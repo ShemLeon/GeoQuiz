@@ -30,7 +30,7 @@ fun LoginScreen(navigate: (NavigationPaths) -> Unit){
             text = stringResource(R.string.app_login_title),
             fontSize = 25.sp,
             fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(top = 70.dp)
+            modifier = Modifier.padding(top = 90.dp)
         )
         Column (modifier = Modifier.fillMaxWidth()){
 
