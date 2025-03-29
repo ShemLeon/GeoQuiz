@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.leoevg.geoquiz.navigation.MainNavigation
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
 
 class MainActivity : ComponentActivity() {
@@ -32,9 +33,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainUI(modifier: Modifier = Modifier) {
-    Text("",
-         modifier = modifier
-    )
+    MainNavigation(modifier)
 }
 
 @Preview(showBackground = true)
