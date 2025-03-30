@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -29,10 +31,13 @@ import androidx.core.provider.FontsContractCompat.Columns
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.navigation.NavigationPaths
 import com.leoevg.geoquiz.ui.theme.Bg
+import com.leoevg.geoquiz.ui.theme.Blue
 import com.leoevg.geoquiz.ui.theme.BlueGrey
 
 @Composable
-fun LoginScreen(navigate: (NavigationPaths) -> Unit){
+fun LoginScreen(
+    navigate: (NavigationPaths) -> Unit){
+
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -40,7 +45,7 @@ fun LoginScreen(navigate: (NavigationPaths) -> Unit){
         .fillMaxSize()
         .background(Bg),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
             text = stringResource(R.string.app_login_title),
@@ -50,10 +55,12 @@ fun LoginScreen(navigate: (NavigationPaths) -> Unit){
         )
         Column (
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth(0.8f),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth(),
                 value = email,
                 onValueChange = { email = it },
                 placeholder = { Text(stringResource(R.string.email)) },
@@ -67,12 +74,13 @@ fun LoginScreen(navigate: (NavigationPaths) -> Unit){
                 )
             )
             OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp),
                 value = password,
                 onValueChange = { password = it },
                 placeholder = { Text(stringResource(R.string.password)) },
                 visualTransformation = PasswordVisualTransformation(),
-                modifier = Modifier
-                    .padding(top = 10.dp),
                 shape = RoundedCornerShape(15.dp),
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = Color.Transparent,
@@ -82,6 +90,45 @@ fun LoginScreen(navigate: (NavigationPaths) -> Unit){
                     unfocusedContainerColor = BlueGrey
                 )
             )
+        }
+        Column (
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 40.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth(fraction = 0.8f),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Blue
+                ),
+                shape = RoundedCornerShape(15.dp),
+                onClick = {}
+            ) {
+                Text(
+                    stringResource(R.string.login)
+                )
+            }
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth(fraction = 0.8f),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = BlueGrey
+                ),
+                shape = RoundedCornerShape(15.dp),
+                onClick = {
+                    navigate(NavigationPaths.Register)
+                }
+            ) {
+                Text(
+                    stringResource(R.string.create_account),
+                    color = Color.Black,
+                    fontWeight = FontWeight.SemiBold
+
+
+                )
+            }
         }
     }
 }

@@ -5,15 +5,15 @@ import com.leoevg.geoquiz.R
 
 class TypeGame(
     var typeGameId: Int,
-    var typeGameName: String,
+    var typeGameNameResId: Int,
     var typeGameImg: Int
 )
 
 val typeGames = listOf(
-    TypeGame(1, "Easy", R.drawable.card_easy),
-    TypeGame(2, "Hard", R.drawable.card_hard),
-    TypeGame(3, "Nightmare", R.drawable.card_nigthmare),
-    TypeGame(4, "Clothing", R.drawable.card_clothing),
-    TypeGame(5, "History", R.drawable.card_history),
-    TypeGame(6, "Sport", R.drawable.card_sport)
+    TypeGame(1, R.string.easy, R.drawable.card_easy),
+    TypeGame(2, R.string.hard, R.drawable.card_hard),
+    TypeGame(3, R.string.nightmare, R.drawable.card_nigthmare),
+    TypeGame(4, R.string.clothing, R.drawable.card_clothing),
+    TypeGame(5, R.string.history, R.drawable.card_history),
+    TypeGame(6, R.string.sport, R.drawable.card_sport)
 )
