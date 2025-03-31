@@ -22,7 +22,6 @@ class MainActivity : ComponentActivity() {
             GeoQuizTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     MainUI(
-
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
