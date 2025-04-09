@@ -1,9 +1,7 @@
 package com.leoevg.geoquiz.data.model
-
 import com.leoevg.geoquiz.R
 
-
-class TypeGame(
+data class TypeGame(
     var typeGameId: Int,
     var typeGameNameResId: Int,
     var typeGameImg: Int
