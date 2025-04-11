@@ -52,9 +52,11 @@ fun ChooseScreen(navigate: (NavigationPaths) -> Unit){
         }
 
         LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(5.dp),
-            // shape = RoundedCornerShape(15.dp)
-        ){
+            modifier = Modifier.
+            padding(top = 18.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+
+            ){
             items(typeGames){
 
                 GameModelItem(

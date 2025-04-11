@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.data.model.TypeGame
+import com.leoevg.geoquiz.ui.theme.Blue
 import com.leoevg.geoquiz.ui.theme.BlueGrey
 
 @Composable
@@ -26,14 +27,12 @@ fun GameModelItem(
 ){
     Box (
         modifier = modifier
-
             .background(
-                color = if (isSelected) BlueGrey else Color.White,
+                color = if (isSelected) Blue else Color.White,
                 shape = RoundedCornerShape(25.dp)
             )
             .padding(horizontal = 12.dp, vertical = 18.dp)
             .clickable { onItemClicked() }
-
     ){
         Text(
             text = stringResource(typeGame.typeGameNameResId),
