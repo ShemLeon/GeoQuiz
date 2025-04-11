@@ -12,8 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.data.model.TypeGame
+import com.leoevg.geoquiz.ui.theme.BlueGrey
 
 @Composable
 fun GameModelItem(
@@ -24,13 +26,19 @@ fun GameModelItem(
 ){
     Box (
         modifier = modifier
-            .background(if (isSelected) Color.Blue else Color.White, shape = RoundedCornerShape(3.dp))
-            .padding(5.dp)
+
+            .background(
+                color = if (isSelected) BlueGrey else Color.White,
+                shape = RoundedCornerShape(25.dp)
+            )
+            .padding(horizontal = 12.dp, vertical = 18.dp)
             .clickable { onItemClicked() }
+
     ){
         Text(
-            stringResource(typeGame.typeGameNameResId),
-            color = if (isSelected) Color.White else Color.Black
+            text = stringResource(typeGame.typeGameNameResId),
+            color = if (isSelected) Color.White else Color.Black,
+            fontSize = 18.sp
             )
 
     }
