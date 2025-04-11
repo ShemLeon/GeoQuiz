@@ -22,5 +22,14 @@
     <string name="historyDesc">This game mode’s name is “Clothing,” and it’s all about style, fabrics, and fashion history! From iconic designers to traditional attire, this mode will test your knowledge of the world of clothing. Whether you’re a fashionista or just looking to learn something new, get ready to unravel the threads of these exciting questions. Let’s see how much you know about what we wear!</string>
     <string name="sportDesc">This game mode’s name is “Clothing,” and it’s all about style, fabrics, and fashion history! From iconic designers to traditional attire, this mode will test your knowledge of the world of clothing. Whether you’re a fashionista or just looking to learn something new, get ready to unravel the threads of these exciting questions. Let’s see how much you know about what we wear!</string>
 
+    <string name="your_score">Your score: </string>
+    <string name="val_points">points</string>
+    <string name="question">Question</string>
+    <string name="options">Options</string>
+    <string name="correct_answer">Choose the correct answer</string>
+    <string name="hint">Hint</string>
+    <string name="apply">Apply</string>
+    <string name="finish">Finish</string>
+
 
 </resources>
