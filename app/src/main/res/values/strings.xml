@@ -26,10 +26,14 @@
     <string name="val_points">points</string>
     <string name="question">Question</string>
     <string name="options">Options</string>
-    <string name="correct_answer">Choose the correct answer</string>
+    <string name="choose_correct_answer">Choose the correct answer</string>
     <string name="hint">Hint</string>
     <string name="apply">Apply</string>
     <string name="finish">Finish</string>
 
+    <string name="congratulations">Congratulations!</string>
+    <string name="your_score_is">Your score is:</string>
+    <string name="points">points</string>
+    <string name="go_to_quizzes">Go to quizzes</string>
 
 </resources>

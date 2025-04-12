@@ -113,7 +113,9 @@ fun ChooseScreen(navigate: (NavigationPaths) -> Unit){
                     containerColor = Blue
                 ),
                 shape = RoundedCornerShape(15.dp),
-                onClick = {}
+                onClick = {
+
+                }
             ) {
                 Icon(
                     painter = painterResource(R.drawable.play_button),
