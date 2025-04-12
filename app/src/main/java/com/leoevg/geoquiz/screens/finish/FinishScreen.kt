@@ -34,8 +34,7 @@ fun FinishScreen(navigate: (NavigationPaths) -> Unit){
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         Row (
-            modifier =
-            Modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 2.dp),
             horizontalArrangement = Arrangement.SpaceBetween
