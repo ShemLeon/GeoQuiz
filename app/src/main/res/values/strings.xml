@@ -31,8 +31,10 @@
     <string name="apply">Apply</string>
     <string name="finish">Finish</string>
 
+    <string name="quiz_results">Quiz Results</string>
     <string name="congratulations">Congratulations!</string>
     <string name="your_score_is">Your score is:</string>
+    <string name="number_points">00</string>
     <string name="points">points</string>
     <string name="go_to_quizzes">Go to quizzes</string>
 
