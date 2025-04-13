@@ -3,6 +3,7 @@ package com.leoevg.geoquiz.screens.finish
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -36,7 +37,7 @@ fun FinishScreen(navigate: (NavigationPaths) -> Unit){
         Row (
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 2.dp),
+                .padding(top = 6.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ){
             Icon(
@@ -72,37 +73,43 @@ fun FinishScreen(navigate: (NavigationPaths) -> Unit){
         )
         Text(
             stringResource(R.string.number_points),
-            modifier = Modifier.padding(top = 40.dp),
+            modifier = Modifier.padding(top = 90.dp),
             fontSize = 140.sp,
             fontWeight = FontWeight.Normal
         )
         Text(
             stringResource(R.string.points),
-            modifier = Modifier.padding(top = 10.dp),
+            modifier = Modifier.padding(top = 0.dp),
             fontSize = 44.sp,
             fontWeight = FontWeight.Normal
         )
 
 // Finish
-        Button(
+        Column (
             modifier = Modifier
-                .fillMaxWidth(fraction = 0.99f)
-                .padding(bottom = 20.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Blue
-            ),
-            shape = RoundedCornerShape(15.dp),
-            onClick = {
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.Bottom
+        ){
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth(fraction = 0.99f)
+                    .padding(bottom = 20.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Blue),
+                shape = RoundedCornerShape(15.dp),
+                onClick = {
 
+                }
+            ) {
+                Text(
+                    stringResource(R.string.go_to_quizzes),
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.Normal,
+
+                    )
             }
-        ) {
-            Text(
-                stringResource(R.string.finish),
-                fontSize = 30.sp,
-                fontWeight = FontWeight.Normal,
-
-                )
         }
+
+
 
     }
 
