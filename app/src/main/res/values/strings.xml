@@ -38,4 +38,6 @@
     <string name="points">points</string>
     <string name="go_to_quizzes">Go to quizzes</string>
 
+    <string name="answer_opt">Country</string>
+
 </resources>

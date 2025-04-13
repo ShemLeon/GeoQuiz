@@ -26,8 +26,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.leoevg.geoquiz.R
+import com.leoevg.geoquiz.data.model.AnswerOption
 import com.leoevg.geoquiz.navigation.NavigationPaths
 import com.leoevg.geoquiz.screens.choose.ChooseScreen
+import com.leoevg.geoquiz.ui.components.AnswerOptionItem
 import com.leoevg.geoquiz.ui.theme.Blue
 
 @Composable
@@ -108,11 +110,13 @@ fun QuizScreen(navigate: (NavigationPaths) -> Unit){
                 .padding(start = 10.dp)
 
         ) }
+        OptionsAnswerSection()
         Column (
             modifier = Modifier
                 .fillMaxSize(),
             verticalArrangement = Arrangement.Bottom
         ){
+
             Row (
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -210,12 +214,13 @@ fun QuizScreen(navigate: (NavigationPaths) -> Unit){
 }
 
 @Composable
-fun OptionsAnswerSection(modifier: Modifier){
+fun OptionsAnswerSection(modifier: Modifier = Modifier){
     Column (
         modifier = modifier
             .fillMaxWidth()
     ){
         Text("option1")
+        AnswerOptionItem(answerOption = AnswerOption(1, "TestCountry"))
     }
 
 }
