@@ -1,5 +1,6 @@
 package com.leoevg.geoquiz.screens.quiz
 
+import android.R.attr.top
 import android.app.ProgressDialog.show
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -38,6 +39,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import coil3.compose.AsyncImage
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.data.model.AnswerOption
 import com.leoevg.geoquiz.data.model.Question
@@ -49,6 +52,7 @@ import com.leoevg.geoquiz.ui.theme.BlueGrey
 
 @Composable
 fun QuizScreen(navigate: (NavigationPaths) -> Unit){
+    val viewModel = viewModel<QuizScreenViewModel>()
     var question by remember { mutableStateOf(Question(
         id = 1,
         rightAnswer = 2,
@@ -112,12 +116,10 @@ fun QuizScreen(navigate: (NavigationPaths) -> Unit){
                     contentDescription = "play_icon_button",
                 )
             }
-
-
         }
-        Image(
-            painter = painterResource(R.drawable.quiz_screen_znak),
-            contentDescription = "item Desc",
+        AsyncImage(
+            model = question.imageQuest,
+            contentDescription = "Question image",
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f) // расположение квадратиком
