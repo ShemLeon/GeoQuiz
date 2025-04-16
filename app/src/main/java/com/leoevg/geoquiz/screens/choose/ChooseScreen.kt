@@ -68,7 +68,6 @@ fun ChooseScreen(navigate: (NavigationPaths) -> Unit){
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ){
                 items(typeGames){
-
                     GameModelItem(
                         typeGame = it,
                         isSelected = selectedTypeGame.typeGameId==it.typeGameId
@@ -79,9 +78,7 @@ fun ChooseScreen(navigate: (NavigationPaths) -> Unit){
             }
 
             Text(
-
                 text = stringResource(selectedTypeGame.typeGameDescResId),
-
                 fontSize = 20.sp,
                 textAlign = TextAlign.Start,
                 modifier = Modifier
