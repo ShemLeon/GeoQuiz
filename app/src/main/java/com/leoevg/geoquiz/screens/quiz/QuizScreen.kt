@@ -1,9 +1,12 @@
 package com.leoevg.geoquiz.screens.quiz
 
+import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,6 +29,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -33,6 +38,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import coil3.compose.AsyncImage
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.data.model.AnswerOption
 import com.leoevg.geoquiz.data.model.Question
@@ -40,14 +47,16 @@ import com.leoevg.geoquiz.navigation.NavigationPaths
 import com.leoevg.geoquiz.screens.choose.ChooseScreen
 import com.leoevg.geoquiz.ui.components.AnswerOptionItem
 import com.leoevg.geoquiz.ui.theme.Blue
+import com.leoevg.geoquiz.ui.theme.BlueGrey
 
 @Composable
 fun QuizScreen(
     navigate: (NavigationPaths) -> Unit
 ){
+    val viewmodel = viewModel<QuizScreenViewModel>()
     var question by remember { mutableStateOf(Question(
         1,
-        rightAnswer = "2",
+        rightAnswer = 2,
         hint = "There is no hint",
         answerOptions = listOf(AnswerOption(1, "Answer 1"), AnswerOption(2, "Answer 2")),
         imageQuest = "https://media.istockphoto.com/id/641067732/photo/jerusalem-old-city-western-wall-with-israeli-flag.jpg?s=612x612&w=0&k=20&c=GYJ98NjcTV_ROIgqqs3g5OdmLEtprvyCZ2_ZFYMq3hk="
@@ -55,6 +64,9 @@ fun QuizScreen(
 
     // select by default
     var selectedAnswerOptionId by remember { mutableIntStateOf(-1) }
+
+    // context for hint
+    val context = LocalContext.current
 
     Column (
         modifier = Modifier
@@ -111,13 +123,14 @@ fun QuizScreen(
 
 
         }
-        Image(
-            painter = painterResource(R.drawable.quiz_screen_znak),
-            contentDescription = "item Desc",
+
+        AsyncImage(
+            model = question.imageQuest,
+            contentDescription = "Question image",
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f) // расположение квадратиком
-                .padding(top = 30.dp)
+                .padding(top=30.dp)
         )
         Row (
             horizontalArrangement = Arrangement.Start,
@@ -134,20 +147,20 @@ fun QuizScreen(
         ) }
         // grid
         OptionAnswersSection(
+            modifier = Modifier.padding(top=15.dp),
             answerOptions = question.answerOptions,
-            rightAnswerId = question.rightAnswer,
-            selectedAnswerOptionId = selectedAnswerOptionId
+            selectedAnswerOptionId = selectedAnswerOptionId,
+            // после нажатия на итем меняет optionId на selected и также state
+            onItemSelected = { optionId -> selectedAnswerOptionId = optionId }
         )
-
         Column (
             modifier = Modifier
                 .fillMaxSize(),
             verticalArrangement = Arrangement.Bottom
         ){
-
             Row (
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 20.dp)
@@ -155,62 +168,56 @@ fun QuizScreen(
             ){
                 Button(
                     modifier = Modifier
-                        .fillMaxWidth(0.48f)
-                        ,
+                        .weight(1f),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Blue
                     ),
+                    contentPadding = PaddingValues(vertical = 15.dp),
                     shape = RoundedCornerShape(25.dp),
-                    onClick = {}
-                ) {
-                    Row (
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically,
-                        // modifier = Modifier.fillMaxSize()
-                    ){
-                        Icon(
-                            painter = painterResource(R.drawable.hint_button),
-                            contentDescription = "hint_icon_button",
-                            modifier = Modifier.size(24.dp)
-                        )
-                        Text(
-                            stringResource(R.string.hint),
-                            fontSize = 30.sp,
-                            fontWeight = FontWeight.Normal,
-                            modifier = Modifier
-                                .padding(start = 10.dp)
-                        )
+                    onClick = {
+                        Toast.makeText(context, "Hint: ${question.hint}", Toast.LENGTH_LONG).show()
                     }
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.hint_button),
+                        tint = Color.Black,
+                        contentDescription = "hint_icon_button",
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Text(
+                        stringResource(R.string.hint),
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Normal,
+                        modifier = Modifier
+                            .padding(start = 10.dp),
+                        color = Color.Black
+                    )
                 }
 
                 Button(
                     modifier = Modifier
-                        .fillMaxWidth(0.98f)
-                    ,
+                        .weight(1f),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Blue
+                        containerColor = BlueGrey
                     ),
+                    contentPadding = PaddingValues(vertical = 15.dp),
                     shape = RoundedCornerShape(25.dp),
                     onClick = {}
                 ) {
-                    Row (
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically,
-                        // modifier = Modifier.fillMaxSize()
-                    ){
-                        Icon(
-                            painter = painterResource(R.drawable.apply_button),
-                            contentDescription = "hint_icon_button",
-                            modifier = Modifier.size(24.dp)
-                        )
-                        Text(
-                            stringResource(R.string.apply),
-                            fontSize = 30.sp,
-                            fontWeight = FontWeight.Normal,
-                            modifier = Modifier
-                                .padding(start = 10.dp)
-                        )
-                    }
+                    Icon(
+                        painter = painterResource(R.drawable.apply_button),
+                        tint = Color.Black,
+                        contentDescription = "hint_icon_button",
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Text(
+                        stringResource(R.string.apply),
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Normal,
+                        modifier = Modifier
+                            .padding(start = 10.dp),
+                        color = Color.Black
+                    )
                 }
 
 
@@ -223,6 +230,7 @@ fun QuizScreen(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Blue
                 ),
+                contentPadding = PaddingValues(vertical = 15.dp),
                 shape = RoundedCornerShape(15.dp),
                 onClick = {
 
@@ -230,7 +238,7 @@ fun QuizScreen(
             ) {
                 Text(
                     stringResource(R.string.finish),
-                    fontSize = 30.sp,
+                    fontSize = 20.sp,
                     fontWeight = FontWeight.Normal,
 
                 )
@@ -245,18 +253,22 @@ fun QuizScreen(
 fun OptionAnswersSection(
     modifier: Modifier = Modifier,
     answerOptions: List<AnswerOption>,
-    rightAnswerId: Int,
-    selectedAnswerOptionId: Int
+    selectedAnswerOptionId: Int,
+    onItemSelected: (Int) -> Unit
 ){
-
     LazyVerticalGrid(
         modifier = Modifier.fillMaxWidth(),
         columns = GridCells.Fixed(2)
     ) {
-        items(answerOptions){ currentOptionItem ->
+        items(answerOptions){currentOptionItem ->
             AnswerOptionItem(
                 answerOption = currentOptionItem,
-                isSelected = selectedAnswerOptionId == rightAnswerId
+                isSelected = selectedAnswerOptionId == currentOptionItem.id,
+                onClick = {
+                    //отработает, когда item будет нажат
+                    // передает id нового выбранного item.
+                    onItemSelected(currentOptionItem.id)
+                }
             )
         }
     }

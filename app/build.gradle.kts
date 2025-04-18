@@ -63,4 +63,8 @@ dependencies {
     implementation(libs.retrofit)
     // gson converter
     implementation(libs.converter.gson)
+
+    // coil
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network)
 }
