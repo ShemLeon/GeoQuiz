@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.leoevg.geoquiz" />
+                  <option name="mobileSdkAppId" value="1:870099045253:android:1f408f146cd481463392ec" />
+                  <option name="projectId" value="geobase-52793" />
+                  <option name="projectNumber" value="870099045253" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

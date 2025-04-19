@@ -46,12 +46,15 @@ import com.leoevg.geoquiz.data.model.AnswerOption
 import com.leoevg.geoquiz.data.model.Question
 import com.leoevg.geoquiz.navigation.NavigationPaths
 import com.leoevg.geoquiz.screens.choose.ChooseScreen
+import com.leoevg.geoquiz.screens.question.QuestionScreen
 import com.leoevg.geoquiz.ui.components.AnswerOptionItem
 import com.leoevg.geoquiz.ui.theme.Blue
 import com.leoevg.geoquiz.ui.theme.BlueGrey
 
 @Composable
-fun QuizScreen(navigate: (NavigationPaths) -> Unit){
+fun QuizScreen(
+    navigate: (NavigationPaths) -> Unit
+){
     val viewModel = viewModel<QuizScreenViewModel>()
     var question by remember { mutableStateOf(Question(
         id = 1,
@@ -60,202 +63,13 @@ fun QuizScreen(navigate: (NavigationPaths) -> Unit){
         answerOptions = listOf(AnswerOption(1, "Answer 1"), AnswerOption(2, "Answer 2")),
         imageQuest = "https://media.istockphoto.com/id/641067732/photo/jerusalem-old-city-western-wall-with-israeli-flag.jpg?s=612x612&w=0&k=20&c=GYJ98NjcTV_ROIgqqs3g5OdmLEtprvyCZ2_ZFYMq3hk="
     )) }
-    var selectedAnswerOptionId by remember { mutableIntStateOf(-1) }
 
-    val context = LocalContext.current
-
-    Column (
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 10.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ){
-        Row (
-            modifier = Modifier
-                .padding(top = 10.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Start
-        ){
-            Text(
-                text = stringResource(R.string.your_score),
-                fontSize = 25.sp,
-                fontWeight = FontWeight.Normal,
-                textAlign = TextAlign.Center
-            )
-            Text(
-                text = "0 ${stringResource(R.string.val_points)}",
-                fontSize = 25.sp,
-                fontWeight = FontWeight.SemiBold,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(start = 10.dp)
-            )
-        }
-        Row (
-            modifier = Modifier
-                .padding(top = 10.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ){
-            Text(
-                text =  "${stringResource(R.string.question)} 1",
-                fontSize = 35.sp,
-                fontWeight = FontWeight.SemiBold,
-                textAlign = TextAlign.Center
-            )
-            Row (
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ){
-                Icon(
-                    painter = painterResource(R.drawable.play_button),
-                    contentDescription = "play_icon_button",
-
-                )
-                Icon(
-                    painter = painterResource(R.drawable.play_button),
-                    contentDescription = "play_icon_button",
-                )
-            }
-        }
-        AsyncImage(
-            model = question.imageQuest,
-            contentDescription = "Question image",
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1f) // расположение квадратиком
-                .padding(top = 30.dp)
-        )
-        Row (
-            horizontalArrangement = Arrangement.Start,
-            modifier = Modifier.fillMaxWidth()
-        ){
-            Text(
-            text = stringResource(R.string.choose_correct_answer),
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Light,
-            textAlign = TextAlign.Start,
-            modifier = Modifier
-                .padding(start = 10.dp)
-
-        ) }
-        OptionAnswersSection(
-            modifier = Modifier.padding(top = 15.dp),
-            answerOptions = question.answerOptions,
-            selectedAnswerOptionId = selectedAnswerOptionId,
-            onItemSelected = { optionId -> selectedAnswerOptionId = optionId }
-        )
-        Column (
-            modifier = Modifier
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Bottom
-        ){
-            Row (
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 20.dp)
-                    .height(56.dp)
-            ){
-                Button(
-                    modifier = Modifier
-                        .weight(1f),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Blue
-                    ),
-                    contentPadding = PaddingValues(vertical = 15.dp),
-                    shape = RoundedCornerShape(25.dp),
-                    onClick = {
-                        Toast.makeText(context, "Hint: ${question.hint}", Toast.LENGTH_LONG).show()
-                    }
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.hint_button),
-                        contentDescription = "hint_icon_button",
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Text(
-                        stringResource(R.string.hint),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Normal,
-                        modifier = Modifier
-                            .padding(start = 10.dp)
-                    )
-                }
-
-                Button(
-                    modifier = Modifier
-                        .weight(1f),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = BlueGrey
-                    ),
-                    contentPadding = PaddingValues(vertical = 15.dp),
-                    shape = RoundedCornerShape(25.dp),
-                    onClick = {}
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.apply_button),
-                        tint = Color.Black,
-                        contentDescription = "hint_icon_button",
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Text(
-                        stringResource(R.string.apply),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Normal,
-                        modifier = Modifier
-                            .padding(start = 10.dp),
-                        color = Color.Black
-                    )
-                }
-
-            }
-// Finish
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth(fraction = 0.99f)
-                    .padding(bottom = 20.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Blue
-                ),
-                contentPadding = PaddingValues(vertical = 15.dp),
-                shape = RoundedCornerShape(25.dp),
-                onClick = {
-
-                }
-            ) {
-                Text(
-                    stringResource(R.string.finish),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Normal
-                )
-            }
-        }
-
-    }
-
+    QuestionScreen(
+        question = question,
+        navigate = navigate
+    )
 }
 
-@Composable
-fun OptionAnswersSection(
-    modifier: Modifier = Modifier,
-    answerOptions: List<AnswerOption>,
-    selectedAnswerOptionId: Int,
-    onItemSelected: (Int) -> Unit
-){
-    LazyVerticalGrid(
-        modifier = modifier.fillMaxWidth(),
-        columns = GridCells.Fixed(2)
-    ) {
-        items(answerOptions) { currentOptionItem ->
-            AnswerOptionItem(
-                answerOption = currentOptionItem,
-                isSelected = selectedAnswerOptionId == currentOptionItem.id,
-                onClick = { onItemSelected(currentOptionItem.id) }
-            )
-        }
-    }
-}
 
 @Composable
 @Preview(showBackground = true)
