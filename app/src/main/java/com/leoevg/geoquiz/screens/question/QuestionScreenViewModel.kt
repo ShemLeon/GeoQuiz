@@ -10,6 +10,36 @@ class QuestionScreenViewModel: ViewModel() {
 
     fun onEvent(event: QuestionScreenEvent){
         // SOLID
+        when(event){
+            QuestionScreenEvent.ApplyBtnClicked -> onApplyBtnClicked()
+            QuestionScreenEvent.FinishBtnClicked -> onFinishBtnClicked()
+            QuestionScreenEvent.HintBtnClicked -> onHintBtnClicked()
+            QuestionScreenEvent.ImageDoubleClicked -> onImageDoubleBtnClicked()
+            QuestionScreenEvent.NightModeBtnClicked -> onNightModeBtnClicked()
+            is QuestionScreenEvent.OptionSelected -> onOptionSelected(event.selectedOptionId)
+            QuestionScreenEvent.SilentModeBtnClicked -> onSilentModeBtnClicked()
+        }
     }
 
+    private fun onApplyBtnClicked(){
+
+    }
+    private fun onFinishBtnClicked (){
+
+    }
+    private fun onHintBtnClicked(){
+
+    }
+    private fun onImageDoubleBtnClicked(){
+
+    }
+    private fun onNightModeBtnClicked(){
+
+    }
+    private fun onOptionSelected(selectedOptionId: Int){
+        selectedAnswerOptionId = selectedOptionId
+    }
+    private fun onSilentModeBtnClicked(){
+
+    }
 }

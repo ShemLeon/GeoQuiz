@@ -133,8 +133,8 @@ fun QuestionScreen(
             modifier = Modifier.padding(top=15.dp),
             answerOptions = question.answerOptions,
             selectedAnswerOptionId = viewModel.selectedAnswerOptionId,
-            // после нажатия на итем меняет optionId на selected и также state
-            onItemSelected = { optionId -> selectedAnswerOptionId = optionId }
+           // нам надо передать события, что произошло и передать в него выбранный id
+            onItemSelected = { optionId -> viewModel.onEvent(QuestionScreenEvent.OptionSelected(optionId)) }
         )
         Column (
             modifier = Modifier
@@ -213,6 +213,7 @@ fun QuestionScreen(
                 contentPadding = PaddingValues(vertical = 15.dp),
                 shape = RoundedCornerShape(15.dp),
                 onClick = {
+                    viewModel.onEvent(QuestionScreenEvent.FinishBtnClicked)
                 }
             ) {
                 Text(
