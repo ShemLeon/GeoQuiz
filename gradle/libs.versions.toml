@@ -13,6 +13,7 @@ kotlinxSerializationJson = "1.7.3"
 navigationCompose = "2.8.9"
 retrofit = "2.9.0"
 coil = "3.1.0"
+google-services = "4.4.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -45,3 +46,5 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+
+google-services = {id = "com.google.gms.google-services", version.ref = "googleServices" }

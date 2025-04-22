@@ -6,7 +6,6 @@ import com.leoevg.geoquiz.data.model.Quiz
 // являются ядром, для следующего наследования / использования
 // здесь я создам ф-ции отвечающие за загрузку данных
 
-
 interface QuizRepository {
     suspend fun loadQuiz(quizTypeGame: String): Quiz
 
