@@ -45,6 +45,7 @@ import com.leoevg.geoquiz.data.model.AnswerOption
 import com.leoevg.geoquiz.data.model.Question
 import com.leoevg.geoquiz.navigation.NavigationPaths
 import com.leoevg.geoquiz.screens.choose.ChooseScreen
+import com.leoevg.geoquiz.screens.question.QuestionScreen
 import com.leoevg.geoquiz.ui.components.AnswerOptionItem
 import com.leoevg.geoquiz.ui.theme.Blue
 import com.leoevg.geoquiz.ui.theme.BlueGrey
@@ -62,10 +63,10 @@ fun QuizScreen(
         imageQuest = "https://media.istockphoto.com/id/641067732/photo/jerusalem-old-city-western-wall-with-israeli-flag.jpg?s=612x612&w=0&k=20&c=GYJ98NjcTV_ROIgqqs3g5OdmLEtprvyCZ2_ZFYMq3hk="
     )) }
 
-    // select by default
-    var selectedAnswerOptionId by remember { mutableIntStateOf(-1) }
-
-
+    QuestionScreen(
+        question = question,
+        navigate = navigate
+    )
 }
 
 

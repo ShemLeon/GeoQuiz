@@ -1,6 +1,7 @@
 package com.leoevg.geoquiz.screens.question
 
 import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -28,6 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -36,9 +38,11 @@ import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.data.model.AnswerOption
 import com.leoevg.geoquiz.data.model.Question
 import com.leoevg.geoquiz.navigation.NavigationPaths
+import com.leoevg.geoquiz.screens.quiz.QuizScreen
 import com.leoevg.geoquiz.ui.components.AnswerOptionItem
 import com.leoevg.geoquiz.ui.theme.Blue
 import com.leoevg.geoquiz.ui.theme.BlueGrey
+import kotlin.Unit
 
 @Composable
 fun QuestionScreen(
@@ -46,9 +50,7 @@ fun QuestionScreen(
     navigate: (NavigationPaths) -> Unit
 ){
     val viewModel: QuestionScreenViewModel = viewModel()
-    // context for hint
-    val context = LocalContext.current
-
+     val context = LocalContext.current  // context for hint
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -94,17 +96,20 @@ fun QuestionScreen(
                 Icon(
                     painter = painterResource(R.drawable.volume_up),
                     tint = Color.Black,
-                    contentDescription = "hint_icon_button",
-                    modifier = Modifier.size(54.dp)
-
+                    contentDescription = "volumeUp_icon_button",
+                    modifier = Modifier.clickable{
+                        viewModel.onEvent(QuestionScreenEvent.SilentModeBtnClicked)
+                    }
                 )
                 Icon(
-                    painter = painterResource(R.drawable.play_button),
-                    contentDescription = "play_icon_button",
+                    painter = painterResource(R.drawable.light_mode_icon),
+                    tint = Color.Black,
+                    contentDescription = "light_mode_icon",
+                    modifier = Modifier.clickable{
+                        viewModel.onEvent(QuestionScreenEvent.NightModeBtnClicked)
+                    }
                 )
             }
-
-
         }
 
         AsyncImage(
@@ -158,6 +163,7 @@ fun QuestionScreen(
                     contentPadding = PaddingValues(vertical = 15.dp),
                     shape = RoundedCornerShape(25.dp),
                     onClick = {
+                        viewModel.onEvent(QuestionScreenEvent.HintBtnClicked)
                         Toast.makeText(context, "Hint: ${question.hint}", Toast.LENGTH_LONG).show()
                     }
                 ) {
@@ -184,7 +190,9 @@ fun QuestionScreen(
                     ),
                     contentPadding = PaddingValues(vertical = 15.dp),
                     shape = RoundedCornerShape(25.dp),
-                    onClick = {}
+                    onClick = {
+                        viewModel.onEvent(QuestionScreenEvent.ApplyBtnClicked)
+                    }
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.apply_button),
@@ -252,3 +260,6 @@ fun OptionAnswersSection(
     }
 
 }
+
+
+
