@@ -113,7 +113,7 @@ fun QuestionScreen(
         }
 
         AsyncImage(
-            model = question.imageQuest,
+            model = question.picturesUrls[0],
             contentDescription = "Question image",
             modifier = Modifier
                 .fillMaxWidth()

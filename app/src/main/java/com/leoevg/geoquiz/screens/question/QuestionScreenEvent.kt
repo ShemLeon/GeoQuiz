@@ -1,7 +1,5 @@
 package com.leoevg.geoquiz.screens.question
 
-import androidx.lifecycle.ViewModel
-
 sealed interface QuestionScreenEvent {
     data class OptionSelected(val selectedOptionId: Int): QuestionScreenEvent
     data object HintBtnClicked: QuestionScreenEvent
