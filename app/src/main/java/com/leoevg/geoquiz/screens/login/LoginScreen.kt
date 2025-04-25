@@ -27,8 +27,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.navigation.NavigationPaths
+import com.leoevg.geoquiz.screens.question.QuestionScreenViewModel
 import com.leoevg.geoquiz.ui.theme.Bg
 import com.leoevg.geoquiz.ui.theme.Blue
 import com.leoevg.geoquiz.ui.theme.BlueGrey
@@ -36,9 +38,7 @@ import com.leoevg.geoquiz.ui.theme.BlueGrey
 @Composable
 fun LoginScreen(
     navigate: (NavigationPaths) -> Unit){
-
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    val viewModel: LoginScreenViewModel = viewModel()
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -60,8 +60,10 @@ fun LoginScreen(
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth(),
-                value = email,
-                onValueChange = { email = it },
+                value = viewModel.email,
+                onValueChange = {
+                    viewModel.onEvent(LoginScreenEvent.EmailChanged(it))
+                                },
                 placeholder = { Text(stringResource(R.string.email)) },
                 shape = RoundedCornerShape(15.dp),
                 colors = OutlinedTextFieldDefaults.colors(
@@ -76,8 +78,10 @@ fun LoginScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 10.dp),
-                value = password,
-                onValueChange = { password = it },
+                value = viewModel.password,
+                onValueChange = {
+                    viewModel.onEvent(LoginScreenEvent.PasswordChanged(it))
+                                },
                 placeholder = { Text(stringResource(R.string.password)) },
                 visualTransformation = PasswordVisualTransformation(),
                 shape = RoundedCornerShape(15.dp),
@@ -103,7 +107,9 @@ fun LoginScreen(
                     containerColor = Blue
                 ),
                 shape = RoundedCornerShape(15.dp),
-                onClick = {}
+                onClick = {
+                    viewModel.onEvent(LoginScreenEvent.LoginBtnClicked)
+                }
             ) {
                 Text(
                     stringResource(R.string.login)

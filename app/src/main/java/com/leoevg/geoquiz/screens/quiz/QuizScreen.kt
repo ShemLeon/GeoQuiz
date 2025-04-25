@@ -57,10 +57,11 @@ fun QuizScreen(
     val viewmodel = viewModel<QuizScreenViewModel>()
     var question by remember { mutableStateOf(Question(
         1,
-        rightAnswer = 2,
+        rightAnswer = "qweqwe",
         hint = "There is no hint",
         answerOptions = listOf(AnswerOption(1, "Answer 1"), AnswerOption(2, "Answer 2")),
-        imageQuest = "https://media.istockphoto.com/id/641067732/photo/jerusalem-old-city-western-wall-with-israeli-flag.jpg?s=612x612&w=0&k=20&c=GYJ98NjcTV_ROIgqqs3g5OdmLEtprvyCZ2_ZFYMq3hk="
+        picturesUrls = emptyList()
+
     )) }
 
     QuestionScreen(
