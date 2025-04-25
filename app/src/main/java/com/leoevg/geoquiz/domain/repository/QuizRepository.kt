@@ -1,4 +1,4 @@
-package com.leoevg.geoquiz.data.domain.repository
+package com.leoevg.geoquiz.domain.repository
 
 import com.leoevg.geoquiz.data.model.Quiz
 

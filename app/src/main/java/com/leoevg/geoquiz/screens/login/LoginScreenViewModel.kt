@@ -5,6 +5,11 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.leoevg.geoquiz.data.repository.LoginRepositoryImpl
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.annotation.meta.When
 import kotlin.String
 
@@ -12,6 +17,7 @@ class LoginScreenViewModel: ViewModel( ) {
     // state вьюхи
     var email by mutableStateOf("")
     var password by mutableStateOf("")
+    var error by mutableStateOf<String?>(null)
 
     fun onEvent(event: LoginScreenEvent){
         // SOLID
@@ -30,10 +36,22 @@ class LoginScreenViewModel: ViewModel( ) {
         this.password = password
     }
 
-    private fun  onLoginBtnClicked(){
-
+    private fun onLoginBtnClicked(){
+        if (email.isEmpty() || password.isEmpty()) {
+            error = "Fields cannot be empty"
+            return
+        }
+        error = null
+        login(email, password)
     }
 
+    private fun login(email: String, password: String) {
+        val loginRepository = LoginRepositoryImpl()
 
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = loginRepository.login(email, password)
+
+        }
+    }
 
 }

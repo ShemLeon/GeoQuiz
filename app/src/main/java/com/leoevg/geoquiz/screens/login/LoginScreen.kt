@@ -1,5 +1,6 @@
 package com.leoevg.geoquiz.screens.login
 
+import android.R.attr.top
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -57,9 +58,16 @@ fun LoginScreen(
                 .fillMaxWidth(0.8f),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
+            viewModel.error?.let { error ->
+                Text(
+                    text = error,
+                    color = Color.Red
+                )
+            }
             OutlinedTextField(
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .padding(top = 20.dp),
                 value = viewModel.email,
                 onValueChange = {
                     viewModel.onEvent(LoginScreenEvent.EmailChanged(it))

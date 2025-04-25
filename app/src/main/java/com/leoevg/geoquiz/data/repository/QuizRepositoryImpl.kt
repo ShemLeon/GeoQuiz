@@ -1,7 +1,7 @@
 package com.leoevg.geoquiz.data.repository
 
 import com.google.firebase.database.FirebaseDatabase
-import com.leoevg.geoquiz.data.domain.repository.QuizRepository
+import com.leoevg.geoquiz.domain.repository.QuizRepository
 import com.leoevg.geoquiz.data.model.AnswerOption
 import com.leoevg.geoquiz.data.model.Question
 import com.leoevg.geoquiz.data.model.Quiz
