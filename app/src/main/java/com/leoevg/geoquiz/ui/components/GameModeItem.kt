@@ -39,7 +39,5 @@ fun GameModelItem(
             color = if (isSelected) Color.White else Color.Black,
             fontSize = 18.sp
             )
-
     }
-
 }

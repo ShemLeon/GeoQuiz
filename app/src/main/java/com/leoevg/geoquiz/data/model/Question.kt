@@ -2,8 +2,8 @@ package com.leoevg.geoquiz.data.model
 
 data class Question (
     val id: Int,
-    val rightAnswer: String,
+    val rightAnswer: Int,
     val hint: String,
-    val list: List<AnswerOption>,
+    val answerOptions: List<AnswerOption>,
     val imageQuest: String
 )
