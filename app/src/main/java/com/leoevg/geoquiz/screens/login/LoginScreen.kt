@@ -27,7 +27,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.provider.FontsContractCompat.Columns
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.navigation.NavigationPaths
 import com.leoevg.geoquiz.ui.theme.Bg
