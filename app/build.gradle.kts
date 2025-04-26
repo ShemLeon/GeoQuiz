@@ -79,4 +79,6 @@ dependencies {
     implementation(libs.dagger.hilt.android)
     implementation(libs.android.hilt.navigation.compose)
     ksp(libs.dagger.hilt.android.compiler)
+
+    implementation(libs.material.icons.extended)
 }

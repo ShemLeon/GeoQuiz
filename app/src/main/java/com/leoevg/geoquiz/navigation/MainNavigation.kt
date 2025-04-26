@@ -44,7 +44,14 @@ fun MainNavigation(
             AdminScreen { navController.navigate(it) }
         }
         composable<NavigationPaths.Choose> {
-            ChooseScreen { navController.navigate(it) }
+            ChooseScreen(
+                navigate = {
+                    navController.navigate(it)
+                },
+                popBackStack = {
+                    navController.popBackStack()
+                }
+            )
         }
         composable<NavigationPaths.Quiz> {
             QuizScreen { navController.navigate(it) }
