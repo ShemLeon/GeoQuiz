@@ -1,6 +1,5 @@
 package com.leoevg.geoquiz.screens.login
 
-import android.R.attr.top
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,12 +12,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,18 +23,29 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.navigation.NavigationPaths
-import com.leoevg.geoquiz.screens.question.QuestionScreenViewModel
+import com.leoevg.geoquiz.ui.components.LoadingDialog
 import com.leoevg.geoquiz.ui.theme.Bg
 import com.leoevg.geoquiz.ui.theme.Blue
 import com.leoevg.geoquiz.ui.theme.BlueGrey
 
 @Composable
 fun LoginScreen(
-    navigate: (NavigationPaths) -> Unit){
-    val viewModel: LoginScreenViewModel = viewModel()
+    navigate: (NavigationPaths) -> Unit,
+    popBackStack: () -> Unit
+){
+    val viewModel: LoginScreenViewModel = hiltViewModel()
+
+    LaunchedEffect(viewModel.isLoggedIn) {
+        if (viewModel.isLoggedIn) {
+            popBackStack()
+            navigate(NavigationPaths.Choose)
+        }
+    }
+
+    LoadingDialog(isLoading = viewModel.isLoading)
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -138,8 +144,6 @@ fun LoginScreen(
                     stringResource(R.string.create_account),
                     color = Color.Black,
                     fontWeight = FontWeight.SemiBold
-
-
                 )
             }
         }
@@ -149,5 +153,5 @@ fun LoginScreen(
 @Composable
 @Preview(showBackground = true)
 fun LoginScreenPreview(){
-    LoginScreen {  }
+//    LoginScreen {  }
 }

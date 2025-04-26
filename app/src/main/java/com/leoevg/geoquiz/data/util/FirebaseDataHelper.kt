@@ -24,10 +24,13 @@ suspend fun DatabaseReference.getDataOnce(): DataSnapshot{
     }
 }
 
-suspend fun Task<AuthResult>.getCompletedResult(): AuthResult {
+suspend fun Task<AuthResult>.getCompletedResult(): AuthResult? {
     return suspendCancellableCoroutine { continuation ->
         this.addOnCompleteListener {
-            continuation.resume(it.result)
+            if (it.isSuccessful)
+                continuation.resume(it.result)
+            else
+                continuation.resume(null)
         }
     }
 }
