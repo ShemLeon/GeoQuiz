@@ -7,6 +7,7 @@ import com.leoevg.geoquiz.domain.repository.LoginRepository
 
 class LoginRepositoryImpl : LoginRepository {
     override suspend fun login(email: String, password: String): AuthResult? {
-        return FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password).getCompletedResult()
+        return FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password).
+            getCompletedResult()
     }
 }
