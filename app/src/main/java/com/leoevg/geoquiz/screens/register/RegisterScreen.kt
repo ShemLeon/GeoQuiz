@@ -41,7 +41,6 @@ import com.leoevg.geoquiz.ui.theme.BlueGrey
 fun RegisterScreen(
     navigate: (NavigationPaths) -> Unit){
     val viewModel: RegisterScreenViewModel = viewModel()
-
     Column(modifier = Modifier
         .fillMaxSize()
         .background(Bg),

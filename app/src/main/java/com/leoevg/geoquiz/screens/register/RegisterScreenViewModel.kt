@@ -1,5 +1,4 @@
 package com.leoevg.geoquiz.screens.register
-
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -18,9 +17,7 @@ class RegisterScreenViewModel: ViewModel( ) {
             is RegisterScreenEvent.NicknameChanged -> onNicknameChanged(event.nickname)
             is RegisterScreenEvent.EmailChanged -> onEmailChanged(event.email)
             is RegisterScreenEvent.PasswordChanged -> onPasswordChanged(event.password)
-
             RegisterScreenEvent.RegisterBtnClicked -> onRegisterBtnClicked()
-
         }
     }
 
