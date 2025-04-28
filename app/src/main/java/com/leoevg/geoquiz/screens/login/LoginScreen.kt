@@ -76,6 +76,7 @@ fun LoginScreen(
                     .padding(top = 20.dp),
                 value = viewModel.email,
                 onValueChange = {
+                    // it - новое значение введенное юзером, евентом передаем его в viewModel
                     viewModel.onEvent(LoginScreenEvent.EmailChanged(it))
                                 },
                 placeholder = { Text(stringResource(R.string.email)) },

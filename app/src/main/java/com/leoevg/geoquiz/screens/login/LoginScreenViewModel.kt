@@ -30,6 +30,8 @@ class LoginScreenViewModel @Inject constructor(
     fun onEvent(event: LoginScreenEvent){
         // SOLID
         when(event){
+            // is - проверка является ли обьект евент объектом класса, а не сравнит его в тупую
+            // при этом LoginBtnClicked - являются data object издесь мы сравниваем объекты без проблем
             is LoginScreenEvent.EmailChanged -> onEmailChanged(event.email)
             is LoginScreenEvent.PasswordChanged -> onPasswordChanged(event.password)
             LoginScreenEvent.LoginBtnClicked -> onLoginBtnClicked()
