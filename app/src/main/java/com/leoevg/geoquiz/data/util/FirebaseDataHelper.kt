@@ -25,10 +25,12 @@ suspend fun DatabaseReference.getDataOnce(): DataSnapshot{
 }
 
 suspend fun Task<AuthResult>.getCompletedResult(): AuthResult? {
+    // асинхронная таска в фаербейс
     return suspendCancellableCoroutine { continuation ->
         this.addOnCompleteListener {
             if (it.isSuccessful)
                 continuation.resume(it.result)
+            // it - выполненная таски
             else
                 continuation.resume(null)
         }

@@ -55,6 +55,7 @@ class LoginScreenViewModel @Inject constructor(
     }
 
     private fun login(email: String, password: String) = viewModelScope.launch(Dispatchers.IO) {
+        // внутри этой ф-ции запрос к FIREBASE и его обработка. уйдет в repository
         isLoading = true
         val result = loginRepository.login(email, password)
         isLoading = false
