@@ -4,6 +4,7 @@ import com.leoevg.geoquiz.data.repository.LoginRepositoryImpl
 import com.leoevg.geoquiz.data.repository.QuizRepositoryImpl
 import com.leoevg.geoquiz.domain.repository.LoginRepository
 import com.leoevg.geoquiz.domain.repository.QuizRepository
+import com.leoevg.geoquiz.domain.repository.RegisterRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,9 +15,16 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object RepositoryModule {
     @Provides
-    @Singleton // синглтон значит, что зависимость создасться 1 раз и будет неизменяема на протяжении всей работы приложения
+    @Singleton // синглтон значит, что зависимость создасться 1
+    // раз и будет неизменяема на протяжении всей работы приложения
     fun provideLoginRepository(): LoginRepository {
         return LoginRepositoryImpl()
+    }
+
+    @Provides
+    @Singleton
+    fun provideRegisterRepository(): RegisterRepository {
+        return RegisterRepositoryImpl()
     }
 
     @Provides
@@ -25,3 +33,19 @@ object RepositoryModule {
         return QuizRepositoryImpl()
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

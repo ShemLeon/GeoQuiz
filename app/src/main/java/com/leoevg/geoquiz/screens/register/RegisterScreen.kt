@@ -39,7 +39,11 @@ import com.leoevg.geoquiz.ui.theme.BlueGrey
 
 @Composable
 fun RegisterScreen(
-    navigate: (NavigationPaths) -> Unit){
+    navigate: (NavigationPaths) -> Unit,
+    popBackStack: () -> Unit
+){
+
+
     val viewModel: RegisterScreenViewModel = viewModel()
     Column(modifier = Modifier
         .fillMaxSize()
