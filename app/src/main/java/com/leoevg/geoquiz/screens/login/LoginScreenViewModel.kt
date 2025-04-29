@@ -56,9 +56,9 @@ class LoginScreenViewModel @Inject constructor(
 
     private fun login(email: String, password: String) = viewModelScope.launch(Dispatchers.IO) {
         // внутри этой ф-ции запрос к FIREBASE и его обработка. уйдет в repository
-        isLoading = true
+        isLoading = true // анимация полосы загрузки включается
         val result = loginRepository.login(email, password)
-        isLoading = false
+        isLoading = false //  анимация полосы загрузки выключается
 
         result?.user?.let {
             isLoggedIn = true

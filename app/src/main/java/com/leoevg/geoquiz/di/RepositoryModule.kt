@@ -14,7 +14,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object RepositoryModule {
     @Provides
-    @Singleton
+    @Singleton // синглтон значит, что зависимость создасться 1 раз и будет неизменяема на протяжении всей работы приложения
     fun provideLoginRepository(): LoginRepository {
         return LoginRepositoryImpl()
     }
