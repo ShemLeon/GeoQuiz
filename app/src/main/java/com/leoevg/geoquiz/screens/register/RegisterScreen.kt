@@ -13,10 +13,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,13 +23,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.google.android.play.core.integrity.v
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.navigation.NavigationPaths
-import com.leoevg.geoquiz.screens.login.LoginScreen
-import com.leoevg.geoquiz.screens.login.LoginScreenEvent
-import com.leoevg.geoquiz.screens.login.LoginScreenViewModel
+import com.leoevg.geoquiz.ui.components.LoadingDialog
 import com.leoevg.geoquiz.ui.theme.Bg
 import com.leoevg.geoquiz.ui.theme.Blue
 import com.leoevg.geoquiz.ui.theme.BlueGrey
@@ -42,9 +36,19 @@ fun RegisterScreen(
     navigate: (NavigationPaths) -> Unit,
     popBackStack: () -> Unit
 ){
+    val viewModel: RegisterScreenViewModel = hiltViewModel()
+    // LaunchedEffect - блок, который срабатывает когда переданная в него зависимость изменяется.
+    // в данном случае - переход на след экран
+    LaunchedEffect(viewModel.isRegisteredIn) {
+        if (viewModel.isRegisteredIn) {
+            popBackStack() // чистит стак, чтобы при нажатии
+            // кнопки назад не сохранило введенный логин/пароль
+            navigate(NavigationPaths.Choose)
+        }
+    }
 
+    LoadingDialog(isLoading = viewModel.isLoading)
 
-    val viewModel: RegisterScreenViewModel = viewModel()
     Column(modifier = Modifier
         .fillMaxSize()
         .background(Bg),
@@ -63,6 +67,12 @@ fun RegisterScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ){
+            viewModel.error?.let { error ->
+                Text(
+                    text = error,
+                    color = Color.Red
+                )
+            }
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -145,5 +155,5 @@ fun RegisterScreen(
 @Composable
 @Preview(showBackground = true)
 fun RegisterScreenPreview(){
-    RegisterScreen {  }
+//    RegisterScreen {  }
 }

@@ -7,11 +7,13 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.leoevg.geoquiz.domain.repository.LoginRepository
 import com.leoevg.geoquiz.domain.repository.RegisterRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.String
 
+@HiltViewModel
 class RegisterScreenViewModel @Inject constructor(
     private val registerRepository: RegisterRepository
 ): ViewModel ( ) {
@@ -43,7 +45,7 @@ class RegisterScreenViewModel @Inject constructor(
         this.password = password
     }
 
-    private fun  onRegisterBtnClicked(){
+    private fun onRegisterBtnClicked(){
         if (email.isEmpty() || password.isEmpty() || nickname.isEmpty()){
             error = "Fields cannot be empty"
             return
@@ -55,7 +57,7 @@ class RegisterScreenViewModel @Inject constructor(
     private fun register(nickname: String, email: String, password: String) = viewModelScope.launch(Dispatchers.IO){
         // внутри этой ф-ции запрос к FIREBASE и его обработка. уйдет в repository\
         isLoading = true // анимация полосы загрузки включается
-        var result = registerRepository.register(nickname, email, password)
+        val result = registerRepository.register(nickname, email, password)
         isLoading = false //  анимация полосы загрузки выключается
 
         result?.user?.let {

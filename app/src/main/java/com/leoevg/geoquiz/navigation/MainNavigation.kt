@@ -38,7 +38,14 @@ fun MainNavigation(
             )
        }
         composable<NavigationPaths.Register> {
-            RegisterScreen { navController.navigate(it) }
+            RegisterScreen(
+                navigate = {
+                    navController.navigate(it)
+                },
+                popBackStack = {
+                    navController.popBackStack()
+                }
+            )
         }
         composable<NavigationPaths.Admin> {
             AdminScreen { navController.navigate(it) }

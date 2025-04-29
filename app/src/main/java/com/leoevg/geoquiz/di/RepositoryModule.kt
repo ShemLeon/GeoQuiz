@@ -2,6 +2,7 @@ package com.leoevg.geoquiz.di
 
 import com.leoevg.geoquiz.data.repository.LoginRepositoryImpl
 import com.leoevg.geoquiz.data.repository.QuizRepositoryImpl
+import com.leoevg.geoquiz.data.repository.RegisterRepositoryImpl
 import com.leoevg.geoquiz.domain.repository.LoginRepository
 import com.leoevg.geoquiz.domain.repository.QuizRepository
 import com.leoevg.geoquiz.domain.repository.RegisterRepository
@@ -13,10 +14,14 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object RepositoryModule {
+/* анотация о том, что должен быть установлен синглтон
+ синглтон значит, что зависимость создасться  1 раз и будет неизменяема на протяжении всей работы приложения
+ если его запросить, например, в 3х ViewModel - он будет везде одинаков
+ */
+
+object RepositoryModule { // ф-я, которая знает как билдить модули
     @Provides
-    @Singleton // синглтон значит, что зависимость создасться 1
-    // раз и будет неизменяема на протяжении всей работы приложения
+    @Singleton
     fun provideLoginRepository(): LoginRepository {
         return LoginRepositoryImpl()
     }

@@ -1,18 +1,14 @@
 package com.leoevg.geoquiz.screens.login
 
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.leoevg.geoquiz.data.repository.LoginRepositoryImpl
 import com.leoevg.geoquiz.domain.repository.LoginRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import javax.annotation.meta.When
 import javax.inject.Inject
 import kotlin.String
 
