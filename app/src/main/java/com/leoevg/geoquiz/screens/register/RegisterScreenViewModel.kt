@@ -4,8 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.leoevg.geoquiz.domain.repository.LoginRepository
+import com.leoevg.geoquiz.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,7 +13,7 @@ import kotlin.String
 
 @HiltViewModel
 class RegisterScreenViewModel @Inject constructor(
-    private val registerRepository: RegisterRepository
+    private val registerRepository: AuthRepository
 ): ViewModel ( ) {
     // state вьюхи
     var nickname by mutableStateOf("")

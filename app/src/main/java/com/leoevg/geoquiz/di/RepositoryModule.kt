@@ -1,8 +1,8 @@
 package com.leoevg.geoquiz.di
 
-import com.leoevg.geoquiz.data.repository.LoginRepositoryImpl
+import com.leoevg.geoquiz.data.repository.AuthRepositoryImpl
 import com.leoevg.geoquiz.data.repository.QuizRepositoryImpl
-import com.leoevg.geoquiz.domain.repository.LoginRepository
+import com.leoevg.geoquiz.domain.repository.AuthRepository
 import com.leoevg.geoquiz.domain.repository.QuizRepository
 import dagger.Module
 import dagger.Provides
@@ -20,14 +20,8 @@ import javax.inject.Singleton
 object RepositoryModule { // ф-я, которая знает как билдить модули
     @Provides
     @Singleton
-    fun provideLoginRepository(): LoginRepository {
-        return LoginRepositoryImpl()
-    }
-
-    @Provides
-    @Singleton
-    fun provideRegisterRepository(): RegisterRepository {
-        return RegisterRepositoryImpl()
+    fun provideAuthRepository(): AuthRepository {
+        return AuthRepositoryImpl()
     }
 
     @Provides

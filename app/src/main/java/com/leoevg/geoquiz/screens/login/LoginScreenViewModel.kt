@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.leoevg.geoquiz.domain.repository.LoginRepository
+import com.leoevg.geoquiz.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,7 +14,7 @@ import kotlin.String
 
 @HiltViewModel
 class LoginScreenViewModel @Inject constructor(
-    private val loginRepository: LoginRepository
+    private val authRepository: AuthRepository
 ): ViewModel( ) {
     // state вьюхи
     var email by mutableStateOf("")
@@ -53,7 +53,7 @@ class LoginScreenViewModel @Inject constructor(
     private fun login(email: String, password: String) = viewModelScope.launch(Dispatchers.IO) {
         // внутри этой ф-ции запрос к FIREBASE и его обработка. уйдет в repository
         isLoading = true // анимация полосы загрузки включается
-        val result = loginRepository.login(email, password)
+        val result = authRepository.login(email, password)
         isLoading = false //  анимация полосы загрузки выключается
 
         result?.user?.let {
