@@ -155,5 +155,8 @@ fun RegisterScreen(
 @Composable
 @Preview(showBackground = true)
 fun RegisterScreenPreview(){
-//    RegisterScreen {  }
+    RegisterScreen(
+        navigate = {},
+        popBackStack = {}
+    )
 }

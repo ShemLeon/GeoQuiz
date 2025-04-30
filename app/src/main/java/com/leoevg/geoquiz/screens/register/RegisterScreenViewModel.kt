@@ -13,7 +13,7 @@ import kotlin.String
 
 @HiltViewModel
 class RegisterScreenViewModel @Inject constructor(
-    private val registerRepository: AuthRepository
+    private val authRepository: AuthRepository
 ): ViewModel ( ) {
     // state вьюхи
     var nickname by mutableStateOf("")
@@ -55,7 +55,7 @@ class RegisterScreenViewModel @Inject constructor(
     private fun register(nickname: String, email: String, password: String) = viewModelScope.launch(Dispatchers.IO){
         // внутри этой ф-ции запрос к FIREBASE и его обработка. уйдет в repository\
         isLoading = true // анимация полосы загрузки включается
-        val result = registerRepository.register(nickname, email, password)
+        val result = authRepository.register(nickname, email, password)
         isLoading = false //  анимация полосы загрузки выключается
 
         result?.user?.let {
