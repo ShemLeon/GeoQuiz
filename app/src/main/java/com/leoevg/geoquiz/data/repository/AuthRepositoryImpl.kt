@@ -4,6 +4,7 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.leoevg.geoquiz.data.model.User
+import com.leoevg.geoquiz.data.util.NODE_USERS
 import com.leoevg.geoquiz.data.util.getCompletedResult
 import com.leoevg.geoquiz.domain.repository.AuthRepository
 
@@ -28,7 +29,7 @@ class AuthRepositoryImpl : AuthRepository {
 
 
         // если что-то из result user uid - нул, то вернет нул. это safe call
-        FirebaseDatabase.getInstance().reference.child("Users").child(uid)
+        FirebaseDatabase.getInstance().reference.child(NODE_USERS).child(uid)
             //.child("email").setValue(email)
             .setValue(user.getAsMap())
         return result
