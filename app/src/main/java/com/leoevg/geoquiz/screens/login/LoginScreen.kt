@@ -37,10 +37,12 @@ fun LoginScreen(
     popBackStack: () -> Unit
 ){
     val viewModel: LoginScreenViewModel = hiltViewModel()
-
+    // LaunchedEffect - блок, который срабатывает когда переданная в него зависимость изменяется.
+    // в данном случае - переход на след экран
     LaunchedEffect(viewModel.isLoggedIn) {
         if (viewModel.isLoggedIn) {
-            popBackStack()
+            popBackStack() // чистит стак, чтобы при нажатии
+            // кнопки назад не сохранило введенный логин/пароль
             navigate(NavigationPaths.Choose)
         }
     }
@@ -76,6 +78,7 @@ fun LoginScreen(
                     .padding(top = 20.dp),
                 value = viewModel.email,
                 onValueChange = {
+                    // it - новое значение введенное юзером, евентом передаем его в viewModel
                     viewModel.onEvent(LoginScreenEvent.EmailChanged(it))
                                 },
                 placeholder = { Text(stringResource(R.string.email)) },

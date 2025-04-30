@@ -1,18 +1,14 @@
 package com.leoevg.geoquiz.screens.login
 
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.leoevg.geoquiz.data.repository.LoginRepositoryImpl
 import com.leoevg.geoquiz.domain.repository.LoginRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import javax.annotation.meta.When
 import javax.inject.Inject
 import kotlin.String
 
@@ -30,6 +26,8 @@ class LoginScreenViewModel @Inject constructor(
     fun onEvent(event: LoginScreenEvent){
         // SOLID
         when(event){
+            // is - проверка является ли обьект евент объектом класса, а не сравнит его в тупую
+            // при этом LoginBtnClicked - являются data object издесь мы сравниваем объекты без проблем
             is LoginScreenEvent.EmailChanged -> onEmailChanged(event.email)
             is LoginScreenEvent.PasswordChanged -> onPasswordChanged(event.password)
             LoginScreenEvent.LoginBtnClicked -> onLoginBtnClicked()
@@ -53,9 +51,10 @@ class LoginScreenViewModel @Inject constructor(
     }
 
     private fun login(email: String, password: String) = viewModelScope.launch(Dispatchers.IO) {
-        isLoading = true
+        // внутри этой ф-ции запрос к FIREBASE и его обработка. уйдет в repository
+        isLoading = true // анимация полосы загрузки включается
         val result = loginRepository.login(email, password)
-        isLoading = false
+        isLoading = false //  анимация полосы загрузки выключается
 
         result?.user?.let {
             isLoggedIn = true
