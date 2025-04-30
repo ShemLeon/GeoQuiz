@@ -27,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -44,9 +45,11 @@ import com.leoevg.geoquiz.ui.theme.Blue
 @Composable
 fun ChooseScreen(
     navigate: (NavigationPaths) -> Unit = {},
+    onQuizSelected: (NavigationPaths.Quiz) -> Unit = {},
     popBackStack: () -> Unit = {}
 ){
     var selectedTypeGame by remember { mutableStateOf(typeGames[0]) }
+    val context = LocalContext.current
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -131,7 +134,8 @@ fun ChooseScreen(
                 ),
                 shape = RoundedCornerShape(15.dp),
                 onClick = {
-
+                    val quizTypeGame = context.resources.getString(selectedTypeGame.typeGameNameResId)
+                    onQuizSelected(NavigationPaths.Quiz(quizTypeGame))
                 }
             ) {
                 Icon(

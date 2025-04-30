@@ -1,12 +1,12 @@
 package com.leoevg.geoquiz.screens.quiz
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.leoevg.geoquiz.data.model.Quiz
-import com.leoevg.geoquiz.domain.repository.AuthRepository
 import com.leoevg.geoquiz.domain.repository.QuizRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
@@ -19,6 +19,7 @@ class QuizScreenViewModel @Inject constructor(
 ): ViewModel() {
     // state вьюхи
     var currentQuiz by mutableStateOf<Quiz?>(null)
+    var currentQuestionIndex by mutableIntStateOf(0)
 
 // реализация получения вопросов
     fun loadQuiz(quizTypeGame: String) {
