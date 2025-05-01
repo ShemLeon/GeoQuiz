@@ -7,7 +7,7 @@ sealed interface NavigationPaths{
       @Serializable data object Admin: NavigationPaths
 
       @Serializable data object Choose: NavigationPaths
-      @Serializable data class Quiz(val typeGameId: Int): NavigationPaths
+      @Serializable data class Quiz(val typeGame: String): NavigationPaths
       @Serializable data class Finish(val score: Int): NavigationPaths
 
 }

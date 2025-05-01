@@ -7,6 +7,7 @@ import androidx.compose.ui.window.Popup
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.google.firebase.auth.FirebaseAuth
 import com.leoevg.geoquiz.screens.admin.AdminScreen
 import com.leoevg.geoquiz.screens.choose.ChooseScreen
@@ -55,13 +56,17 @@ fun MainNavigation(
                 navigate = {
                     navController.navigate(it)
                 },
+                onQuizSelected = {
+                    navController.navigate(it)
+                },
                 popBackStack = {
                     navController.popBackStack()
                 }
             )
         }
         composable<NavigationPaths.Quiz> {
-            QuizScreen { navController.navigate(it) }
+            val quizInfo = it.toRoute<NavigationPaths.Quiz>()
+            QuizScreen(typeGame = quizInfo.typeGame) { navController.navigate(it) }
         }
         composable<NavigationPaths.Finish> {
             FinishScreen { navController.navigate(it) }
