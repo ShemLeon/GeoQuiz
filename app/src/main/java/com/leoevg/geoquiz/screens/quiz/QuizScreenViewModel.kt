@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 class QuizScreenViewModel @Inject constructor(
     private val quizRepository: QuizRepository
 ): ViewModel() {
-    // state вьюхи
+    // state вьюхи - отображает текущий загруженный квиз. Cодержит обьект класса Quiz
     var currentQuiz by mutableStateOf<Quiz?>(null)
 
 // реализация получения вопросов
@@ -27,3 +27,8 @@ class QuizScreenViewModel @Inject constructor(
         }
     }
 }
+
+/*
+ viewModelScope - корутина. то место где мы запускаем ее.
+ в currentQuiz = quizRepository.loadQuiz(quizTypeGame) - мы сохраняем то что мы загрузили корутиной
+ */

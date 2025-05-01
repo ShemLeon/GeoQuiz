@@ -156,7 +156,8 @@ fun LoginScreen(
 @Composable
 @Preview(showBackground = true)
 fun LoginScreenPreview(){
-    LoginScreen(navigate = {},
-    popBackStack = {}
+    LoginScreen(
+        navigate = {},
+        popBackStack = {}
     )
 }
