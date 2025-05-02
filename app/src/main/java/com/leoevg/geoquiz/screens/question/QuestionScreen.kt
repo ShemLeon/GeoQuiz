@@ -284,17 +284,15 @@ fun OptionAnswersSection(
 @Preview(showBackground = true)
 fun OptionAnswersSectionPreview() {
     // Создаём тестовые данные
-    val mockAnswerOptions = listOf(
-        AnswerOption(1, "Ответ 1"),
-        AnswerOption(2, "Отт 2"),
-        AnswerOption(3, "Ответ 3"),
-        AnswerOption(4, "Ответ 4"),
-        AnswerOption(5, "Ответ 5"),
-        AnswerOption(6, "Ответ 6")
-    )
-
     OptionAnswersSection(
-        answerOptions = mockAnswerOptions,
+        answerOptions = listOf(
+            AnswerOption(1, "Ответ 1"),
+            AnswerOption(2, "Отт 2"),
+            AnswerOption(3, "Ответ 3"),
+            AnswerOption(4, "Ответ 4"),
+            AnswerOption(5, "Ответ 5"),
+            AnswerOption(6, "Ответ 6")
+        ),
         selectedAnswerOptionId = 1, // выбран первый вариант
         onItemSelected = {} // пустая лямбда для превью
     )

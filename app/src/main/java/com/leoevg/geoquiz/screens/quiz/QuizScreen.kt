@@ -12,6 +12,7 @@ import com.leoevg.geoquiz.ui.components.LoadingDialog
 
 // Добавь эти импорты в начало файла
 import androidx.compose.runtime.remember
+import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.data.model.Quiz
 import com.leoevg.geoquiz.data.model.Question
 import com.leoevg.geoquiz.data.model.AnswerOption
@@ -47,31 +48,21 @@ fun QuizScreen(
 @Composable
 @Preview(showBackground = true)
 fun QuizScreenPreview() {
-    // Создаём превью-версию экрана
-    QuizScreenPreviewContent()
-}
-
-@Composable
-fun QuizScreenPreviewContent() {
-    // Создаём тестовые данные
-    val mockQuestion = Question(
-        id = 1,
-        rightAnswer = "Ответ 1",
-        hint = "Тестовая подсказка",
-        answerOptions = listOf(
-            AnswerOption(1, "Ответ 1"),
-            AnswerOption(2, "Отт 2"),
-            AnswerOption(3, "Ответ 3"),
-            AnswerOption(4, "Ответ 4"),
-            AnswerOption(5, "Ответ 5"),
-            AnswerOption(6, "Ответ 6")
-        ),
-        picturesUrls = listOf("https://example.com/image.jpg")
-    )
-
-    // Создаём UI заглушку для превью
     QuestionScreen(
-        question = mockQuestion,
+        question = Question(
+            id = 1,
+            rightAnswer = "Ответ 1",
+            hint = "Тестовая подсказка",
+            answerOptions = listOf(
+                AnswerOption(1, "Ответ 1"),
+                AnswerOption(2, "Отт 2"),
+                AnswerOption(3, "Ответ 3"),
+                AnswerOption(4, "Ответ 4"),
+                AnswerOption(5, "Ответ 5"),
+                AnswerOption(6, "Ответ 6")
+            ),
+            picturesUrls = listOf("https://picsum.photos/400/400")
+        ),
         navigate = {}
     )
 }
