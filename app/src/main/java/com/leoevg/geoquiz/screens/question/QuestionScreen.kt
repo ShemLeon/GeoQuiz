@@ -299,3 +299,26 @@ fun OptionAnswersSectionPreview() {
 }
 
 
+@Composable
+@Preview(showBackground = true)
+fun QuestionScreenPreview() {
+    QuestionScreen(
+        question = Question(
+            id = 1,
+            rightAnswer = "Ответ 1",
+            hint = "Тестовая подсказка",
+            answerOptions = listOf(
+                AnswerOption(1, "Ответйцуйцу 321"),
+                AnswerOption(2, "Отт 2"),
+                AnswerOption(3, "Ответ 3"),
+                AnswerOption(4, "Ответ 4"),
+                AnswerOption(5, "Ответ 5"),
+                AnswerOption(6, "Ответ 6")
+            ),
+            picturesUrls = listOf("https://picsum.photos/400/400")
+        ),
+        navigate = {}
+    )
+}
+
+

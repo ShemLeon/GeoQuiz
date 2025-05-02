@@ -54,7 +54,7 @@ fun QuizScreenPreview() {
             rightAnswer = "Ответ 1",
             hint = "Тестовая подсказка",
             answerOptions = listOf(
-                AnswerOption(1, "Ответ 1"),
+                AnswerOption(1, "Ответйцуйцу 321"),
                 AnswerOption(2, "Отт 2"),
                 AnswerOption(3, "Ответ 3"),
                 AnswerOption(4, "Ответ 4"),
