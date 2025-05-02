@@ -3,6 +3,7 @@ package com.leoevg.geoquiz.screens.question
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -50,7 +51,7 @@ fun QuestionScreen(
     navigate: (NavigationPaths) -> Unit
 ){
     val viewModel: QuestionScreenViewModel = viewModel()
-     val context = LocalContext.current  // context for hint
+    val context = LocalContext.current  // context for hint
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -91,14 +92,21 @@ fun QuestionScreen(
                 textAlign = TextAlign.Center
             )
             Row (
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                modifier = Modifier.height(40.dp), // фиксированная высота Row с иконками
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
             ){
                 Icon(
                     painter = painterResource(R.drawable.volume_up),
                     tint = Color.Black,
                     contentDescription = "volumeUp_icon_button",
-                    modifier = Modifier.clickable{
+
+                    modifier = Modifier
+
+                        .aspectRatio(1f) // Сохраняем пропорции (квадрат)
+                        .clickable{
                         viewModel.onEvent(QuestionScreenEvent.SilentModeBtnClicked)
+
                     }
                 )
                 Icon(
@@ -244,22 +252,52 @@ fun OptionAnswersSection(
 ){
     LazyVerticalGrid(
         modifier = Modifier.fillMaxWidth(),
-        columns = GridCells.Fixed(2)
+        columns = GridCells.Fixed(2),
+        horizontalArrangement = Arrangement.Start,
+        contentPadding = PaddingValues(horizontal = 4.dp)
+
     ) {
         items(answerOptions){currentOptionItem ->
-            AnswerOptionItem(
-                answerOption = currentOptionItem,
-                isSelected = selectedAnswerOptionId == currentOptionItem.id,
-                onClick = {
-                    //отработает, когда item будет нажат
-                    // передает id нового выбранного item.
-                    onItemSelected(currentOptionItem.id)
-                }
-            )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(0.95f) // Ограничиваем ширину элемента внутри ячейки
+                    .padding(horizontal = 4.dp, vertical = 4.dp)
+            ){
+                AnswerOptionItem(
+                    answerOption = currentOptionItem,
+                    isSelected = selectedAnswerOptionId == currentOptionItem.id,
+                    onClick = {
+                        //отработает, когда item будет нажат
+                        // передает id нового выбранного item.
+                        onItemSelected(currentOptionItem.id)
+                    }
+                )
+            }
+
         }
     }
-
 }
 
+
+
+@Composable
+@Preview(showBackground = true)
+fun OptionAnswersSectionPreview() {
+    // Создаём тестовые данные
+    val mockAnswerOptions = listOf(
+        AnswerOption(1, "Ответ 1"),
+        AnswerOption(2, "Отт 2"),
+        AnswerOption(3, "Ответ 3"),
+        AnswerOption(4, "Ответ 4"),
+        AnswerOption(5, "Ответ 5"),
+        AnswerOption(6, "Ответ 6")
+    )
+
+    OptionAnswersSection(
+        answerOptions = mockAnswerOptions,
+        selectedAnswerOptionId = 1, // выбран первый вариант
+        onItemSelected = {} // пустая лямбда для превью
+    )
+}
 
 

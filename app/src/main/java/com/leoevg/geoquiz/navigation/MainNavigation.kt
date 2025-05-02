@@ -66,6 +66,7 @@ fun MainNavigation(
         }
         composable<NavigationPaths.Quiz> {
             val quizInfo = it.toRoute<NavigationPaths.Quiz>()
+            // нужно передать выбор типа квиза из ChooseScreen сюда
             QuizScreen(typeGame = quizInfo.typeGame) { navController.navigate(it) }
         }
         composable<NavigationPaths.Finish> {
