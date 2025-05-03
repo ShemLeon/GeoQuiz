@@ -42,6 +42,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.leoevg.geoquiz.R
@@ -59,14 +60,9 @@ fun QuestionScreen(
     question: Question,
     navigate: (NavigationPaths) -> Unit
 ){
-    val viewModel: QuestionScreenViewModel = viewModel()
+    val viewModel: QuestionScreenViewModel = hiltViewModel()
     val context = LocalContext.current  // context for hint
-    var volumeIcon by remember { mutableIntStateOf(
-        if (viewModel.isSilentModeEnabled)
-            R.drawable.volume_up
-        else
-            R.drawable.volume_down
-    ) }
+
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -112,7 +108,12 @@ fun QuestionScreen(
                 verticalAlignment = Alignment.CenterVertically
             ){
                 Icon(
-                    painter = painterResource(volumeIcon),
+                    painter = painterResource(
+                        if (viewModel.isSilentModeEnabled)
+                        R.drawable.volume_up
+                    else
+                        R.drawable.volume_down
+                    ),
                     tint = Color.Black,
                     contentDescription = "volumeUp_icon_button",
                     modifier = Modifier

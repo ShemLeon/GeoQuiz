@@ -53,13 +53,6 @@ class QuestionScreenViewModel @Inject constructor(
         val isSilentModeEnable = prefManager.getBoolValueByKey("muzloWorks", true)
         prefManager.putBoolValue("muzloWorks", !isSilentModeEnable)// смена режима
         isSilentModeEnabled = !isSilentModeEnable
-
-    }
-
-    fun isSilentModeEnable(context: Context): Boolean {
-        val sharedPrefs = context.getSharedPreferences("geoPrefs", Context.MODE_PRIVATE)
-        val isSilentModeEnable = sharedPrefs.getBoolean("muzloWorks", true)
-        return isSilentModeEnable
     }
 
 }
