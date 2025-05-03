@@ -1,5 +1,4 @@
 package com.leoevg.geoquiz.screens.question
-
 import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -14,7 +13,7 @@ import jakarta.inject.Inject
 class QuestionScreenViewModel @Inject constructor(
     private val prefManager: SharedPrefManager
 ) : ViewModel() {
-    var isSilentModeEnabled by mutableStateOf(prefManager.getBoolValueByKey("muzloWorks", true))
+    var isSilentModeEnabled by mutableStateOf(prefManager.getBoolValueByKey("musicWorks", true))
     var selectedAnswerOptionId by mutableIntStateOf(-1)
 
     fun onEvent(event: QuestionScreenEvent){
@@ -28,6 +27,12 @@ class QuestionScreenViewModel @Inject constructor(
             is QuestionScreenEvent.OptionSelected -> onOptionSelected(event.selectedOptionId)
             QuestionScreenEvent.SilentModeBtnClicked -> onSilentModeBtnClicked()
         }
+    }
+
+    private fun onSilentModeBtnClicked(){
+        val isSilentModeEnable = prefManager.getBoolValueByKey("musicWorks", true)
+        prefManager.putBoolValue("musicWorks", !isSilentModeEnable)// смена режима
+        isSilentModeEnabled = !isSilentModeEnable
     }
 
     private fun onApplyBtnClicked(){
@@ -49,10 +54,6 @@ class QuestionScreenViewModel @Inject constructor(
         selectedAnswerOptionId = selectedOptionId
     }
 
-    private fun onSilentModeBtnClicked(){
-        val isSilentModeEnable = prefManager.getBoolValueByKey("muzloWorks", true)
-        prefManager.putBoolValue("muzloWorks", !isSilentModeEnable)// смена режима
-        isSilentModeEnabled = !isSilentModeEnable
-    }
+
 
 }

@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.navigation.NavigationPaths
-import com.leoevg.geoquiz.screens.quiz.QuizScreen
 import com.leoevg.geoquiz.ui.theme.Blue
 
 @Composable
@@ -51,7 +50,7 @@ fun FinishScreen(navigate: (NavigationPaths) -> Unit){
                 fontWeight = FontWeight.Normal
             )
             Icon(
-                painter = painterResource(R.drawable.gear_button),
+                painter = painterResource(R.drawable.icon_button_gear),
                 contentDescription = "home button icon",
                 modifier = Modifier.size(24.dp)
             )

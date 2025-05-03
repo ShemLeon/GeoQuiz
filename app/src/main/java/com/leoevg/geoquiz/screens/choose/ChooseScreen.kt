@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Logout
-import androidx.compose.material.icons.outlined.Logout
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -139,7 +138,7 @@ fun ChooseScreen(
                 }
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.play_button),
+                    painter = painterResource(R.drawable.icon_button_play),
                     contentDescription = "play_icon_button",
 
                     )

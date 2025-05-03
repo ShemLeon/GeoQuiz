@@ -21,6 +21,9 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.Logout
+import androidx.compose.material.icons.automirrored.outlined.Sort
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -110,9 +113,9 @@ fun QuestionScreen(
                 Icon(
                     painter = painterResource(
                         if (viewModel.isSilentModeEnabled)
-                        R.drawable.volume_up
-                    else
-                        R.drawable.volume_down
+                            R.drawable.volume_up
+                        else
+                            R.drawable.volume_down
                     ),
                     tint = Color.Black,
                     contentDescription = "volumeUp_icon_button",
@@ -123,8 +126,13 @@ fun QuestionScreen(
                         }
                 )
                 Icon(
-                    painter = painterResource(R.drawable.light_mode_icon),
-                    tint = Color.Black,
+                    painter = painterResource(
+                        if (viewModel.isSilentModeEnabled)
+                            R.drawable.light_mode_icon
+                        else
+                            R.drawable.volume_down
+                    ),
+                                    tint = Color.Black,
                     contentDescription = "light_mode_icon",
                     modifier = Modifier.clickable{
                         viewModel.onEvent(QuestionScreenEvent.NightModeBtnClicked)
