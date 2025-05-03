@@ -2,6 +2,8 @@ package com.leoevg.geoquiz.screens.question
 
 import android.widget.Toast
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,12 +18,19 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -52,6 +61,12 @@ fun QuestionScreen(
 ){
     val viewModel: QuestionScreenViewModel = viewModel()
     val context = LocalContext.current  // context for hint
+    var volumeIcon by remember { mutableIntStateOf(
+        if (viewModel.isSilentModeEnabled)
+            R.drawable.volume_up
+        else
+            R.drawable.volume_down
+    ) }
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -97,17 +112,14 @@ fun QuestionScreen(
                 verticalAlignment = Alignment.CenterVertically
             ){
                 Icon(
-                    painter = painterResource(R.drawable.volume_up),
+                    painter = painterResource(volumeIcon),
                     tint = Color.Black,
                     contentDescription = "volumeUp_icon_button",
-
                     modifier = Modifier
-
                         .aspectRatio(1f) // Сохраняем пропорции (квадрат)
                         .clickable{
-                        viewModel.onEvent(QuestionScreenEvent.SilentModeBtnClicked)
-
-                    }
+                            viewModel.onEvent(QuestionScreenEvent.SilentModeBtnClicked)
+                        }
                 )
                 Icon(
                     painter = painterResource(R.drawable.light_mode_icon),
@@ -279,7 +291,31 @@ fun OptionAnswersSection(
 }
 
 
+@Composable
+@Preview(showBackground = true)
+fun QuestionScreenPreview() {
+    QuestionScreen(
+        question = Question(
+            id = 1,
+            rightAnswer = "Ответ 1",
+            hint = "Тестовая подсказка",
+            answerOptions = listOf(
+                AnswerOption(1, "Ответ " +
+                        "32321" +
+                        "321321"),
+                AnswerOption(2, "Отт 2"),
+                AnswerOption(3, "Ответ 3"),
+                AnswerOption(4, "Ответ 4"),
+                AnswerOption(5, "Ответ 5"),
+                AnswerOption(6, "Ответ 6")
+            ),
+            picturesUrls = listOf("https://picsum.photos/400/400")
+        ),
+        navigate = {}
+    )
+}
 
+/*
 @Composable
 @Preview(showBackground = true)
 fun OptionAnswersSectionPreview() {
@@ -297,28 +333,5 @@ fun OptionAnswersSectionPreview() {
         onItemSelected = {} // пустая лямбда для превью
     )
 }
-
-
-@Composable
-@Preview(showBackground = true)
-fun QuestionScreenPreview() {
-    QuestionScreen(
-        question = Question(
-            id = 1,
-            rightAnswer = "Ответ 1",
-            hint = "Тестовая подсказка",
-            answerOptions = listOf(
-                AnswerOption(1, "Ответйцуйцу 321"),
-                AnswerOption(2, "Отт 2"),
-                AnswerOption(3, "Ответ 3"),
-                AnswerOption(4, "Ответ 4"),
-                AnswerOption(5, "Ответ 5"),
-                AnswerOption(6, "Ответ 6")
-            ),
-            picturesUrls = listOf("https://picsum.photos/400/400")
-        ),
-        navigate = {}
-    )
-}
-
+*/
 

@@ -1,5 +1,6 @@
 package com.leoevg.geoquiz.screens.question
 
+
 sealed interface QuestionScreenEvent {
     data class OptionSelected(val selectedOptionId: Int): QuestionScreenEvent
     data object HintBtnClicked: QuestionScreenEvent
@@ -8,4 +9,5 @@ sealed interface QuestionScreenEvent {
     data object ImageDoubleClicked: QuestionScreenEvent
     data object SilentModeBtnClicked: QuestionScreenEvent
     data object NightModeBtnClicked: QuestionScreenEvent
+
 }
