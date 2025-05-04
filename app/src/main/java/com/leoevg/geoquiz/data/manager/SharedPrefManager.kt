@@ -4,6 +4,7 @@ import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
+// здесь импортируем/инжектим context
 class SharedPrefManager @Inject constructor(
     // Shared Preferences - быстрые настройки при запуске приложения
     @ApplicationContext
@@ -15,6 +16,7 @@ class SharedPrefManager @Inject constructor(
         return prefs.getBoolean(key, defaultValue)
     }
     fun putBoolValue(key: String, newValue: Boolean){
+        // получаем обьект едитор из нашего prefs и меняем значение
         prefs.edit().putBoolean(key, newValue).apply()
     }
 }

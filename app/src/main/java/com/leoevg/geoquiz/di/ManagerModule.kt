@@ -20,3 +20,18 @@ object ManagerModule {
         return SharedPrefManager(context)
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -2,8 +2,7 @@ package com.leoevg.geoquiz.screens.question
 
 import android.widget.Toast
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -66,13 +65,13 @@ fun QuestionScreen(
     val viewModel: QuestionScreenViewModel = hiltViewModel()
     val context = LocalContext.current  // context for hint
 
-    Column (
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ){
-        Row (
+        Row(
             modifier = Modifier
                 .padding(top = 10.dp)
                 .fillMaxWidth(),
@@ -149,6 +148,8 @@ fun QuestionScreen(
                 .aspectRatio(1f) // расположение квадратиком
                 .padding(top=30.dp)
         )
+
+
         Row (
             horizontalArrangement = Arrangement.Start,
             modifier = Modifier.fillMaxWidth()
@@ -299,7 +300,6 @@ fun OptionAnswersSection(
     }
 }
 
-
 @Composable
 @Preview(showBackground = true)
 fun QuestionScreenPreview() {
@@ -309,9 +309,7 @@ fun QuestionScreenPreview() {
             rightAnswer = "Ответ 1",
             hint = "Тестовая подсказка",
             answerOptions = listOf(
-                AnswerOption(1, "Ответ " +
-                        "32321" +
-                        "321321"),
+                AnswerOption(1, "Ответ 1"),
                 AnswerOption(2, "Отт 2"),
                 AnswerOption(3, "Ответ 3"),
                 AnswerOption(4, "Ответ 4"),

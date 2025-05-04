@@ -1,5 +1,6 @@
 package com.leoevg.geoquiz.screens.question
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -42,7 +43,7 @@ class QuestionScreenViewModel @Inject constructor(
 
     }
     private fun onHintBtnClicked(){
-
+       // Toast.makeText(context, "Hint: ${question.hint}", Toast.LENGTH_LONG).show()
     }
     private fun onImageDoubleBtnClicked(){
 
