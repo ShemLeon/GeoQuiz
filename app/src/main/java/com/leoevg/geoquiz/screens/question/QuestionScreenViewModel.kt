@@ -15,6 +15,7 @@ class QuestionScreenViewModel @Inject constructor(
     private val prefManager: SharedPrefManager
 ) : ViewModel() {
     var isSilentModeEnabled by mutableStateOf(prefManager.getBoolValueByKey("musicWorks", true))
+    var isNightModeEnabled by mutableStateOf(prefManager.getBoolValueByKey("darkWorks", true))
     var selectedAnswerOptionId by mutableIntStateOf(-1)
 
     fun onEvent(event: QuestionScreenEvent){
@@ -32,8 +33,14 @@ class QuestionScreenViewModel @Inject constructor(
 
     private fun onSilentModeBtnClicked(){
         val isSilentModeEnable = prefManager.getBoolValueByKey("musicWorks", true)
-        prefManager.putBoolValue("musicWorks", !isSilentModeEnable)// смена режима
+        prefManager.putBoolValue("musicWorks", !isSilentModeEnable) // смена тихого режима
         isSilentModeEnabled = !isSilentModeEnable
+    }
+
+    private fun onNightModeBtnClicked(){
+        val isNightModeEnable = prefManager.getBoolValueByKey("darkWorks", true)
+        prefManager.putBoolValue("darkWorks", !isNightModeEnable)
+        isNightModeEnabled = !isNightModeEnable
     }
 
     private fun onApplyBtnClicked(){
@@ -48,9 +55,7 @@ class QuestionScreenViewModel @Inject constructor(
     private fun onImageDoubleBtnClicked(){
 
     }
-    private fun onNightModeBtnClicked(){
 
-    }
     private fun onOptionSelected(selectedOptionId: Int){
         selectedAnswerOptionId = selectedOptionId
     }

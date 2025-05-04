@@ -17,22 +17,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.Logout
-import androidx.compose.material.icons.automirrored.outlined.Sort
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,13 +36,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.data.model.AnswerOption
 import com.leoevg.geoquiz.data.model.Question
 import com.leoevg.geoquiz.navigation.NavigationPaths
-import com.leoevg.geoquiz.screens.quiz.QuizScreen
 import com.leoevg.geoquiz.ui.components.AnswerOptionItem
 import com.leoevg.geoquiz.ui.theme.Blue
 import com.leoevg.geoquiz.ui.theme.BlueGrey
@@ -104,6 +93,7 @@ fun QuestionScreen(
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center
             )
+// Silent & DarkMode
             Row (
                 modifier = Modifier.height(40.dp), // фиксированная высота Row с иконками
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -126,10 +116,10 @@ fun QuestionScreen(
                 )
                 Icon(
                     painter = painterResource(
-                        if (viewModel.isSilentModeEnabled)
-                            R.drawable.light_mode_icon
+                        if (viewModel.isNightModeEnabled)
+                            R.drawable.icon_light_mode
                         else
-                            R.drawable.volume_down
+                            R.drawable.icon_dark_mode
                     ),
                                     tint = Color.Black,
                     contentDescription = "light_mode_icon",
@@ -139,16 +129,43 @@ fun QuestionScreen(
                 )
             }
         }
-
-        AsyncImage(
-            model = question.picturesUrls[0],
-            contentDescription = "Question image",
+// Image
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f) // расположение квадратиком
                 .padding(top=30.dp)
-        )
-
+        ){
+            AsyncImage(
+                model = question.picturesUrls[0],
+                contentDescription = "Question image",
+                modifier = Modifier
+                    .fillMaxSize()
+            )
+// Hint
+            Button(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(6.dp)
+                    .size(60.dp),
+                contentPadding = PaddingValues(vertical = 5.dp),
+                shape = CircleShape,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Blue.copy(alpha = 0.5f)
+                ),
+                onClick = {
+                    viewModel.onEvent(QuestionScreenEvent.HintBtnClicked)
+                    Toast.makeText(context, "Hint: ${question.hint}", Toast.LENGTH_LONG).show()
+                }
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.hint_button),
+                    tint = Color.Black,
+                    contentDescription = "hint_icon_button",
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+        }
 
         Row (
             horizontalArrangement = Arrangement.Start,
@@ -163,13 +180,15 @@ fun QuestionScreen(
                     .padding(start = 10.dp)
             )
         }
-        // grid
+// Grid
         OptionAnswersSection(
             modifier = Modifier.padding(top=15.dp),
             answerOptions = question.answerOptions,
             selectedAnswerOptionId = viewModel.selectedAnswerOptionId,
            // нам надо передать события, что произошло и передать в него выбранный id
-            onItemSelected = { optionId -> viewModel.onEvent(QuestionScreenEvent.OptionSelected(optionId)) }
+            onItemSelected = {
+                optionId -> viewModel.onEvent(QuestionScreenEvent.OptionSelected(optionId))
+            }
         )
         Column (
             modifier = Modifier
@@ -181,37 +200,9 @@ fun QuestionScreen(
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 20.dp)
+                    .padding(bottom = 10.dp)
                     .height(56.dp)
             ){
-                Button(
-                    modifier = Modifier
-                        .weight(1f),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Blue
-                    ),
-                    contentPadding = PaddingValues(vertical = 15.dp),
-                    shape = RoundedCornerShape(25.dp),
-                    onClick = {
-                        viewModel.onEvent(QuestionScreenEvent.HintBtnClicked)
-                        Toast.makeText(context, "Hint: ${question.hint}", Toast.LENGTH_LONG).show()
-                    }
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.hint_button),
-                        tint = Color.Black,
-                        contentDescription = "hint_icon_button",
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Text(
-                        stringResource(R.string.hint),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Normal,
-                        modifier = Modifier
-                            .padding(start = 10.dp),
-                        color = Color.Black
-                    )
-                }
                 Button(
                     modifier = Modifier
                         .weight(1f),
@@ -248,7 +239,7 @@ fun QuestionScreen(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Blue
                 ),
-                contentPadding = PaddingValues(vertical = 15.dp),
+                contentPadding = PaddingValues(vertical = 10.dp),
                 shape = RoundedCornerShape(15.dp),
                 onClick = {
                     viewModel.onEvent(QuestionScreenEvent.FinishBtnClicked)
