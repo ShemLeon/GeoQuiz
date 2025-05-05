@@ -4,9 +4,9 @@ import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-// здесь импортируем/инжектим context
+// Here import/inject context
 class SharedPrefManager @Inject constructor(
-    // Shared Preferences - быстрые настройки при запуске приложения
+    // Shared Preferences - quick setups after onCreate() application
     @ApplicationContext
     private val context: Context
 ) {

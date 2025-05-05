@@ -1,9 +1,7 @@
 package com.leoevg.geoquiz.di
 
 import android.content.Context
-import androidx.annotation.UiContext
 import com.leoevg.geoquiz.data.manager.SharedPrefManager
-import com.leoevg.geoquiz.domain.repository.AuthRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -112,6 +112,7 @@ fun QuestionScreen(
                         .aspectRatio(1f) // Сохраняем пропорции (квадрат)
                         .clickable{
                             viewModel.onEvent(QuestionScreenEvent.SilentModeBtnClicked)
+
                         }
                 )
                 Icon(
@@ -203,6 +204,7 @@ fun QuestionScreen(
                     .padding(bottom = 10.dp)
                     .height(56.dp)
             ){
+// Apply
                 Button(
                     modifier = Modifier
                         .weight(1f),

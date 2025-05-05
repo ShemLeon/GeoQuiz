@@ -12,11 +12,8 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-/* синглтон - зависимость создасться  1 раз и будет неизменяема на протяжении всей работы приложения
- если его запросить, например, в нескольких ViewModel - он будет везде одинаков
- */
-
-object RepositoryModule { // ф-я, которая знает как билдить модули
+// function, who knows how to build modules
+object RepositoryModule {
     @Provides
     @Singleton
     fun provideAuthRepository(): AuthRepository {

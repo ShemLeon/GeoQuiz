@@ -10,4 +10,5 @@ sealed interface QuestionScreenEvent {
     data object SilentModeBtnClicked: QuestionScreenEvent
     data object NightModeBtnClicked: QuestionScreenEvent
 
+
 }
