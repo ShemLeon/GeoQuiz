@@ -1,5 +1,6 @@
 package com.leoevg.geoquiz.screens.login
 
+import android.R.attr.password
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -39,15 +40,15 @@ fun LoginScreen(
     val viewModel: LoginScreenViewModel = hiltViewModel()
     // LaunchedEffect - блок, который срабатывает когда переданная в него зависимость изменяется.
     // в данном случае - переход на след экран
-    LaunchedEffect(viewModel.isLoggedIn) {
-        if (viewModel.isLoggedIn) {
+    LaunchedEffect(viewModel.state.isLoggedIn) {
+        if (viewModel.state.isLoggedIn) {
             popBackStack() // чистит стак, чтобы при нажатии
             // кнопки назад не сохранило введенный логин/пароль
             navigate(NavigationPaths.Choose)
         }
     }
 
-    LoadingDialog(isLoading = viewModel.isLoading)
+    LoadingDialog(isLoading = viewModel.state.isLoading)
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -66,7 +67,7 @@ fun LoginScreen(
                 .fillMaxWidth(0.8f),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
-            viewModel.error?.let { error ->
+            viewModel.state.error?.let { error ->
                 Text(
                     text = error,
                     color = Color.Red
@@ -76,7 +77,7 @@ fun LoginScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 20.dp),
-                value = viewModel.email,
+                value = viewModel.state.email,
                 onValueChange = {
                     // it - новое значение введенное юзером, евентом передаем его в viewModel
                     viewModel.onEvent(LoginScreenEvent.EmailChanged(it))
@@ -95,7 +96,7 @@ fun LoginScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 10.dp),
-                value = viewModel.password,
+                value = viewModel.state.password,
                 onValueChange = {
                     viewModel.onEvent(LoginScreenEvent.PasswordChanged(it))
                                 },

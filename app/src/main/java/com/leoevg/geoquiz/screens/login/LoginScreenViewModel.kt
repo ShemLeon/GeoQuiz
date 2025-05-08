@@ -1,5 +1,6 @@
 package com.leoevg.geoquiz.screens.login
 
+import android.R.attr.password
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -17,11 +18,7 @@ class LoginScreenViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ): ViewModel( ) {
     // state вьюхи
-    var email by mutableStateOf("")
-    var password by mutableStateOf("")
-    var error by mutableStateOf<String?>(null)
-    var isLoggedIn by mutableStateOf(false)
-    var isLoading by mutableStateOf(false)
+    var state by mutableStateOf(LoginScreenState())
 
     fun onEvent(event: LoginScreenEvent){
         // SOLID
@@ -35,31 +32,31 @@ class LoginScreenViewModel @Inject constructor(
     }
 
     private fun onEmailChanged(email: String){
-        this.email = email
+        state = state.copy(email = email)
     }
     private fun onPasswordChanged(password: String){
-        this.password = password
+        state = state.copy(password = password)
     }
 
     private fun onLoginBtnClicked(){
-        if (email.isEmpty() || password.isEmpty()) {
-            error = "Fields cannot be empty"
+        if (state.email.isEmpty() || state.password.isEmpty()) {
+            state.error = "Fields cannot be empty"
             return
         }
-        error = null
-        login(email, password)
+        state.error = null
+        login(state.email, state.password)
     }
 
     private fun login(email: String, password: String) = viewModelScope.launch(Dispatchers.IO) {
         // внутри этой ф-ции запрос к FIREBASE и его обработка. уйдет в repository
-        isLoading = true // анимация полосы загрузки включается
+        state = state.copy(isLoading = true) // анимация полосы загрузки включается
         val result = authRepository.login(email, password)
-        isLoading = false //  анимация полосы загрузки выключается
+        state = state.copy(isLoading = false) //  анимация полосы загрузки выключается
 
         result?.user?.let {
-            isLoggedIn = true
+            state = state.copy(isLoggedIn = true)
         } ?: run {
-            error = "Error signing in. Check your credentials"
+            state.error = "Error signing in. Check your credentials"
         }
     }
 
