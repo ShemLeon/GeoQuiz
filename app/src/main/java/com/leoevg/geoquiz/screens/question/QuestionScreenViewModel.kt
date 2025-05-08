@@ -19,9 +19,10 @@ class QuestionScreenViewModel @Inject constructor(
     private val prefManager: SharedPrefManager,
     private val audioService: AudioService
 ) : ViewModel() {
-    var isSilentModeEnabled by mutableStateOf(prefManager.getBoolValueByKey("musicWorks", true))
-    var isNightModeEnabled by mutableStateOf(prefManager.getBoolValueByKey("darkWorks", true))
-    var selectedAnswerOptionId by mutableIntStateOf(-1)
+    var state by mutableStateOf(QuestionScreenState(
+        isSilentModeEnabled = prefManager.getBoolValueByKey("darkWorks", true),
+        isNightModeEnabled =prefManager.getBoolValueByKey("darkWorks", true))
+    )
 
     fun onEvent(event: QuestionScreenEvent){
         // SOLID
@@ -39,10 +40,10 @@ class QuestionScreenViewModel @Inject constructor(
     private fun onSilentModeBtnClicked(){
         val isSilentModeEnable = prefManager.getBoolValueByKey("musicWorks", true)
         prefManager.putBoolValue("musicWorks", !isSilentModeEnable) // change silent mode
-        isSilentModeEnabled = !isSilentModeEnable
+        state = state.copy(isSilentModeEnabled = !isSilentModeEnable)
 
         // Play sound only if !isSilentModeEnable
-        if (isSilentModeEnabled){
+        if (state.isSilentModeEnabled){
             // Play music from resource
             audioService.playSound(R.raw.silent_klav)
         }
@@ -57,20 +58,22 @@ class QuestionScreenViewModel @Inject constructor(
     private fun onNightModeBtnClicked(){
         val isNightModeEnable = prefManager.getBoolValueByKey("darkWorks", true)
         prefManager.putBoolValue("darkWorks", !isNightModeEnable)
-        isNightModeEnabled = !isNightModeEnable
+        state = state.copy(isNightModeEnabled = !isNightModeEnable)
     }
 
     private fun onApplyBtnClicked(){
 
-
     }
+
     private fun onFinishBtnClicked (){
     // Play sound only if !isSilentModeEnable
-        if (isSilentModeEnabled){
+        if (state.isSilentModeEnabled){
             // Play music from resource
             audioService.playSound(R.raw.tadam)
         }
     }
+
+
     private fun onHintBtnClicked(){
        // Toast.makeText(context, "Hint: ${question.hint}", Toast.LENGTH_LONG).show()
     }
@@ -79,7 +82,7 @@ class QuestionScreenViewModel @Inject constructor(
     }
 
     private fun onOptionSelected(selectedOptionId: Int){
-        selectedAnswerOptionId = selectedOptionId
+        state = state.copy(selectedAnswerOptionId = selectedOptionId)
     }
 
 

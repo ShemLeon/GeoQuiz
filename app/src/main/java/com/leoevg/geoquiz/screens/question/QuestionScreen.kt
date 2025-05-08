@@ -42,9 +42,11 @@ import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.data.model.AnswerOption
 import com.leoevg.geoquiz.data.model.Question
 import com.leoevg.geoquiz.navigation.NavigationPaths
+import com.leoevg.geoquiz.screens.question.QuestionScreenContent
 import com.leoevg.geoquiz.ui.components.AnswerOptionItem
 import com.leoevg.geoquiz.ui.theme.Blue
 import com.leoevg.geoquiz.ui.theme.BlueGrey
+import org.checkerframework.checker.units.qual.s
 import kotlin.Unit
 
 @Composable
@@ -54,10 +56,23 @@ fun QuestionScreen(
     viewModel: QuestionScreenViewModel = hiltViewModel()
 ){
     val viewModel: QuestionScreenViewModel = hiltViewModel()
-    val context = LocalContext.current  // context for hint
+    QuestionScreenContent(
+        question = question,
+        state = viewModel.state,
+        onEvent = viewModel::onEvent
+    )
+}
 
+@Composable
+fun QuestionScreenContent(
+    modifier: Modifier = Modifier,
+    question: Question,
+    state: QuestionScreenState = QuestionScreenState(),
+    onEvent: (QuestionScreenEvent) -> Unit
+    ){
+    val context = LocalContext.current  // context for hint
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -103,7 +118,7 @@ fun QuestionScreen(
             ){
                 Icon(
                     painter = painterResource(
-                        if (viewModel.isSilentModeEnabled)
+                        if (state.isSilentModeEnabled)
                             R.drawable.volume_up
                         else
                             R.drawable.volume_down
@@ -113,21 +128,21 @@ fun QuestionScreen(
                     modifier = Modifier
                         .aspectRatio(1f) // Сохраняем пропорции (квадрат)
                         .clickable{
-                            viewModel.onEvent(QuestionScreenEvent.SilentModeBtnClicked)
+                            onEvent(QuestionScreenEvent.SilentModeBtnClicked)
 
                         }
                 )
                 Icon(
                     painter = painterResource(
-                        if (viewModel.isNightModeEnabled)
+                        if (state.isNightModeEnabled)
                             R.drawable.icon_light_mode
                         else
                             R.drawable.icon_dark_mode
                     ),
-                                    tint = Color.Black,
+                    tint = Color.Black,
                     contentDescription = "light_mode_icon",
                     modifier = Modifier.clickable{
-                        viewModel.onEvent(QuestionScreenEvent.NightModeBtnClicked)
+                        onEvent(QuestionScreenEvent.NightModeBtnClicked)
                     }
                 )
             }
@@ -157,7 +172,7 @@ fun QuestionScreen(
                     containerColor = Blue.copy(alpha = 0.5f)
                 ),
                 onClick = {
-                    viewModel.onEvent(QuestionScreenEvent.HintBtnClicked)
+                    onEvent(QuestionScreenEvent.HintBtnClicked)
                     Toast.makeText(context, "Hint: ${question.hint}", Toast.LENGTH_LONG).show()
                 }
             ) {
@@ -187,10 +202,10 @@ fun QuestionScreen(
         OptionAnswersSection(
             modifier = Modifier.padding(top=15.dp),
             answerOptions = question.answerOptions,
-            selectedAnswerOptionId = viewModel.selectedAnswerOptionId,
-           // нам надо передать события, что произошло и передать в него выбранный id
+            selectedAnswerOptionId = state.selectedAnswerOptionId,
+            // нам надо передать события, что произошло и передать в него выбранный id
             onItemSelected = {
-                optionId -> viewModel.onEvent(QuestionScreenEvent.OptionSelected(optionId))
+                    optionId -> onEvent(QuestionScreenEvent.OptionSelected(optionId))
             }
         )
         Column (
@@ -216,7 +231,7 @@ fun QuestionScreen(
                     contentPadding = PaddingValues(vertical = 15.dp),
                     shape = RoundedCornerShape(25.dp),
                     onClick = {
-                        viewModel.onEvent(QuestionScreenEvent.ApplyBtnClicked)
+                        onEvent(QuestionScreenEvent.ApplyBtnClicked)
                     }
                 ) {
                     Icon(
@@ -246,7 +261,7 @@ fun QuestionScreen(
                 contentPadding = PaddingValues(vertical = 10.dp),
                 shape = RoundedCornerShape(15.dp),
                 onClick = {
-                    viewModel.onEvent(QuestionScreenEvent.FinishBtnClicked)
+                    onEvent(QuestionScreenEvent.FinishBtnClicked)
                 }
             ) {
                 Text(
@@ -257,6 +272,7 @@ fun QuestionScreen(
             }
         }
     }
+
 }
 
 
@@ -298,7 +314,7 @@ fun OptionAnswersSection(
 @Composable
 @Preview(showBackground = true)
 fun QuestionScreenPreview() {
-    QuestionScreen(
+    QuestionScreenContent(
         question = Question(
             id = 1,
             rightAnswer = "Ответ 1",
@@ -313,9 +329,8 @@ fun QuestionScreenPreview() {
             ),
             picturesUrls = listOf("https://picsum.photos/400/400")
         ),
-        navigate = {},
-        viewModel = viewModel()
-    )
+    ) { }
+
 }
 
 /*
