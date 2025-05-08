@@ -36,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.data.model.AnswerOption
@@ -49,7 +50,8 @@ import kotlin.Unit
 @Composable
 fun QuestionScreen(
     question: Question,
-    navigate: (NavigationPaths) -> Unit
+    navigate: (NavigationPaths) -> Unit,
+    viewModel: QuestionScreenViewModel = hiltViewModel()
 ){
     val viewModel: QuestionScreenViewModel = hiltViewModel()
     val context = LocalContext.current  // context for hint
@@ -311,7 +313,8 @@ fun QuestionScreenPreview() {
             ),
             picturesUrls = listOf("https://picsum.photos/400/400")
         ),
-        navigate = {}
+        navigate = {},
+        viewModel = viewModel()
     )
 }
 

@@ -23,7 +23,6 @@ class QuestionScreenViewModel @Inject constructor(
     var isNightModeEnabled by mutableStateOf(prefManager.getBoolValueByKey("darkWorks", true))
     var selectedAnswerOptionId by mutableIntStateOf(-1)
 
-
     fun onEvent(event: QuestionScreenEvent){
         // SOLID
         when(event){

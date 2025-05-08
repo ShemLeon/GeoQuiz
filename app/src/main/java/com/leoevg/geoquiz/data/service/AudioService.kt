@@ -17,14 +17,15 @@ class AudioService @Inject constructor(
         releaseMediaPlayer()
         // Создаем новый проигрыватель
         mediaPlayer = MediaPlayer.create(context, resId)
+
         mediaPlayer?.setOnCompletionListener {
             // автоматическое освобождение ресурсов после окончания
             releaseMediaPlayer()
         }
+
         // Начинаем воспроизведение
         mediaPlayer?.start()
     }
-
 
     fun releaseMediaPlayer() {
         mediaPlayer?.apply {
