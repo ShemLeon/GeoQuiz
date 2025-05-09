@@ -22,6 +22,7 @@ class RegisterScreenViewModel @Inject constructor(
     var error by mutableStateOf<String?>(null)
     var isLoading by mutableStateOf(false)
     var isRegisteredIn by mutableStateOf(false)
+    var state by mutableStateOf(RegisterScreenState())
 
     fun onEvent(event: RegisterScreenEvent){
         // SOLID
@@ -34,10 +35,10 @@ class RegisterScreenViewModel @Inject constructor(
     }
 
     private fun onNicknameChanged(nickname: String){
-        this.nickname = nickname
+        state = state.copy(nickname = nickname)
     }
     private fun onEmailChanged(email: String){
-        this.email = email
+        state = state.copy(email = email)
     }
     private fun onPasswordChanged(password: String){
         this.password = password
@@ -53,13 +54,14 @@ class RegisterScreenViewModel @Inject constructor(
     }
 
     private fun register(nickname: String, email: String, password: String) = viewModelScope.launch(Dispatchers.IO){
-        // внутри этой ф-ции запрос к FIREBASE и его обработка. уйдет в repository\
-        isLoading = true // анимация полосы загрузки включается
+        // внутри этой ф-ции запрос к FIREBASE и его обработка. уйдет в repository
+
+        state = state.copy( isLoading = true) // анимация полосы загрузки включается
         val result = authRepository.register(nickname, email, password)
-        isLoading = false //  анимация полосы загрузки выключается
+        state = state.copy( isLoading = false) // анимация полосы загрузки включается
 
         result?.user?.let {
-            isRegisteredIn = true
+            state = state.copy(isRegisteredIn = true)
         } ?: run {
             error = "Error signing in. Check your credentials"
         }
