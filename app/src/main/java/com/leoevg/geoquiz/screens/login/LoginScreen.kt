@@ -38,6 +38,7 @@ fun LoginScreen(
     popBackStack: () -> Unit
 ){
     val viewModel: LoginScreenViewModel = hiltViewModel()
+
     // LaunchedEffect - блок, который срабатывает когда переданная в него зависимость изменяется.
     // в данном случае - переход на след экран
     LaunchedEffect(viewModel.state.isLoggedIn) {

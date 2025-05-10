@@ -24,8 +24,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.navigation.NavigationPaths
+import com.leoevg.geoquiz.screens.question.QuestionScreenEvent
 import com.leoevg.geoquiz.ui.components.LoadingDialog
 import com.leoevg.geoquiz.ui.theme.Bg
 import com.leoevg.geoquiz.ui.theme.Blue
@@ -39,16 +41,28 @@ fun RegisterScreen(
     val viewModel: RegisterScreenViewModel = hiltViewModel()
     // LaunchedEffect - блок, который срабатывает когда переданная в него зависимость изменяется.
     // в данном случае - переход на след экран
-    LaunchedEffect(viewModel.isRegisteredIn) {
-        if (viewModel.isRegisteredIn) {
+    LaunchedEffect(viewModel.state.isRegisteredIn) {
+        if (viewModel.state.isRegisteredIn) {
             popBackStack() // чистит стак, чтобы при нажатии
             // кнопки назад не сохранило введенный логин/пароль
             navigate(NavigationPaths.Choose)
         }
     }
 
-    LoadingDialog(isLoading = viewModel.isLoading)
+    LoadingDialog(isLoading = viewModel.state.isLoading)
+    RegisterScreenContent({})
 
+
+
+
+}
+
+@Composable
+fun RegisterScreenContent(
+    modifier: Modifier = Modifier,
+    state: RegisterScreenState = RegisterScreenState(),
+    onEvent: (QuestionScreenEvent) -> Unit
+){
     Column(modifier = Modifier
         .fillMaxSize()
         .background(Bg),
@@ -67,7 +81,7 @@ fun RegisterScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ){
-            viewModel.error?.let { error ->
+            state.error?.let { error ->
                 Text(
                     text = error,
                     color = Color.Red
@@ -76,10 +90,10 @@ fun RegisterScreen(
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth(),
-                value = viewModel.nickname,
+                value = state.nickname,
                 onValueChange = {
-                    viewModel.onEvent(RegisterScreenEvent.NicknameChanged(it))
-                                },
+                    onEvent(RegisterScreenEvent.NicknameChanged(it))
+                },
                 placeholder = { Text(stringResource(R.string.nickname)) },
                 shape = RoundedCornerShape(15.dp),
                 colors = OutlinedTextFieldDefaults.colors(
@@ -93,10 +107,10 @@ fun RegisterScreen(
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth(),
-                value = viewModel.email,
+                value = state.email,
                 onValueChange = {
-                    viewModel.onEvent(RegisterScreenEvent.EmailChanged(it))
-                                },
+                    onEvent(RegisterScreenEvent.EmailChanged(it))
+                },
                 placeholder = { Text(stringResource(R.string.email)) },
                 shape = RoundedCornerShape(15.dp),
                 colors = OutlinedTextFieldDefaults.colors(
@@ -110,10 +124,10 @@ fun RegisterScreen(
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth(),
-                value = viewModel.password,
+                value = state.password,
                 onValueChange = {
-                    viewModel.onEvent(RegisterScreenEvent.PasswordChanged(it))
-                                },
+                    onEvent(RegisterScreenEvent.PasswordChanged(it))
+                },
                 placeholder = { Text(stringResource(R.string.password)) },
                 visualTransformation = PasswordVisualTransformation(),
                 shape = RoundedCornerShape(15.dp),
@@ -131,7 +145,7 @@ fun RegisterScreen(
                 .fillMaxWidth()
                 .padding(bottom = 40.dp),
             horizontalAlignment = Alignment.CenterHorizontally
-        ){
+        ) {
             Button(
                 modifier = Modifier
                     .fillMaxWidth(fraction = 0.8f),
@@ -140,14 +154,13 @@ fun RegisterScreen(
                 ),
                 shape = RoundedCornerShape(15.dp),
                 onClick = {
-                    viewModel.onEvent(RegisterScreenEvent.RegisterBtnClicked)
+                    onEvent(RegisterScreenEvent.RegisterBtnClicked)
                 }
             ) {
                 Text(
                     stringResource(R.string.create_account)
                 )
             }
-
         }
     }
 }

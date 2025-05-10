@@ -44,7 +44,6 @@ fun QuizScreen(
 
 
 
-
 @Composable
 @Preview(showBackground = true)
 fun QuizScreenPreview() {

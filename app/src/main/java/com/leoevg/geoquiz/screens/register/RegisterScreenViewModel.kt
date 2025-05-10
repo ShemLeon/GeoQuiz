@@ -16,13 +16,10 @@ class RegisterScreenViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ): ViewModel ( ) {
     // state вьюхи
-    var nickname by mutableStateOf("")
-    var email by mutableStateOf("")
-    var password by mutableStateOf("")
-    var error by mutableStateOf<String?>(null)
-    var isLoading by mutableStateOf(false)
-    var isRegisteredIn by mutableStateOf(false)
+    // state по умолчанию (для возможности тестирования и @preview)
+    // обеспечивает реальное и наглядное изменение данных в модели и рекомпозицию UI
     var state by mutableStateOf(RegisterScreenState())
+
 
     fun onEvent(event: RegisterScreenEvent){
         // SOLID
@@ -41,29 +38,30 @@ class RegisterScreenViewModel @Inject constructor(
         state = state.copy(email = email)
     }
     private fun onPasswordChanged(password: String){
-        this.password = password
+        state.copy(password= password)
     }
 
     private fun onRegisterBtnClicked(){
-        if (email.isEmpty() || password.isEmpty() || nickname.isEmpty()){
-            error = "Fields cannot be empty"
+        if (state.email.isEmpty() || state.password.isEmpty() || state.nickname.isEmpty()){
+            state.error = "Fields cannot be empty"
             return
         }
-        error = null
-        register(nickname, email, password)
+        state.error = null
+        register(state.nickname, state.email, state.password)
     }
 
-    private fun register(nickname: String, email: String, password: String) = viewModelScope.launch(Dispatchers.IO){
+    private fun register(nickname: String, email: String, password: String) =
+        viewModelScope.launch(Dispatchers.IO){
         // внутри этой ф-ции запрос к FIREBASE и его обработка. уйдет в repository
 
-        state = state.copy( isLoading = true) // анимация полосы загрузки включается
+        state = state.copy(isLoading = true) // анимация полосы загрузки включается
         val result = authRepository.register(nickname, email, password)
-        state = state.copy( isLoading = false) // анимация полосы загрузки включается
+        state = state.copy(isLoading = false) // анимация полосы загрузки включается
 
         result?.user?.let {
             state = state.copy(isRegisteredIn = true)
         } ?: run {
-            error = "Error signing in. Check your credentials"
+            state.error = "Error signing in. Check your credentials"
         }
     }
 
