@@ -173,8 +173,8 @@ fun RegisterScreenContent(
 @Preview(showBackground = true)
 fun RegisterScreenPreview(){
     RegisterScreenContent(
-        modifier = Modifier,
-        state = RegisterScreenState(),
-        onEvent = {}
+        modifier = TODO(),
+        state = TODO(),
+        onEvent = TODO()
     )
 }

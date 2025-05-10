@@ -27,6 +27,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.navigation.NavigationPaths
+import com.leoevg.geoquiz.screens.login.LoginScreenContent
+import com.leoevg.geoquiz.screens.register.RegisterScreenContent
+import com.leoevg.geoquiz.screens.register.RegisterScreenEvent
+import com.leoevg.geoquiz.screens.register.RegisterScreenState
 import com.leoevg.geoquiz.ui.components.LoadingDialog
 import com.leoevg.geoquiz.ui.theme.Bg
 import com.leoevg.geoquiz.ui.theme.Blue
@@ -50,11 +54,27 @@ fun LoginScreen(
     }
 
     LoadingDialog(isLoading = viewModel.state.isLoading)
+    LoginScreenContent(
+        navigate = navigate,
+        state = viewModel.state,
+        onEvent = viewModel::onEvent,
+        // onEvent должен принять в себя лямда блок, который в принципе, тоже есть функция.
+        // :: - ссылка на функцию
 
+    )
+}
+
+@Composable
+fun LoginScreenContent(
+    modifier: Modifier = Modifier,
+    state: LoginScreenState = LoginScreenState(),
+    onEvent: (LoginScreenEvent) -> Unit,
+    navigate: (NavigationPaths) -> Unit
+){
     Column(
         modifier = Modifier
-        .fillMaxSize()
-        .background(Bg),
+            .fillMaxSize()
+            .background(Bg),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
@@ -69,7 +89,7 @@ fun LoginScreen(
                 .fillMaxWidth(0.8f),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
-            viewModel.state.error?.let { error ->
+            state.error?.let { error ->
                 Text(
                     text = error,
                     color = Color.Red
@@ -79,11 +99,11 @@ fun LoginScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 20.dp),
-                value = viewModel.state.email,
+                value = state.email,
                 onValueChange = {
                     // it - новое значение введенное юзером, евентом передаем его в viewModel
-                    viewModel.onEvent(LoginScreenEvent.EmailChanged(it))
-                                },
+                    onEvent(LoginScreenEvent.EmailChanged(it))
+                },
                 placeholder = { Text(stringResource(R.string.email)) },
                 shape = RoundedCornerShape(15.dp),
                 colors = OutlinedTextFieldDefaults.colors(
@@ -98,10 +118,10 @@ fun LoginScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 10.dp),
-                value = viewModel.state.password,
+                value = state.password,
                 onValueChange = {
-                    viewModel.onEvent(LoginScreenEvent.PasswordChanged(it))
-                                },
+                    onEvent(LoginScreenEvent.PasswordChanged(it))
+                },
                 placeholder = { Text(stringResource(R.string.password)) },
                 visualTransformation = PasswordVisualTransformation(),
                 shape = RoundedCornerShape(15.dp),
@@ -128,7 +148,7 @@ fun LoginScreen(
                 ),
                 shape = RoundedCornerShape(15.dp),
                 onClick = {
-                    viewModel.onEvent(LoginScreenEvent.LoginBtnClicked)
+                    onEvent(LoginScreenEvent.LoginBtnClicked)
                 }
             ) {
                 Text(
@@ -156,11 +176,15 @@ fun LoginScreen(
     }
 }
 
+
 @Composable
 @Preview(showBackground = true)
 fun LoginScreenPreview(){
-    LoginScreen(
-        navigate = {},
-        popBackStack = {}
+    LoginScreenContent(
+        modifier = Modifier,
+        state = LoginScreenState(),
+        onEvent = {},
+        navigate = {}
+
     )
 }
