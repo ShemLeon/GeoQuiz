@@ -18,8 +18,9 @@ class RegisterScreenViewModel @Inject constructor(
     // state вьюхи
     // state по умолчанию (для возможности тестирования и @preview)
     // обеспечивает реальное и наглядное изменение данных в модели и рекомпозицию UI
-    var state by mutableStateOf(RegisterScreenState())
+    var state by mutableStateOf(RegisterScreenState(
 
+    ))
 
     fun onEvent(event: RegisterScreenEvent){
         // SOLID
@@ -38,7 +39,7 @@ class RegisterScreenViewModel @Inject constructor(
         state = state.copy(email = email)
     }
     private fun onPasswordChanged(password: String){
-        state.copy(password= password)
+        state= state.copy(password= password)
     }
 
     private fun onRegisterBtnClicked(){

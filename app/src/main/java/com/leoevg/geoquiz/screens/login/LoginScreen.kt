@@ -51,7 +51,8 @@ fun LoginScreen(
 
     LoadingDialog(isLoading = viewModel.state.isLoading)
 
-    Column(modifier = Modifier
+    Column(
+        modifier = Modifier
         .fillMaxSize()
         .background(Bg),
         horizontalAlignment = Alignment.CenterHorizontally,

@@ -28,6 +28,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.navigation.NavigationPaths
 import com.leoevg.geoquiz.screens.question.QuestionScreenEvent
+import com.leoevg.geoquiz.screens.register.RegisterScreenContent
 import com.leoevg.geoquiz.ui.components.LoadingDialog
 import com.leoevg.geoquiz.ui.theme.Bg
 import com.leoevg.geoquiz.ui.theme.Blue
@@ -36,7 +37,8 @@ import com.leoevg.geoquiz.ui.theme.BlueGrey
 @Composable
 fun RegisterScreen(
     navigate: (NavigationPaths) -> Unit,
-    popBackStack: () -> Unit
+    popBackStack: () -> Unit,
+    // viewModel: RegisterScreenViewModel = hiltViewModel()
 ){
     val viewModel: RegisterScreenViewModel = hiltViewModel()
     // LaunchedEffect - блок, который срабатывает когда переданная в него зависимость изменяется.
@@ -50,20 +52,22 @@ fun RegisterScreen(
     }
 
     LoadingDialog(isLoading = viewModel.state.isLoading)
-    RegisterScreenContent({})
-
-
-
-
+    RegisterScreenContent(
+        state = viewModel.state,
+        onEvent = viewModel::onEvent
+        // onEvent должен принять в себя лямда блок, который в принципе, тоже есть функция.
+        // :: - ссылка на функцию
+    )
 }
+
 
 @Composable
 fun RegisterScreenContent(
     modifier: Modifier = Modifier,
     state: RegisterScreenState = RegisterScreenState(),
-    onEvent: (QuestionScreenEvent) -> Unit
+    onEvent: (RegisterScreenEvent) -> Unit
 ){
-    Column(modifier = Modifier
+    Column(modifier = modifier
         .fillMaxSize()
         .background(Bg),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -168,8 +172,9 @@ fun RegisterScreenContent(
 @Composable
 @Preview(showBackground = true)
 fun RegisterScreenPreview(){
-    RegisterScreen(
-        navigate = {},
-        popBackStack = {}
+    RegisterScreenContent(
+        modifier = Modifier,
+        state = RegisterScreenState(),
+        onEvent = {}
     )
 }
