@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.leoevg.geoquiz.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.String
@@ -15,10 +17,14 @@ import kotlin.String
 class RegisterScreenViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ): ViewModel ( ) {
-    // state вьюхи
-    // state по умолчанию (для возможности тестирования и @preview)
+    // state вьюхи по умолчанию (для возможности тестирования и @preview)
     // обеспечивает реальное и наглядное изменение данных в модели и рекомпозицию UI
     var state by mutableStateOf(RegisterScreenState())
+
+    // private _state - доступен только во viewmodel, он же private
+    // а state - public, но он будет неизменяемый и будет доступен везде
+//    private val _state = MutableStateFlow(RegisterScreenState())
+//    val state: StateFlow<RegisterScreenState> = _state
 
     fun onEvent(event: RegisterScreenEvent){
         // SOLID

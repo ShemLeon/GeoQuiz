@@ -36,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.leoevg.geoquiz.R
@@ -48,6 +49,7 @@ import com.leoevg.geoquiz.ui.theme.Blue
 import com.leoevg.geoquiz.ui.theme.BlueGrey
 import org.checkerframework.checker.units.qual.s
 import kotlin.Unit
+import androidx.compose.runtime.getValue
 
 @Composable
 fun QuestionScreen(
@@ -55,10 +57,11 @@ fun QuestionScreen(
     navigate: (NavigationPaths) -> Unit,
     viewModel: QuestionScreenViewModel = hiltViewModel()
 ){
-    val viewModel: QuestionScreenViewModel = hiltViewModel()
+// преобразование stateFlow в обычный для composable
+    val state by viewModel.state.collectAsStateWithLifecycle()
     QuestionScreenContent(
         question = question,
-        state = viewModel.state,
+        state = state,
         onEvent = viewModel::onEvent
     )
 }
