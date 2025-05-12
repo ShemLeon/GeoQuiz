@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -31,6 +32,7 @@ import com.leoevg.geoquiz.ui.components.LoadingDialog
 import com.leoevg.geoquiz.ui.theme.Bg
 import com.leoevg.geoquiz.ui.theme.Blue
 import com.leoevg.geoquiz.ui.theme.BlueGrey
+import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
 
 
 
@@ -76,7 +78,7 @@ fun LoginScreenContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Bg),
+            .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
@@ -84,7 +86,8 @@ fun LoginScreenContent(
             text = stringResource(R.string.app_login_title),
             fontSize = 25.sp,
             fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(top = 90.dp)
+            modifier = Modifier.padding(top = 90.dp),
+            color = MaterialTheme.colorScheme.onBackground
         )
         Column (
             modifier = Modifier
@@ -110,10 +113,10 @@ fun LoginScreenContent(
                 shape = RoundedCornerShape(15.dp),
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = Color.Transparent,
-                    disabledContainerColor = BlueGrey,
-                    focusedContainerColor = BlueGrey,
-                    errorContainerColor = BlueGrey,
-                    unfocusedContainerColor = BlueGrey
+                    disabledContainerColor = MaterialTheme.colorScheme.secondary,
+                    focusedContainerColor = MaterialTheme.colorScheme.secondary,
+                    errorContainerColor = MaterialTheme.colorScheme.secondary,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.secondary
                 )
             )
             OutlinedTextField(
@@ -129,10 +132,10 @@ fun LoginScreenContent(
                 shape = RoundedCornerShape(15.dp),
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = Color.Transparent,
-                    disabledContainerColor = BlueGrey,
-                    focusedContainerColor = BlueGrey,
-                    errorContainerColor = BlueGrey,
-                    unfocusedContainerColor = BlueGrey
+                    disabledContainerColor = MaterialTheme.colorScheme.secondary,
+                    focusedContainerColor = MaterialTheme.colorScheme.secondary,
+                    errorContainerColor = MaterialTheme.colorScheme.secondary,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.secondary
                 )
             )
         }
@@ -146,7 +149,7 @@ fun LoginScreenContent(
                 modifier = Modifier
                     .fillMaxWidth(fraction = 0.8f),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Blue
+                    containerColor = MaterialTheme.colorScheme.primary
                 ),
                 shape = RoundedCornerShape(15.dp),
                 onClick = {
@@ -161,7 +164,7 @@ fun LoginScreenContent(
                 modifier = Modifier
                     .fillMaxWidth(fraction = 0.8f),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = BlueGrey
+                    containerColor = MaterialTheme.colorScheme.primary
                 ),
                 shape = RoundedCornerShape(15.dp),
                 onClick = {
@@ -182,11 +185,28 @@ fun LoginScreenContent(
 @Composable
 @Preview(showBackground = true)
 fun LoginScreenPreview(){
-    LoginScreenContent(
-        modifier = Modifier,
-        state = LoginScreenState(),
-        onEvent = {},
-        navigate = {}
+    GeoQuizTheme {
+        LoginScreenContent(
+            modifier = Modifier,
+            state = LoginScreenState(),
+            onEvent = {},
+            navigate = {}
+        )
+    }
+}
 
-    )
+@Composable
+@Preview(showBackground = true, uiMode = 1)
+fun LoginScreenDarkPreview(){
+    GeoQuizTheme(
+        darkTheme = true
+    ) {
+        LoginScreenContent(
+            modifier = Modifier,
+            state = LoginScreenState(),
+            onEvent = {},
+            navigate = {}
+        )
+    }
+
 }
