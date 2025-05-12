@@ -1,6 +1,5 @@
 package com.leoevg.geoquiz.screens.login
 
-import android.R.attr.password
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,16 +24,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.navigation.NavigationPaths
-import com.leoevg.geoquiz.screens.login.LoginScreenContent
-import com.leoevg.geoquiz.screens.register.RegisterScreenContent
-import com.leoevg.geoquiz.screens.register.RegisterScreenEvent
-import com.leoevg.geoquiz.screens.register.RegisterScreenState
 import com.leoevg.geoquiz.ui.components.LoadingDialog
 import com.leoevg.geoquiz.ui.theme.Bg
 import com.leoevg.geoquiz.ui.theme.Blue
 import com.leoevg.geoquiz.ui.theme.BlueGrey
+
+
+
+import kotlin.Unit
+import androidx.compose.runtime.getValue
 
 @Composable
 fun LoginScreen(
@@ -42,21 +43,22 @@ fun LoginScreen(
     popBackStack: () -> Unit
 ){
     val viewModel: LoginScreenViewModel = hiltViewModel()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     // LaunchedEffect - блок, который срабатывает когда переданная в него зависимость изменяется.
     // в данном случае - переход на след экран
-    LaunchedEffect(viewModel.state.isLoggedIn) {
-        if (viewModel.state.isLoggedIn) {
+    LaunchedEffect(state.isLoggedIn) {
+        if (state.isLoggedIn) {
             popBackStack() // чистит стак, чтобы при нажатии
             // кнопки назад не сохранило введенный логин/пароль
             navigate(NavigationPaths.Choose)
         }
     }
 
-    LoadingDialog(isLoading = viewModel.state.isLoading)
+    LoadingDialog(isLoading = state.isLoading)
     LoginScreenContent(
         navigate = navigate,
-        state = viewModel.state,
+        state = state,
         onEvent = viewModel::onEvent,
         // onEvent должен принять в себя лямда блок, который в принципе, тоже есть функция.
         // :: - ссылка на функцию

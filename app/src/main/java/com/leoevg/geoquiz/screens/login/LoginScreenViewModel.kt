@@ -9,6 +9,9 @@ import androidx.lifecycle.viewModelScope
 import com.leoevg.geoquiz.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.String
@@ -18,7 +21,8 @@ class LoginScreenViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ): ViewModel( ) {
     // state вьюхи
-    var state by mutableStateOf(LoginScreenState())
+    private val _state = MutableStateFlow(LoginScreenState())
+    val state: StateFlow<LoginScreenState> = _state
 
     fun onEvent(event: LoginScreenEvent){
         // SOLID
@@ -32,31 +36,32 @@ class LoginScreenViewModel @Inject constructor(
     }
 
     private fun onEmailChanged(email: String){
-        state = state.copy(email = email)
+        _state.update { it.copy(email = email) }
     }
+
     private fun onPasswordChanged(password: String){
-        state = state.copy(password = password)
+        _state.update{ it.copy(password = password) }
     }
 
     private fun onLoginBtnClicked(){
-        if (state.email.isEmpty() || state.password.isEmpty()) {
-            state.error = "Fields cannot be empty"
+        if (state.value.email.isEmpty() || state.value.password.isEmpty()) {
+            _state.update{it.copy(error = "Fields cannot be empty")}
             return
         }
-        state.error = null
-        login(state.email, state.password)
+        _state.update{it.copy(error = null)}
+        login(state.value.email, state.value.password)
     }
 
     private fun login(email: String, password: String) = viewModelScope.launch(Dispatchers.IO) {
         // внутри этой ф-ции запрос к FIREBASE и его обработка. уйдет в repository
-        state = state.copy(isLoading = true) // анимация полосы загрузки включается
+        _state.update{it.copy(isLoading = true)} // анимация полосы загрузки включается
         val result = authRepository.login(email, password)
-        state = state.copy(isLoading = false) //  анимация полосы загрузки выключается
+        _state.update{it.copy(isLoading = false)} //  анимация полосы загрузки выключается
 
         result?.user?.let {
-            state = state.copy(isLoggedIn = true)
+            _state.update{it.copy(isLoggedIn = true)}
         } ?: run {
-            state.error = "Error signing in. Check your credentials"
+            _state.update{it.copy(error = "Error signing in. Check your credentials")}
         }
     }
 
