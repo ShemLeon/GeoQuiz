@@ -33,7 +33,14 @@ class QuestionScreenViewModel @Inject constructor(
             QuestionScreenEvent.SilentModeBtnClicked -> onSilentModeBtnClicked()
         }
     }
-
+    private fun onNightModeBtnClicked(){
+        val isNightModeEnable = prefManager.getBoolValueByKey("darkWorks", true)
+        prefManager.putBoolValue("darkWorks", !isNightModeEnable)
+        // state = state.copy(isNightModeEnabled = !isNightModeEnable)
+        _state.update {
+            it.copy(isNightModeEnabled = !isNightModeEnable)
+        }
+    }
     private fun onSilentModeBtnClicked(){
         val isSilentModeEnable = prefManager.getBoolValueByKey("musicWorks", true)
         prefManager.putBoolValue("musicWorks", !isSilentModeEnable) // change silent mode
@@ -52,14 +59,7 @@ class QuestionScreenViewModel @Inject constructor(
         audioService.releaseMediaPlayer()
     }
 
-    private fun onNightModeBtnClicked(){
-        val isNightModeEnable = prefManager.getBoolValueByKey("darkWorks", true)
-        prefManager.putBoolValue("darkWorks", !isNightModeEnable)
-        // state = state.copy(isNightModeEnabled = !isNightModeEnable)
-        _state.update {
-            it.copy(isNightModeEnabled = !isNightModeEnable)
-        }
-    }
+
 
     private fun onApplyBtnClicked(){
 

@@ -1,6 +1,7 @@
 package com.leoevg.geoquiz.screens.question
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 
 import androidx.compose.foundation.layout.Arrangement
@@ -43,11 +44,9 @@ import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.data.model.AnswerOption
 import com.leoevg.geoquiz.data.model.Question
 import com.leoevg.geoquiz.navigation.NavigationPaths
-import com.leoevg.geoquiz.screens.question.QuestionScreenContent
 import com.leoevg.geoquiz.ui.components.AnswerOptionItem
 import com.leoevg.geoquiz.ui.theme.Blue
 import com.leoevg.geoquiz.ui.theme.BlueGrey
-import org.checkerframework.checker.units.qual.s
 import kotlin.Unit
 import androidx.compose.runtime.getValue
 
@@ -74,8 +73,14 @@ fun QuestionScreenContent(
     onEvent: (QuestionScreenEvent) -> Unit
     ){
     val context = LocalContext.current  // context for hint
+// Цвет фона
     Column(
         modifier = modifier
+            .background(color = if (state.isNightModeEnabled)
+                Color.Black
+                    .copy(alpha = 0.5f)
+            else
+                Color.White)
             .fillMaxSize()
             .padding(horizontal = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
