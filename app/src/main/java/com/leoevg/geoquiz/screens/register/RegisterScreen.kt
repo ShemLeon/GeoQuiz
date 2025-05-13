@@ -172,9 +172,7 @@ fun RegisterScreenContent(
 @Composable
 @Preview(showBackground = true)
 fun RegisterScreenPreview(){
-    GeoQuizTheme(
-        darkTheme = false
-    ) {
+    GeoQuizTheme() {
         RegisterScreenContent(
             modifier = Modifier,
             state = RegisterScreenState(),

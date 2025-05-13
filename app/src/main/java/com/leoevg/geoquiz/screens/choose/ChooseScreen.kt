@@ -1,6 +1,7 @@
 package com.leoevg.geoquiz.screens.choose
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,6 +18,7 @@ import androidx.compose.material.icons.automirrored.outlined.Logout
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,7 +27,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -39,7 +40,7 @@ import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.data.model.typeGames
 import com.leoevg.geoquiz.navigation.NavigationPaths
 import com.leoevg.geoquiz.ui.components.GameModelItem
-import com.leoevg.geoquiz.ui.theme.Blue
+import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
 
 @Composable
 fun ChooseScreen(
@@ -53,15 +54,18 @@ fun ChooseScreen(
     Box(modifier = Modifier
         .fillMaxSize()
         .padding(horizontal = 10.dp)
+        .background(MaterialTheme.colorScheme.background),
     ) {
         Column (
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 10.dp),
+                .padding(horizontal = 10.dp)
+                .background(MaterialTheme.colorScheme.background),
             horizontalAlignment = Alignment.CenterHorizontally,
         ){
             Row (
-                modifier = Modifier.fillMaxWidth().padding(top = 50.dp),
+                modifier = Modifier.fillMaxWidth()
+                    .padding(top = 50.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ){
@@ -70,7 +74,8 @@ fun ChooseScreen(
                     fontSize = 25.sp,
                     fontWeight = FontWeight.SemiBold,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier
+                    modifier = Modifier,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Icon(
                     imageVector = Icons.AutoMirrored.Outlined.Logout,
@@ -80,17 +85,19 @@ fun ChooseScreen(
                         popBackStack()
                         navigate(NavigationPaths.Login)
                     },
-                    tint = Color.Black
+                    tint = MaterialTheme.colorScheme.onBackground
                 )
             }
-
+// Прокрутка
             LazyRow(
-                modifier = Modifier.
-                padding(top = 30.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier
+                    .padding(top = 30.dp)
+                    .background(MaterialTheme.colorScheme.background),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ){
                 items(typeGames){
                     GameModelItem(
+                        modifier = Modifier,
                         typeGame = it,
                         isSelected = selectedTypeGame.typeGameId==it.typeGameId
                     ) {
@@ -106,7 +113,8 @@ fun ChooseScreen(
                 modifier = Modifier
                     .padding(top = 50.dp)
                     .padding(horizontal = 5.dp)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                color = MaterialTheme.colorScheme.onBackground
             )
             Image(
                 painter = painterResource(selectedTypeGame.typeGameImg),
@@ -123,13 +131,13 @@ fun ChooseScreen(
                 .fillMaxSize(),
             verticalArrangement = Arrangement.Bottom
         ){
+// btn Start the quiz
             Button(
                 modifier = Modifier
                     .fillMaxWidth(fraction = 0.99f)
                     .padding(bottom = 40.dp),
-
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Blue
+                    containerColor = MaterialTheme.colorScheme.primary
                 ),
                 shape = RoundedCornerShape(15.dp),
                 onClick = {
@@ -140,14 +148,15 @@ fun ChooseScreen(
                 Icon(
                     painter = painterResource(R.drawable.icon_button_play),
                     contentDescription = "play_icon_button",
-
+                    tint = MaterialTheme.colorScheme.background
                     )
                 Text(
                     stringResource(R.string.start_the_quiz),
                     fontSize = 30.sp,
                     fontWeight = FontWeight.Normal,
                     modifier = Modifier
-                        .padding(start = 30.dp)
+                        .padding(start = 30.dp),
+                    color = MaterialTheme.colorScheme.background
                 )
             }
         }
@@ -157,6 +166,20 @@ fun ChooseScreen(
 
 @Composable
 @Preview(showBackground = true)
-fun ChooseScreenPreview(){
+fun ChooseScreenPreview() {
+    GeoQuizTheme(
+        darkTheme = false
+    ) {
+        ChooseScreen { }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun ChooseScreenDarkPreview(){
+    GeoQuizTheme(
+        darkTheme = true
+    ){
     ChooseScreen {  }
+}
 }
