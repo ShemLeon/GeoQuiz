@@ -58,10 +58,9 @@ fun LoginScreen(
     LoginScreenContent(
         navigate = navigate,
         state = state,
-        onEvent = viewModel::onEvent,
+        onEvent = viewModel::onEvent
         // onEvent должен принять в себя лямда блок, который в принципе, тоже есть функция.
         // :: - ссылка на функцию
-
     )
 }
 
@@ -94,7 +93,7 @@ fun LoginScreenContent(
             state.error?.let { error ->
                 Text(
                     text = error,
-                    color = Color.Red
+                    color = MaterialTheme.colorScheme.error
                 )
             }
             OutlinedTextField(
@@ -113,7 +112,8 @@ fun LoginScreenContent(
                     disabledContainerColor = MaterialTheme.colorScheme.secondary,
                     focusedContainerColor = MaterialTheme.colorScheme.secondary,
                     errorContainerColor = MaterialTheme.colorScheme.secondary,
-                    unfocusedContainerColor = MaterialTheme.colorScheme.secondary
+                  // unfocusedContainerColor = BlueGrey
+                    unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
                 )
             )
             OutlinedTextField(
@@ -142,6 +142,7 @@ fun LoginScreenContent(
                 .padding(bottom = 40.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
+// btn Login
             Button(
                 modifier = Modifier
                     .fillMaxWidth(fraction = 0.8f),
@@ -157,11 +158,12 @@ fun LoginScreenContent(
                     stringResource(R.string.login)
                 )
             }
+// btn Create account
             Button(
                 modifier = Modifier
                     .fillMaxWidth(fraction = 0.8f),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary
+                    containerColor = MaterialTheme.colorScheme.secondary
                 ),
                 shape = RoundedCornerShape(15.dp),
                 onClick = {
@@ -170,7 +172,7 @@ fun LoginScreenContent(
             ) {
                 Text(
                     stringResource(R.string.create_account),
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.tertiary,
                     fontWeight = FontWeight.SemiBold
                 )
             }
@@ -182,7 +184,9 @@ fun LoginScreenContent(
 @Composable
 @Preview(showBackground = true)
 fun LoginScreenPreview(){
-    GeoQuizTheme {
+    GeoQuizTheme(
+        darkTheme = false
+    ) {
         LoginScreenContent(
             modifier = Modifier,
             state = LoginScreenState(),

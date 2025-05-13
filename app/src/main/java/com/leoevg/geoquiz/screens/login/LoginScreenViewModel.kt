@@ -1,9 +1,5 @@
 package com.leoevg.geoquiz.screens.login
 
-import android.R.attr.password
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.leoevg.geoquiz.domain.repository.AuthRepository
@@ -28,7 +24,7 @@ class LoginScreenViewModel @Inject constructor(
         // SOLID
         when(event){
             // is - проверка является ли обьект евент объектом класса, а не сравнит его в тупую
-            // при этом LoginBtnClicked - являются data object издесь мы сравниваем объекты без проблем
+            // при этом LoginBtnClicked - являются data object и здесь мы сравниваем объекты без проблем
             is LoginScreenEvent.EmailChanged -> onEmailChanged(event.email)
             is LoginScreenEvent.PasswordChanged -> onPasswordChanged(event.password)
             LoginScreenEvent.LoginBtnClicked -> onLoginBtnClicked()

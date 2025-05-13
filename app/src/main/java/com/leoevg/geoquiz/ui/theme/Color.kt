@@ -10,9 +10,10 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 val Bg = Color(0xFFFBFDFE)
-val DarkBg = Color(0xFF121212)
+val DarkBg = Color(0xFF000000)
+
+// val DarkBg = Color(0xFFFFFFFF).copy(alpha = 0.16f)
 
 val BlueGrey = Color(0xFF255A7E).copy(alpha = 0.09f)
-val DarkGrey = Color(0xFF2A2A2A)
-
+val DarkGrey = Color(0xFFFFFFFF).copy(alpha = 0.16f)
 val Blue = Color(0xFF3498DB)

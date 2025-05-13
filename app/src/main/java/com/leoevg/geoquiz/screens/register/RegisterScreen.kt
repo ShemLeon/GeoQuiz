@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -24,39 +25,34 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.navigation.NavigationPaths
-import com.leoevg.geoquiz.screens.question.QuestionScreenEvent
-import com.leoevg.geoquiz.screens.register.RegisterScreenContent
 import com.leoevg.geoquiz.ui.components.LoadingDialog
-import com.leoevg.geoquiz.ui.theme.Bg
-import com.leoevg.geoquiz.ui.theme.Blue
-import com.leoevg.geoquiz.ui.theme.BlueGrey
+import kotlin.Unit
+import androidx.compose.runtime.getValue
+import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
 
 @Composable
 fun RegisterScreen(
     navigate: (NavigationPaths) -> Unit,
-    popBackStack: () -> Unit,
-    // viewModel: RegisterScreenViewModel = hiltViewModel()
+    popBackStack: () -> Unit
 ){
     val viewModel: RegisterScreenViewModel = hiltViewModel()
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
     // LaunchedEffect - блок, который срабатывает когда переданная в него зависимость изменяется.
     // в данном случае - переход на след экран
-    LaunchedEffect(viewModel.state.isRegisteredIn) {
-        if (viewModel.state.isRegisteredIn) {
-            popBackStack() // чистит стак, чтобы при нажатии
-            // кнопки назад не сохранило введенный логин/пароль
+    LaunchedEffect(state.isRegisteredIn) {
+        if (state.isRegisteredIn) {
+            popBackStack() // чистит стак
             navigate(NavigationPaths.Choose)
         }
     }
-
-    LoadingDialog(isLoading = viewModel.state.isLoading)
+    LoadingDialog(isLoading = state.isLoading)
     RegisterScreenContent(
-        state = viewModel.state,
+        state = state,
         onEvent = viewModel::onEvent
-        // onEvent должен принять в себя лямда блок, который в принципе, тоже есть функция.
-        // :: - ссылка на функцию
     )
 }
 
@@ -69,7 +65,7 @@ fun RegisterScreenContent(
 ){
     Column(modifier = modifier
         .fillMaxSize()
-        .background(Bg),
+        .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
@@ -77,7 +73,8 @@ fun RegisterScreenContent(
             text = stringResource(R.string.create_account),
             fontSize = 25.sp,
             fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(top = 90.dp)
+            modifier = Modifier.padding(top = 90.dp),
+            color = MaterialTheme.colorScheme.onBackground
         )
         Column (
             modifier = Modifier
@@ -88,7 +85,7 @@ fun RegisterScreenContent(
             state.error?.let { error ->
                 Text(
                     text = error,
-                    color = Color.Red
+                    color = MaterialTheme.colorScheme.error
                 )
             }
             OutlinedTextField(
@@ -102,10 +99,11 @@ fun RegisterScreenContent(
                 shape = RoundedCornerShape(15.dp),
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = Color.Transparent,
-                    disabledContainerColor = BlueGrey,
-                    focusedContainerColor = BlueGrey,
-                    errorContainerColor = BlueGrey,
-                    unfocusedContainerColor = BlueGrey
+                    disabledContainerColor = MaterialTheme.colorScheme.secondary,
+                    focusedContainerColor = MaterialTheme.colorScheme.secondary,
+                    errorContainerColor = MaterialTheme.colorScheme.secondary,
+                    // unfocusedContainerColor = BlueGrey
+                    unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
                 )
             )
             OutlinedTextField(
@@ -119,10 +117,11 @@ fun RegisterScreenContent(
                 shape = RoundedCornerShape(15.dp),
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = Color.Transparent,
-                    disabledContainerColor = BlueGrey,
-                    focusedContainerColor = BlueGrey,
-                    errorContainerColor = BlueGrey,
-                    unfocusedContainerColor = BlueGrey
+                    disabledContainerColor = MaterialTheme.colorScheme.secondary,
+                    focusedContainerColor = MaterialTheme.colorScheme.secondary,
+                    errorContainerColor = MaterialTheme.colorScheme.secondary,
+                    // unfocusedContainerColor = BlueGrey
+                    unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
                 )
             )
             OutlinedTextField(
@@ -137,10 +136,11 @@ fun RegisterScreenContent(
                 shape = RoundedCornerShape(15.dp),
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = Color.Transparent,
-                    disabledContainerColor = BlueGrey,
-                    focusedContainerColor = BlueGrey,
-                    errorContainerColor = BlueGrey,
-                    unfocusedContainerColor = BlueGrey
+                    disabledContainerColor = MaterialTheme.colorScheme.secondary,
+                    focusedContainerColor = MaterialTheme.colorScheme.secondary,
+                    errorContainerColor = MaterialTheme.colorScheme.secondary,
+                    // unfocusedContainerColor = BlueGrey
+                    unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
                 )
             )
         }
@@ -154,7 +154,7 @@ fun RegisterScreenContent(
                 modifier = Modifier
                     .fillMaxWidth(fraction = 0.8f),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Blue
+                    containerColor = MaterialTheme.colorScheme.primary
                 ),
                 shape = RoundedCornerShape(15.dp),
                 onClick = {
@@ -172,9 +172,27 @@ fun RegisterScreenContent(
 @Composable
 @Preview(showBackground = true)
 fun RegisterScreenPreview(){
-    RegisterScreenContent(
-        modifier = TODO(),
-        state = TODO(),
-        onEvent = TODO()
-    )
+    GeoQuizTheme(
+        darkTheme = false
+    ) {
+        RegisterScreenContent(
+            modifier = Modifier,
+            state = RegisterScreenState(),
+            onEvent = {}
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun RegisterScreenDarkPreview(){
+    GeoQuizTheme(
+        darkTheme = true
+    ) {
+        RegisterScreenContent(
+            modifier = Modifier,
+            state = RegisterScreenState(),
+            onEvent = {}
+        )
+    }
 }
