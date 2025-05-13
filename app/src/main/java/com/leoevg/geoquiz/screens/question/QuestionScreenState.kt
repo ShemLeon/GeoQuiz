@@ -1,7 +1,14 @@
 package com.leoevg.geoquiz.screens.question
 
 data class QuestionScreenState (
-    var isSilentModeEnabled: Boolean = true,
-    var isNightModeEnabled: Boolean = true,
-    var selectedAnswerOptionId: Int = -1
+    // val а не var - т.к. изменение через стейт флоу а не напрямую
+    val isSilentModeEnabled: Boolean = true,
+    val isNightModeEnabled: Boolean = true,
+    val selectedAnswer: String = "",
+    val selectedAnswerOptionId: Int? = null,  // TODO - временная затычка. пофиксить
+    val error: String? = null,
+
+
+
+
 )

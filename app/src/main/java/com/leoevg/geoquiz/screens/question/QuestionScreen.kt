@@ -213,7 +213,7 @@ fun QuestionScreenContent(
             selectedAnswerOptionId = state.selectedAnswerOptionId,
             // нам надо передать события, что произошло и передать в него выбранный id
             onItemSelected = {
-                    optionId -> onEvent(QuestionScreenEvent.OptionSelected(optionId))
+           //         optionId -> onEvent(QuestionScreenEvent.OptionSelected(optionId))
             }
         )
         Column (
@@ -239,7 +239,8 @@ fun QuestionScreenContent(
                     contentPadding = PaddingValues(vertical = 15.dp),
                     shape = RoundedCornerShape(25.dp),
                     onClick = {
-                        onEvent(QuestionScreenEvent.ApplyBtnClicked)
+                        // TODO - починить
+                       // onEvent(QuestionScreenEvent.ApplyBtnClicked)
                     }
                 ) {
                     Icon(
@@ -288,7 +289,8 @@ fun QuestionScreenContent(
 fun OptionAnswersSection(
     modifier: Modifier = Modifier,
     answerOptions: List<AnswerOption>,
-    selectedAnswerOptionId: Int,
+    // TODO - поменял Int на Int?. пофиксить
+    selectedAnswerOptionId: Int?,
     onItemSelected: (Int) -> Unit
 ){
     LazyVerticalGrid(

@@ -3,6 +3,7 @@ package com.leoevg.geoquiz.screens.question
 import androidx.lifecycle.ViewModel
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.data.manager.SharedPrefManager
+import com.leoevg.geoquiz.data.model.Question
 import com.leoevg.geoquiz.data.service.AudioService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
@@ -17,19 +18,19 @@ class QuestionScreenViewModel @Inject constructor(
 ) : ViewModel() {
     private val _state = MutableStateFlow(QuestionScreenState(
         isSilentModeEnabled = prefManager.getBoolValueByKey("darkWorks", true),
-        isNightModeEnabled =prefManager.getBoolValueByKey("darkWorks", true)
+        isNightModeEnabled = prefManager.getBoolValueByKey("darkWorks", true)
         ))
     val state: StateFlow<QuestionScreenState> = _state
 
     fun onEvent(event: QuestionScreenEvent){
         // SOLID
         when(event){
-            QuestionScreenEvent.ApplyBtnClicked -> onApplyBtnClicked()
+            is QuestionScreenEvent.ApplyBtnClicked -> onApplyBtnClicked(event.question)
             QuestionScreenEvent.FinishBtnClicked -> onFinishBtnClicked()
             QuestionScreenEvent.HintBtnClicked -> onHintBtnClicked()
             QuestionScreenEvent.ImageDoubleClicked -> onImageDoubleBtnClicked()
             QuestionScreenEvent.NightModeBtnClicked -> onNightModeBtnClicked()
-            is QuestionScreenEvent.OptionSelected -> onOptionSelected(event.selectedOptionId)
+            is QuestionScreenEvent.OptionSelected -> onOptionSelected(event.selectedOption)
             QuestionScreenEvent.SilentModeBtnClicked -> onSilentModeBtnClicked()
         }
     }
@@ -61,7 +62,18 @@ class QuestionScreenViewModel @Inject constructor(
 
 
 
-    private fun onApplyBtnClicked(){
+    private fun onApplyBtnClicked(question: Question){
+        if (state.value.selectedAnswer == "") {
+            _state.update { it.copy(error = "ВЫБЕРИ СКА") }
+            return
+        }
+        if (state.value.selectedAnswer == question.rightAnswer){
+            // TODO color red
+            // TODO Hint - проверить state (создать его) isHintUsed: Boolean
+            // TODO +score
+        } else {
+            // TODO Display error
+        }
 
     }
 
@@ -80,9 +92,9 @@ class QuestionScreenViewModel @Inject constructor(
 
     }
 
-    private fun onOptionSelected(selectedOptionId: Int){
+    private fun onOptionSelected(selectedOption: String){
         _state.update {
-            it.copy(selectedAnswerOptionId = selectedOptionId)
+            it.copy(selectedAnswer = selectedOption)
         }
     }
 

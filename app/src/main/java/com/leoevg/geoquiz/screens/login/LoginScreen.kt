@@ -34,8 +34,6 @@ import com.leoevg.geoquiz.ui.theme.Blue
 import com.leoevg.geoquiz.ui.theme.BlueGrey
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
 
-
-
 import kotlin.Unit
 import androidx.compose.runtime.getValue
 
@@ -56,7 +54,6 @@ fun LoginScreen(
             navigate(NavigationPaths.Choose)
         }
     }
-
     LoadingDialog(isLoading = state.isLoading)
     LoginScreenContent(
         navigate = navigate,
