@@ -30,6 +30,7 @@ import com.leoevg.geoquiz.navigation.NavigationPaths
 import com.leoevg.geoquiz.ui.theme.Blue
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
 
+
 @Composable
 fun FinishScreen(navigate: (NavigationPaths) -> Unit){
     Column (
