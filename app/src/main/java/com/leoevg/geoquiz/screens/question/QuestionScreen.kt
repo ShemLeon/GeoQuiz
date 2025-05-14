@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -49,6 +50,7 @@ import com.leoevg.geoquiz.ui.theme.Blue
 import com.leoevg.geoquiz.ui.theme.BlueGrey
 import kotlin.Unit
 import androidx.compose.runtime.getValue
+import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
 
 @Composable
 fun QuestionScreen(
@@ -58,11 +60,13 @@ fun QuestionScreen(
 ){
 // преобразование stateFlow в обычный для composable
     val state by viewModel.state.collectAsStateWithLifecycle()
-    QuestionScreenContent(
-        question = question,
-        state = state,
-        onEvent = viewModel::onEvent
-    )
+    GeoQuizTheme(darkTheme = state.isNightModeEnabled) {
+        QuestionScreenContent(
+            question = question,
+            state = state,
+            onEvent = viewModel::onEvent
+        )
+    }
 }
 
 @Composable
@@ -76,11 +80,7 @@ fun QuestionScreenContent(
 // Цвет фона
     Column(
         modifier = modifier
-            .background(color = if (state.isNightModeEnabled)
-                Color.Black
-                    .copy(alpha = 0.5f)
-            else
-                Color.White)
+            .background(color = MaterialTheme.colorScheme.background)
             .fillMaxSize()
             .padding(horizontal = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -95,14 +95,16 @@ fun QuestionScreenContent(
                 text = stringResource(R.string.your_score),
                 fontSize = 25.sp,
                 fontWeight = FontWeight.Normal,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onBackground
             )
             Text(
                 text = "0 ${stringResource(R.string.val_points)}",
                 fontSize = 25.sp,
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(start = 10.dp)
+                modifier = Modifier.padding(start = 10.dp),
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
         Row (
@@ -116,7 +118,8 @@ fun QuestionScreenContent(
                 text =  "${stringResource(R.string.question)} 1",
                 fontSize = 35.sp,
                 fontWeight = FontWeight.SemiBold,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onBackground
             )
 // Silent & DarkMode
             Row (
@@ -131,7 +134,7 @@ fun QuestionScreenContent(
                         else
                             R.drawable.volume_down
                     ),
-                    tint = Color.Black,
+                    tint = MaterialTheme.colorScheme.onBackground,
                     contentDescription = "volumeUp_icon_button",
                     modifier = Modifier
                         .aspectRatio(1f) // Сохраняем пропорции (квадрат)
@@ -147,7 +150,7 @@ fun QuestionScreenContent(
                         else
                             R.drawable.icon_dark_mode
                     ),
-                    tint = Color.Black,
+                    tint = MaterialTheme.colorScheme.onBackground,
                     contentDescription = "light_mode_icon",
                     modifier = Modifier.clickable{
                         onEvent(QuestionScreenEvent.NightModeBtnClicked)
@@ -203,7 +206,8 @@ fun QuestionScreenContent(
                 fontWeight = FontWeight.Light,
                 textAlign = TextAlign.Start,
                 modifier = Modifier
-                    .padding(start = 10.dp)
+                    .padding(start = 10.dp),
+                color = MaterialTheme.colorScheme.onBackground,
             )
         }
 // Grid
@@ -234,8 +238,11 @@ fun QuestionScreenContent(
                     modifier = Modifier
                         .weight(1f),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = BlueGrey
+                        containerColor = MaterialTheme.colorScheme.secondary
                     ),
+//                    colors = ButtonDefaults.buttonColors(
+//                        containerColor = BlueGrey
+//                    ),
                     contentPadding = PaddingValues(vertical = 15.dp),
                     shape = RoundedCornerShape(25.dp),
                     onClick = {
@@ -245,9 +252,10 @@ fun QuestionScreenContent(
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.apply_button),
-                        tint = Color.Black,
+                        tint = MaterialTheme.colorScheme.onBackground,
                         contentDescription = "hint_icon_button",
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(24.dp),
+
                     )
                     Text(
                         stringResource(R.string.apply),
@@ -255,7 +263,7 @@ fun QuestionScreenContent(
                         fontWeight = FontWeight.Normal,
                         modifier = Modifier
                             .padding(start = 10.dp),
-                        color = Color.Black
+                        color = MaterialTheme.colorScheme.background,
                     )
                 }
             }
@@ -310,7 +318,6 @@ fun OptionAnswersSection(
                     answerOption = currentOptionItem,
                     isSelected = selectedAnswerOptionId == currentOptionItem.id,
                     onClick = {
-                        //отработает, когда item будет нажат
                         // передает id нового выбранного item.
                         onItemSelected(currentOptionItem.id)
                     }
@@ -340,26 +347,30 @@ fun QuestionScreenPreview() {
             picturesUrls = listOf("https://picsum.photos/400/400")
         ),
     ) { }
-
 }
 
-/*
+
 @Composable
 @Preview(showBackground = true)
-fun OptionAnswersSectionPreview() {
-    // Создаём тестовые данные
-    OptionAnswersSection(
-        answerOptions = listOf(
-            AnswerOption(1, "Ответ 1"),
-            AnswerOption(2, "Отт 2"),
-            AnswerOption(3, "Ответ 3"),
-            AnswerOption(4, "Ответ 4"),
-            AnswerOption(5, "Ответ 5"),
-            AnswerOption(6, "Ответ 6")
+fun QuestionScreenDarkPreview() {
+    GeoQuizTheme(
+        darkTheme = true
+    ){
+    QuestionScreenContent(
+        question = Question(
+            id = 1,
+            rightAnswer = "Ответ 1",
+            hint = "Тестовая подсказка",
+            answerOptions = listOf(
+                AnswerOption(1, "Ответ 1"),
+                AnswerOption(2, "Отт 2"),
+                AnswerOption(3, "Ответ 3"),
+                AnswerOption(4, "Ответ 4"),
+                AnswerOption(5, "Ответ 5"),
+                AnswerOption(6, "Ответ 6")
+            ),
+            picturesUrls = listOf("https://picsum.photos/400/400")
         ),
-        selectedAnswerOptionId = 1, // выбран первый вариант
-        onItemSelected = {} // пустая лямбда для превью
-    )
-}
-*/
+    ) { }
+}}
 
