@@ -40,7 +40,7 @@ fun AnswerOptionItem(
             //       .border(2.dp, if (isSelected) Blue else Color.Transparent
             //                ,RoundedCornerShape(15.dp))
 //  color = if (isSelected) Color.Transparent else MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f),
-            .padding(horizontal = 10.dp, vertical = 15.dp)
+            .padding(horizontal = 8.dp, vertical = 5.dp)
             .clickable { onClick() },
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
@@ -58,7 +58,7 @@ fun AnswerOptionItem(
             fontWeight = FontWeight.Normal,
             color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier
-                .padding(start = 10.dp),
+                .padding(start = 5.dp),
         )
     }
 }

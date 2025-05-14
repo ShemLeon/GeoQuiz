@@ -15,6 +15,7 @@ class SharedPrefManager @Inject constructor(
     fun getBoolValueByKey(key: String, defaultValue: Boolean = true): Boolean {
         return prefs.getBoolean(key, defaultValue)
     }
+
     fun putBoolValue(key: String, newValue: Boolean){
         // получаем обьект едитор из нашего prefs и меняем значение
         prefs.edit().putBoolean(key, newValue).apply()

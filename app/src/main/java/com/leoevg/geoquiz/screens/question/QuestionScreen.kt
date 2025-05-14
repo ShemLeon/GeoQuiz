@@ -273,7 +273,7 @@ fun QuestionScreenContent(
                     .fillMaxWidth(fraction = 0.99f)
                     .padding(bottom = 20.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Blue
+                    containerColor = MaterialTheme.colorScheme.primary
                 ),
                 contentPadding = PaddingValues(vertical = 10.dp),
                 shape = RoundedCornerShape(15.dp),
@@ -285,6 +285,7 @@ fun QuestionScreenContent(
                     stringResource(R.string.finish),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Normal,
+                    color = MaterialTheme.colorScheme.background
                 )
             }
         }
@@ -305,14 +306,13 @@ fun OptionAnswersSection(
         modifier = Modifier.fillMaxWidth(),
         columns = GridCells.Fixed(2),
         horizontalArrangement = Arrangement.Start,
-        contentPadding = PaddingValues(horizontal = 4.dp)
-
+        contentPadding = PaddingValues(horizontal = 2.dp)
     ) {
         items(answerOptions){currentOptionItem ->
             Box(
                 modifier = Modifier
                     .fillMaxWidth(0.95f) // Ограничиваем ширину элемента внутри ячейки
-                    .padding(horizontal = 4.dp, vertical = 4.dp)
+                    .padding(horizontal = 3.dp, vertical = 1.dp)
             ){
                 AnswerOptionItem(
                     answerOption = currentOptionItem,

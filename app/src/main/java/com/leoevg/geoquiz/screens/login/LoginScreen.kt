@@ -45,7 +45,8 @@ fun LoginScreen(
     val viewModel: LoginScreenViewModel = hiltViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    // LaunchedEffect - блок, который срабатывает когда переданная в него зависимость изменяется.
+    // LaunchedEffect - блок, который срабатывает когда переданная
+    // в него зависимость изменяется.
     // в данном случае - переход на след экран
     LaunchedEffect(state.isLoggedIn) {
         if (state.isLoggedIn) {
