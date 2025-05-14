@@ -263,7 +263,7 @@ fun QuestionScreenContent(
                         fontWeight = FontWeight.Normal,
                         modifier = Modifier
                             .padding(start = 10.dp),
-                        color = MaterialTheme.colorScheme.background,
+                        color = MaterialTheme.colorScheme.onBackground,
                     )
                 }
             }
@@ -331,6 +331,9 @@ fun OptionAnswersSection(
 @Composable
 @Preview(showBackground = true)
 fun QuestionScreenPreview() {
+    GeoQuizTheme(
+        darkTheme = false
+    ){
     QuestionScreenContent(
         question = Question(
             id = 1,
@@ -347,7 +350,7 @@ fun QuestionScreenPreview() {
             picturesUrls = listOf("https://picsum.photos/400/400")
         ),
     ) { }
-}
+}}
 
 
 @Composable
