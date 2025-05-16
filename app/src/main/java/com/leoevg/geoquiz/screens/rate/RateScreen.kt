@@ -35,7 +35,7 @@ import com.leoevg.geoquiz.navigation.NavigationPaths
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
 
 @Composable
-fun FinishScreen(navigate: (NavigationPaths) -> Unit){
+fun RateScreen(navigate: (NavigationPaths) -> Unit){
     Column (
         modifier = Modifier
             .fillMaxWidth()
@@ -75,7 +75,7 @@ fun FinishScreen(navigate: (NavigationPaths) -> Unit){
 
         }
         Text(
-            stringResource(R.string.congratulations),
+            stringResource(R.string.rate_us),
             modifier = Modifier
                 .padding(top = 40.dp),
             fontSize = 44.sp,
@@ -86,21 +86,6 @@ fun FinishScreen(navigate: (NavigationPaths) -> Unit){
         Text(
             stringResource(R.string.your_score_is),
             modifier = Modifier.padding(top = 20.dp),
-            fontSize = 44.sp,
-            fontWeight = FontWeight.Normal,
-            color = MaterialTheme.colorScheme.onBackground
-        )
-        Text(
-            stringResource(R.string.number_points),
-            modifier = Modifier.padding(top = 70.dp),
-            fontSize = 160.sp,
-            fontWeight = FontWeight.Normal,
-            color = MaterialTheme.colorScheme.onBackground
-        )
-        Text(
-            stringResource(R.string.points),
-            modifier = Modifier
-                .offset(y=(-20).dp),
             fontSize = 44.sp,
             fontWeight = FontWeight.Normal,
             color = MaterialTheme.colorScheme.onBackground
@@ -172,25 +157,29 @@ fun FinishScreen(navigate: (NavigationPaths) -> Unit){
                     )
             }
         }
+
+
+
     }
+
 }
 
 @Composable
 @Preview(showBackground = true)
-fun FinishScreenPreview(){
+fun RateScreenPreview(){
     GeoQuizTheme(
         darkTheme = false
     ) {
-    FinishScreen {  }
+        RateScreen {  }
     }
 }
 
 @Composable
 @Preview(showBackground = false)
-fun FinishScreenDarkPreview(){
+fun RateScreenDarkPreview(){
     GeoQuizTheme(
         darkTheme = true
     ) {
-        FinishScreen {  }
+        RateScreen {  }
     }
 }
