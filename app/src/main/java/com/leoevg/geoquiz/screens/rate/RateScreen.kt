@@ -1,5 +1,6 @@
 package com.leoevg.geoquiz.screens.finish
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -19,8 +20,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -33,6 +36,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.navigation.NavigationPaths
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
+import java.lang.Error
+import java.lang.invoke.CallSite
 
 @Composable
 fun RateScreen(navigate: (NavigationPaths) -> Unit){
@@ -182,4 +187,23 @@ fun RateScreenDarkPreview(){
     ) {
         RateScreen {  }
     }
+}
+
+@OptIn
+@Composable
+fun(){
+    ReviewRatingViewPreview(
+        ReviewRatingView()
+    )
+}
+
+@Composable
+private fun ReviewRatingView(
+ raiting: Int,
+ @StringRes error: Int?,
+ onRaitingChange: (raiting: Int) -> Int,
+ onSubmit: () -> Unit,
+ snackbarState: SnackbarHostState = remember {SnackbarHostState() }
+){
+
 }
