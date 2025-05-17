@@ -1,6 +1,8 @@
 package com.leoevg.geoquiz.data.model
 import com.leoevg.geoquiz.R
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class TypeGame(
     var typeGameId: Int,
     var typeGameNameResId: Int,

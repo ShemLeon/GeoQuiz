@@ -4,16 +4,20 @@ import androidx.lifecycle.ViewModel
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.data.manager.SharedPrefManager
 import com.leoevg.geoquiz.data.model.Question
-import com.leoevg.geoquiz.data.model.typeGames
+import com.leoevg.geoquiz.data.model.TypeGame
 import com.leoevg.geoquiz.data.service.AudioService
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
-@HiltViewModel
-class QuestionScreenViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = QuestionScreenViewModel.QuestionScreenViewModelFactory::class)
+class QuestionScreenViewModel @AssistedInject constructor(
+    @Assisted private val question: Question,
+    @Assisted private val typeGame: TypeGame,
     private val prefManager: SharedPrefManager,
     private val audioService: AudioService
 ) : ViewModel() {
@@ -43,10 +47,10 @@ class QuestionScreenViewModel @Inject constructor(
         }
 
         if (state.value.selectedAnswer == question.rightAnswer){
-            var score: Double =
-            if (state.value.isHintUsed){
-
-            }
+//            var score: Double =
+//            if (state.value.isHintUsed){
+//
+//            }
 
             // TODO Hint - проверить state (создать его) isHintUsed: Boolean
             // TODO +score
@@ -112,6 +116,8 @@ class QuestionScreenViewModel @Inject constructor(
         }
     }
 
-
-
+    @AssistedFactory
+    interface QuestionScreenViewModelFactory {
+        fun create(question: Question, typeGame: TypeGame): QuestionScreenViewModel
+    }
 }

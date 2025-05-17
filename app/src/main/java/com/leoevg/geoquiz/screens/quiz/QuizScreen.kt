@@ -4,29 +4,29 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.leoevg.geoquiz.navigation.NavigationPaths
 import com.leoevg.geoquiz.screens.question.QuestionScreen
 import com.leoevg.geoquiz.ui.components.LoadingDialog
 
 
 // Добавь эти импорты в начало файла
-import androidx.compose.runtime.remember
-import com.leoevg.geoquiz.R
-import com.leoevg.geoquiz.data.model.Quiz
+import androidx.compose.ui.platform.LocalContext
 import com.leoevg.geoquiz.data.model.Question
 import com.leoevg.geoquiz.data.model.AnswerOption
+import com.leoevg.geoquiz.data.model.TypeGame
+import com.leoevg.geoquiz.data.model.typeGames
 
 @Composable
 fun QuizScreen(
-    typeGame: String = "",
+    typeGame: TypeGame,
     navigate: (NavigationPaths) -> Unit
 ){
+    val context = LocalContext.current
     val viewModel = hiltViewModel<QuizScreenViewModel>()
 
     // блок запустится 1 раз для загрузки квиза с определенным typeGame
     LaunchedEffect(Unit) {
-        viewModel.loadQuiz(typeGame)
+        viewModel.loadQuiz(context.getString(typeGame.typeGameNameResId))
     }
 
     // обращаемся к viewModel, получаем currentQuiz и делаем let блок -
@@ -34,7 +34,8 @@ fun QuizScreen(
     viewModel.currentQuiz?.let { quiz ->
         QuestionScreen(
             question = quiz.questions[viewModel.currentQuestionIndex],
-            navigate = navigate
+            navigate = navigate,
+            typeGame = typeGame
         )
     } ?: run {
         // если блок не загрузится - включаем заставку
@@ -62,6 +63,7 @@ fun QuizScreenPreview() {
             ),
             picturesUrls = listOf("https://picsum.photos/400/400")
         ),
-        navigate = {}
+        navigate = {},
+        typeGame = typeGames[0]
     )
 }

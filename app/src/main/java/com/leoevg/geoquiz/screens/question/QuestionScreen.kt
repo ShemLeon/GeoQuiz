@@ -47,6 +47,7 @@ import com.leoevg.geoquiz.ui.components.AnswerOptionItem
 import com.leoevg.geoquiz.ui.theme.Blue
 import kotlin.Unit
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.leoevg.geoquiz.data.model.TypeGame
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
 
@@ -54,8 +55,10 @@ import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
 fun QuestionScreen(
     question: Question,
     navigate: (NavigationPaths) -> Unit,
-    viewModel: QuestionScreenViewModel = hiltViewModel(),
-    typeGame: TypeGame
+    typeGame: TypeGame,
+    viewModel: QuestionScreenViewModel = hiltViewModel<QuestionScreenViewModel, QuestionScreenViewModel.QuestionScreenViewModelFactory> { factory ->
+        factory.create(question, typeGame)
+    }
 ){
 // преобразование stateFlow в обычный для composable
     val state by viewModel.state.collectAsStateWithLifecycle()

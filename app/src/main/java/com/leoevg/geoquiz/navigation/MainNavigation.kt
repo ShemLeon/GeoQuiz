@@ -9,12 +9,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.google.firebase.auth.FirebaseAuth
+import com.leoevg.geoquiz.data.model.TypeGame
 import com.leoevg.geoquiz.screens.admin.AdminScreen
 import com.leoevg.geoquiz.screens.choose.ChooseScreen
 import com.leoevg.geoquiz.screens.finish.FinishScreen
 import com.leoevg.geoquiz.screens.login.LoginScreen
 import com.leoevg.geoquiz.screens.quiz.QuizScreen
 import com.leoevg.geoquiz.screens.register.RegisterScreen
+import kotlin.reflect.typeOf
 
 @Composable
 fun MainNavigation(
@@ -64,7 +66,11 @@ fun MainNavigation(
                 }
             )
         }
-        composable<NavigationPaths.Quiz> {
+        composable<NavigationPaths.Quiz>(
+            typeMap = mapOf(
+                typeOf<TypeGame>() to CustomNavType.TypeGameNavType
+            )
+        ) {
             val quizInfo = it.toRoute<NavigationPaths.Quiz>()
             // нужно передать выбор типа квиза из ChooseScreen сюда
             QuizScreen(typeGame = quizInfo.typeGame) { navController.navigate(it) }

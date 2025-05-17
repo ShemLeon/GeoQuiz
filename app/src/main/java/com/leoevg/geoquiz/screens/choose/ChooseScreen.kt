@@ -141,8 +141,7 @@ fun ChooseScreen(
                 ),
                 shape = RoundedCornerShape(15.dp),
                 onClick = {
-                    val quizTypeGame = context.resources.getString(selectedTypeGame.typeGameNameResId)
-                    onQuizSelected(NavigationPaths.Quiz(quizTypeGame))
+                    onQuizSelected(NavigationPaths.Quiz(selectedTypeGame))
                 }
             ) {
                 Icon(
