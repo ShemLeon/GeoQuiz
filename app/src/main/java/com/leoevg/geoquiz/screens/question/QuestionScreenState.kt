@@ -1,12 +1,19 @@
 package com.leoevg.geoquiz.screens.question
 
+import com.leoevg.geoquiz.data.model.Question
+
 data class QuestionScreenState (
     // val а не var - т.к. изменение через state Flow а не напрямую
     val isSilentModeEnabled: Boolean = true,
     val isNightModeEnabled: Boolean = true,
     val selectedAnswer: String = "",
-    val selectedAnswerOptionId: Int? = null,  // TODO - временная затычка. пофиксить
     val error: String? = null,
+
+    val isAnswerRight: Boolean? = null, // если мы еще не ответили - состояние null, а потм
+   // на фолс или тру
+    val isHintUsed: Boolean = false,
+    val currentScore: Double = 0.0
+
 )
 
 

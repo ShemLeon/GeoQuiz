@@ -1,5 +1,6 @@
 package com.leoevg.geoquiz.ui.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,17 +32,17 @@ fun AnswerOptionItem(
     modifier: Modifier = Modifier,
     answerOption: AnswerOption,
     isSelected: Boolean = false,
+    isAnswerRight: Boolean? = null,
     onClick: () -> Unit = {}
 ){
     Row (
         modifier = modifier
             .border(2.dp, if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent
                 ,RoundedCornerShape(15.dp))
-            //       .border(2.dp, if (isSelected) Blue else Color.Transparent
-            //                ,RoundedCornerShape(15.dp))
-//  color = if (isSelected) Color.Transparent else MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f),
+            .background(color = if (isAnswerRight == false) MaterialTheme.colorScheme.error else Color.Transparent)
             .padding(horizontal = 8.dp, vertical = 5.dp)
-            .clickable { onClick() },
+            .clickable { onClick() }
+            ,
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
 

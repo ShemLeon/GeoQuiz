@@ -38,7 +38,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.data.model.AnswerOption
@@ -48,16 +47,19 @@ import com.leoevg.geoquiz.ui.components.AnswerOptionItem
 import com.leoevg.geoquiz.ui.theme.Blue
 import kotlin.Unit
 import androidx.compose.runtime.getValue
+import com.leoevg.geoquiz.data.model.TypeGame
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
 
 @Composable
 fun QuestionScreen(
     question: Question,
     navigate: (NavigationPaths) -> Unit,
-    viewModel: QuestionScreenViewModel = hiltViewModel()
+    viewModel: QuestionScreenViewModel = hiltViewModel(),
+    typeGame: TypeGame
 ){
 // преобразование stateFlow в обычный для composable
     val state by viewModel.state.collectAsStateWithLifecycle()
+
     GeoQuizTheme(darkTheme = state.isNightModeEnabled) {
         QuestionScreenContent(
             question = question,
@@ -212,10 +214,11 @@ fun QuestionScreenContent(
         OptionAnswersSection(
             modifier = Modifier.padding(top=15.dp),
             answerOptions = question.answerOptions,
-            selectedAnswerOptionId = state.selectedAnswerOptionId,
+            selectedAnswerOption = state.selectedAnswer,
+            isAnswerRight = state.isAnswerRight,
             // нам надо передать события, что произошло и передать в него выбранный id
             onItemSelected = {
-           //         optionId -> onEvent(QuestionScreenEvent.OptionSelected(optionId))
+                    optionAnswer -> onEvent(QuestionScreenEvent.OptionSelected(optionAnswer))
             }
         )
         Column (
@@ -296,9 +299,10 @@ fun QuestionScreenContent(
 fun OptionAnswersSection(
     modifier: Modifier = Modifier,
     answerOptions: List<AnswerOption>,
-    // TODO - поменял Int на Int?. пофиксить
-    selectedAnswerOptionId: Int?,
-    onItemSelected: (Int) -> Unit
+    selectedAnswerOption: String?,
+    isAnswerRight: Boolean?,
+    onItemSelected: (String) -> Unit,
+
 ){
     LazyVerticalGrid(
         modifier = Modifier.fillMaxWidth(),
@@ -314,10 +318,10 @@ fun OptionAnswersSection(
             ){
                 AnswerOptionItem(
                     answerOption = currentOptionItem,
-                    isSelected = selectedAnswerOptionId == currentOptionItem.id,
+                    isSelected = selectedAnswerOption == currentOptionItem.optAnswer,
                     onClick = {
                         // передает id нового выбранного item.
-                        onItemSelected(currentOptionItem.id)
+                        onItemSelected(currentOptionItem.optAnswer)
                     }
                 )
             }

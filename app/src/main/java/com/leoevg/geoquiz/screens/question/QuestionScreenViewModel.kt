@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.data.manager.SharedPrefManager
 import com.leoevg.geoquiz.data.model.Question
+import com.leoevg.geoquiz.data.model.typeGames
 import com.leoevg.geoquiz.data.service.AudioService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
@@ -40,12 +41,19 @@ class QuestionScreenViewModel @Inject constructor(
             _state.update { it.copy(error = "ВЫБЕРИ СКА") }
             return
         }
+
         if (state.value.selectedAnswer == question.rightAnswer){
-            // TODO color red
+            var score: Double =
+            if (state.value.isHintUsed){
+
+            }
+
             // TODO Hint - проверить state (создать его) isHintUsed: Boolean
             // TODO +score
             // TODO сбросить флаг hint на false
         } else {
+            _state.update { it.copy(isAnswerRight = false) }
+            // TODO color red - TIME PAUSE & NEXT SCREEN
             _state.update { it.copy(error = "UNKNOWN ERROR") }
             return
         }
@@ -79,9 +87,6 @@ class QuestionScreenViewModel @Inject constructor(
     }
 
 
-
-
-
     private fun onFinishBtnClicked (){
     // Play sound only if !isSilentModeEnable
         if (_state.value.isSilentModeEnabled){
@@ -90,7 +95,11 @@ class QuestionScreenViewModel @Inject constructor(
     }
 
     private fun onHintBtnClicked(){
-       // Toast.makeText(context, "Hint: ${question.hint}", Toast.LENGTH_LONG).show()
+        if (_state.value.isHintUsed){
+            _state.update {
+                it.copy(isHintUsed = true)
+            }
+        }
     }
 
     private fun onImageDoubleBtnClicked(){
