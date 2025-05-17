@@ -1,5 +1,5 @@
 package com.leoevg.geoquiz.screens.rate
-
+/*
 
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
@@ -13,16 +13,16 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import ru.gaket.themoviedb.R
-import ru.gaket.themoviedb.data.auth.AuthRepository
-import ru.gaket.themoviedb.data.movies.MoviesRepository
-import ru.gaket.themoviedb.domain.auth.User
-import ru.gaket.themoviedb.domain.review.models.Rating
-import ru.gaket.themoviedb.domain.review.repository.CreateReviewScopedRepository
-import ru.gaket.themoviedb.util.Result
-import ru.gaket.themoviedb.util.doOnSuccess
-import ru.gaket.themoviedb.util.exhaustive
-import ru.gaket.themoviedb.util.mapNestedSuccess
+//import ru.gaket.themoviedb.R
+//import ru.gaket.themoviedb.data.auth.AuthRepository
+//import ru.gaket.themoviedb.data.movies.MoviesRepository
+//import ru.gaket.themoviedb.domain.auth.User
+//import ru.gaket.themoviedb.domain.review.models.Rating
+//import ru.gaket.themoviedb.domain.review.repository.CreateReviewScopedRepository
+//import ru.gaket.themoviedb.util.Result
+//import ru.gaket.themoviedb.util.doOnSuccess
+//import ru.gaket.themoviedb.util.exhaustive
+//import ru.gaket.themoviedb.util.mapNestedSuccess
 
 class RatingViewModel @AssistedInject constructor(
     @Assisted private val createReviewScopedRepository: CreateReviewScopedRepository,
@@ -115,3 +115,5 @@ class RatingViewModel @AssistedInject constructor(
         fun create(createReviewScopedRepository: CreateReviewScopedRepository): RatingViewModel
     }
 }
+
+*/
