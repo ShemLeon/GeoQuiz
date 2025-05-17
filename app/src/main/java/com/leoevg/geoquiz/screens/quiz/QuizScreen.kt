@@ -1,7 +1,10 @@
 package com.leoevg.geoquiz.screens.quiz
 
+import android.util.Log.e
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.currentComposer
+import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.leoevg.geoquiz.navigation.NavigationPaths
@@ -23,6 +26,7 @@ fun QuizScreen(
 ){
     val context = LocalContext.current
     val viewModel = hiltViewModel<QuizScreenViewModel>()
+    var currentScore = 0.0
 
     // блок запустится 1 раз для загрузки квиза с определенным typeGame
     LaunchedEffect(Unit) {
@@ -35,7 +39,11 @@ fun QuizScreen(
         QuestionScreen(
             question = quiz.questions[viewModel.currentQuestionIndex],
             navigate = navigate,
-            typeGame = typeGame
+            typeGame = typeGame,
+            currentScore = currentScore,
+            updateScore = { newScore ->
+                currentScore = newScore
+            }
         )
     } ?: run {
         // если блок не загрузится - включаем заставку
@@ -64,6 +72,8 @@ fun QuizScreenPreview() {
             picturesUrls = listOf("https://picsum.photos/400/400")
         ),
         navigate = {},
-        typeGame = typeGames[0]
+        typeGame = typeGames[0],
+        currentScore = 0.0,
+        updateScore = {}
     )
 }

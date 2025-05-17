@@ -56,8 +56,10 @@ fun QuestionScreen(
     question: Question,
     navigate: (NavigationPaths) -> Unit,
     typeGame: TypeGame,
+    currentScore: Double,
+    updateScore: (Double) -> Unit,
     viewModel: QuestionScreenViewModel = hiltViewModel<QuestionScreenViewModel, QuestionScreenViewModel.QuestionScreenViewModelFactory> { factory ->
-        factory.create(question, typeGame)
+        factory.create(question, typeGame, updateScore)
     }
 ){
 // преобразование stateFlow в обычный для composable
@@ -66,6 +68,7 @@ fun QuestionScreen(
     GeoQuizTheme(darkTheme = state.isNightModeEnabled) {
         QuestionScreenContent(
             question = question,
+            currentScore = currentScore,
             state = state,
             onEvent = viewModel::onEvent
         )
@@ -76,9 +79,10 @@ fun QuestionScreen(
 fun QuestionScreenContent(
     modifier: Modifier = Modifier,
     question: Question,
+    currentScore: Double,
     state: QuestionScreenState = QuestionScreenState(),
     onEvent: (QuestionScreenEvent) -> Unit
-    ){
+){
     val context = LocalContext.current  // context for hint
 // Цвет фона
     Column(
@@ -354,6 +358,7 @@ fun QuestionScreenPreview() {
             ),
             picturesUrls = listOf("https://picsum.photos/400/400")
         ),
+        currentScore = 10.0
     ) { }
 }}
 
@@ -379,6 +384,7 @@ fun QuestionScreenDarkPreview() {
             ),
             picturesUrls = listOf("https://picsum.photos/400/400")
         ),
+        currentScore = 10.0
     ) { }
 }}
 

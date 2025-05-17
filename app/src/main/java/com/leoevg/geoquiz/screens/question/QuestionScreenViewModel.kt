@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.update
 class QuestionScreenViewModel @AssistedInject constructor(
     @Assisted private val question: Question,
     @Assisted private val typeGame: TypeGame,
+    @Assisted private val updateScore: (Double) -> Unit,
     private val prefManager: SharedPrefManager,
     private val audioService: AudioService
 ) : ViewModel() {
@@ -47,14 +48,13 @@ class QuestionScreenViewModel @AssistedInject constructor(
         }
 
         if (state.value.selectedAnswer == question.rightAnswer){
-//            var score: Double =
-//            if (state.value.isHintUsed){
-//
-//            }
-
-            // TODO Hint - проверить state (создать его) isHintUsed: Boolean
+            var score: Double = typeGame.typeGameQuestionCost
+            if (state.value.isHintUsed){
+                score /= 2
+            }
+            updateScore(score)
+            // TODO change screen
             // TODO +score
-            // TODO сбросить флаг hint на false
         } else {
             _state.update { it.copy(isAnswerRight = false) }
             // TODO color red - TIME PAUSE & NEXT SCREEN
@@ -118,6 +118,6 @@ class QuestionScreenViewModel @AssistedInject constructor(
 
     @AssistedFactory
     interface QuestionScreenViewModelFactory {
-        fun create(question: Question, typeGame: TypeGame): QuestionScreenViewModel
+        fun create(question: Question, typeGame: TypeGame, updateScore: (Double) -> Unit): QuestionScreenViewModel
     }
 }
