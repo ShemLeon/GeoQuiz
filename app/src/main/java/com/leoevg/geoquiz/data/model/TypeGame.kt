@@ -4,11 +4,11 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class TypeGame(
-    var typeGameId: Int,
-    var typeGameNameResId: Int,
-    var typeGameImg: Int,
-    var typeGameDescResId: Int,
-    var typeGameQuestionCost: Double
+    val typeGameId: Int,
+    val typeGameNameResId: Int,
+    val typeGameImg: Int,
+    val typeGameDescResId: Int,
+    val typeGameQuestionCost: Double
 )
 
 val typeGames = listOf(
