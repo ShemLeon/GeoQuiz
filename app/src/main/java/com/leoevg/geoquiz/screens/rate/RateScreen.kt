@@ -1,6 +1,5 @@
-package com.leoevg.geoquiz.screens.finish
+package com.leoevg.geoquiz.screens.rate
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,10 +18,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -35,12 +31,14 @@ import androidx.compose.ui.unit.sp
 import com.google.firebase.auth.FirebaseAuth
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.navigation.NavigationPaths
+
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
-import java.lang.Error
-import java.lang.invoke.CallSite
+
 
 @Composable
-fun RateScreen(navigate: (NavigationPaths) -> Unit){
+fun RateScreen(
+    navigate: (NavigationPaths) -> Unit
+){
     Column (
         modifier = Modifier
             .fillMaxWidth()
@@ -76,8 +74,6 @@ fun RateScreen(navigate: (NavigationPaths) -> Unit){
                 },
                 tint = MaterialTheme.colorScheme.onBackground
             )
-
-
         }
         Text(
             stringResource(R.string.rate_us),
@@ -132,15 +128,9 @@ fun RateScreen(navigate: (NavigationPaths) -> Unit){
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Normal,
                         color = MaterialTheme.colorScheme.onBackground,
-
                     )
                 }
-
-
             }
-
-
-
 // btn back
             Button(
                 modifier = Modifier
@@ -158,15 +148,10 @@ fun RateScreen(navigate: (NavigationPaths) -> Unit){
                     stringResource(R.string.go_to_quizzes),
                     fontSize = 30.sp,
                     fontWeight = FontWeight.Normal,
-
                     )
             }
         }
-
-
-
     }
-
 }
 
 @Composable
@@ -187,23 +172,4 @@ fun RateScreenDarkPreview(){
     ) {
         RateScreen {  }
     }
-}
-
-@OptIn
-@Composable
-fun(){
-    ReviewRatingViewPreview(
-        ReviewRatingView()
-    )
-}
-
-@Composable
-private fun ReviewRatingView(
- raiting: Int,
- @StringRes error: Int?,
- onRaitingChange: (raiting: Int) -> Int,
- onSubmit: () -> Unit,
- snackbarState: SnackbarHostState = remember {SnackbarHostState() }
-){
-
 }

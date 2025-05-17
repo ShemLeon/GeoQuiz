@@ -3,7 +3,6 @@ package com.leoevg.geoquiz.screens.question
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -47,7 +46,6 @@ import com.leoevg.geoquiz.data.model.Question
 import com.leoevg.geoquiz.navigation.NavigationPaths
 import com.leoevg.geoquiz.ui.components.AnswerOptionItem
 import com.leoevg.geoquiz.ui.theme.Blue
-import com.leoevg.geoquiz.ui.theme.BlueGrey
 import kotlin.Unit
 import androidx.compose.runtime.getValue
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme

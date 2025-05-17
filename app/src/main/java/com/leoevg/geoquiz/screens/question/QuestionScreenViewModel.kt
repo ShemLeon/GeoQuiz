@@ -25,6 +25,7 @@ class QuestionScreenViewModel @Inject constructor(
     fun onEvent(event: QuestionScreenEvent){
         // SOLID
         when(event){
+            // по событиям из view (евенты) вызываем функции
             is QuestionScreenEvent.ApplyBtnClicked -> onApplyBtnClicked(event.question)
             QuestionScreenEvent.FinishBtnClicked -> onFinishBtnClicked()
             QuestionScreenEvent.HintBtnClicked -> onHintBtnClicked()
@@ -34,6 +35,23 @@ class QuestionScreenViewModel @Inject constructor(
             QuestionScreenEvent.SilentModeBtnClicked -> onSilentModeBtnClicked()
         }
     }
+    private fun onApplyBtnClicked(question: Question){
+        if (state.value.selectedAnswer == "") {
+            _state.update { it.copy(error = "ВЫБЕРИ СКА") }
+            return
+        }
+        if (state.value.selectedAnswer == question.rightAnswer){
+            // TODO color red
+            // TODO Hint - проверить state (создать его) isHintUsed: Boolean
+            // TODO +score
+            // TODO сбросить флаг hint на false
+        } else {
+            _state.update { it.copy(error = "UNKNOWN ERROR") }
+            return
+        }
+
+    }
+
     private fun onNightModeBtnClicked(){
         val isNightModeEnable = prefManager.getBoolValueByKey("darkWorks", true)
         prefManager.putBoolValue("darkWorks", !isNightModeEnable)
@@ -62,20 +80,7 @@ class QuestionScreenViewModel @Inject constructor(
 
 
 
-    private fun onApplyBtnClicked(question: Question){
-        if (state.value.selectedAnswer == "") {
-            _state.update { it.copy(error = "ВЫБЕРИ СКА") }
-            return
-        }
-        if (state.value.selectedAnswer == question.rightAnswer){
-            // TODO color red
-            // TODO Hint - проверить state (создать его) isHintUsed: Boolean
-            // TODO +score
-        } else {
-            // TODO Display error
-        }
 
-    }
 
     private fun onFinishBtnClicked (){
     // Play sound only if !isSilentModeEnable
