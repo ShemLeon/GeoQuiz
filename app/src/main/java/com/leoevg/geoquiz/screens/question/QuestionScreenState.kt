@@ -9,8 +9,8 @@ data class QuestionScreenState (
     val selectedAnswer: String = "",
     val error: String? = null,
 
-    val isAnswerRight: Boolean? = null, // если мы еще не ответили - состояние null, а потм
-   // на фолс или тру
+    val isAnswerRight: Boolean? = null, // если мы еще не ответили - состояние null,
+    // дальше смена на false/true
     val isHintUsed: Boolean = false,
     val currentScore: Double = 0.0
 

@@ -19,6 +19,7 @@ class QuestionScreenViewModel @AssistedInject constructor(
     @Assisted private val question: Question,
     @Assisted private val typeGame: TypeGame,
     @Assisted private val updateScore: (Double) -> Unit,
+    // @Assisted - анотация "я сам передам эти параметры", DaggerHilt не должен их мне давать
     private val prefManager: SharedPrefManager,
     private val audioService: AudioService
 ) : ViewModel() {
@@ -117,7 +118,25 @@ class QuestionScreenViewModel @AssistedInject constructor(
     }
 
     @AssistedFactory
+    // умеет создавать мою viewModel, замена DaggerHilt
     interface QuestionScreenViewModelFactory {
-        fun create(question: Question, typeGame: TypeGame, updateScore: (Double) -> Unit): QuestionScreenViewModel
+        fun create(
+            question: Question,
+            typeGame: TypeGame,
+            updateScore: (Double) -> Unit
+        ): QuestionScreenViewModel
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

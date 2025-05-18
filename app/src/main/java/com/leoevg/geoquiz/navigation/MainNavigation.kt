@@ -40,6 +40,7 @@ fun MainNavigation(
                 }
             )
        }
+
         composable<NavigationPaths.Register> {
             RegisterScreen(
                 navigate = {
@@ -50,9 +51,11 @@ fun MainNavigation(
                 }
             )
         }
+
         composable<NavigationPaths.Admin> {
             AdminScreen { navController.navigate(it) }
         }
+
         composable<NavigationPaths.Choose> {
             ChooseScreen(
                 navigate = {
@@ -66,6 +69,7 @@ fun MainNavigation(
                 }
             )
         }
+
         composable<NavigationPaths.Quiz>(
             typeMap = mapOf(
                 typeOf<TypeGame>() to CustomNavType.TypeGameNavType
@@ -75,6 +79,7 @@ fun MainNavigation(
             // нужно передать выбор типа квиза из ChooseScreen сюда
             QuizScreen(typeGame = quizInfo.typeGame) { navController.navigate(it) }
         }
+
         composable<NavigationPaths.Finish> {
             FinishScreen { navController.navigate(it) }
         }

@@ -19,3 +19,5 @@ val typeGames = listOf(
     TypeGame(5, R.string.history, R.drawable.card_history,R.string.historyDesc, 2.0),
     TypeGame(6, R.string.sport, R.drawable.card_sport,R.string.sportDesc, 2.0)
 )
+
+// описание в файле read.md

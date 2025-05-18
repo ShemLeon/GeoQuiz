@@ -1,7 +1,5 @@
 package com.leoevg.geoquiz.data.model
 
-import androidx.compose.runtime.key
-
 data class User(
     val id: String,
     val nickname: String,
