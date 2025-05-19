@@ -15,6 +15,7 @@ import com.leoevg.geoquiz.screens.choose.ChooseScreen
 import com.leoevg.geoquiz.screens.finish.FinishScreen
 import com.leoevg.geoquiz.screens.login.LoginScreen
 import com.leoevg.geoquiz.screens.quiz.QuizScreen
+import com.leoevg.geoquiz.screens.rate.RateScreen
 import com.leoevg.geoquiz.screens.register.RegisterScreen
 import kotlin.reflect.typeOf
 
@@ -81,8 +82,23 @@ fun MainNavigation(
         }
 
         composable<NavigationPaths.Finish> {
-            FinishScreen { navController.navigate(it) }
+            FinishScreen(
+                navigate = {
+                    navController.navigate(it)
+                }
+
+            )
         }
+
+        composable<NavigationPaths.Rate> {
+            RateScreen(
+                navigate = {
+                    navController.navigate(it)
+                }
+
+            )
+        }
+
     }
 }
 

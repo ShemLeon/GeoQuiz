@@ -14,7 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.Logout
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -35,7 +35,10 @@ import com.leoevg.geoquiz.navigation.NavigationPaths
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
 
 @Composable
-fun FinishScreen(navigate: (NavigationPaths) -> Unit){
+fun FinishScreen(
+    navigate: (NavigationPaths) -> Unit,
+
+){
     Column (
         modifier = Modifier
             .fillMaxWidth()
@@ -43,37 +46,37 @@ fun FinishScreen(navigate: (NavigationPaths) -> Unit){
             .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally,
     ){
+// title
         Row (
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 6.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ){
-            Icon(
-                painter = painterResource(R.drawable.home_button),
-                contentDescription = "home button icon",
-                modifier = Modifier.size(24.dp),
-                tint = MaterialTheme.colorScheme.onBackground
-            )
+            repeat(3) {
+                Icon(
+                    imageVector = Icons.Filled.Star,
+                    contentDescription = "home button icon",
+                    modifier = Modifier.size(24.dp),
+                    tint = MaterialTheme.colorScheme.onBackground
+                )
+            }
             Text(
                 stringResource(R.string.quiz_results),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Normal,
                 color = MaterialTheme.colorScheme.onBackground
             )
-            Icon(
-                imageVector = Icons.AutoMirrored.Outlined.Logout,
-                contentDescription = "Logout btn",
-                modifier = Modifier.clickable {
-                    FirebaseAuth.getInstance().signOut()
-//TODO: не забыть настроить- popBackStack()
-                    navigate(NavigationPaths.Login)
-                },
-                tint = MaterialTheme.colorScheme.onBackground
-            )
-
-
+            repeat(3) {
+                Icon(
+                    imageVector = Icons.Filled.Star,
+                    contentDescription = "home button icon",
+                    modifier = Modifier.size(24.dp),
+                    tint = MaterialTheme.colorScheme.onBackground
+                )
+            }
         }
+// Congratulations
         Text(
             stringResource(R.string.congratulations),
             modifier = Modifier
@@ -81,7 +84,6 @@ fun FinishScreen(navigate: (NavigationPaths) -> Unit){
             fontSize = 44.sp,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground
-
         )
         Text(
             stringResource(R.string.your_score_is),
@@ -105,6 +107,14 @@ fun FinishScreen(navigate: (NavigationPaths) -> Unit){
             fontWeight = FontWeight.Normal,
             color = MaterialTheme.colorScheme.onBackground
         )
+        Text(
+            stringResource(R.string.max_score),
+            modifier = Modifier,
+            fontSize = 30.sp,
+            fontWeight = FontWeight.Normal,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+
 
 // Bottom
         Column (
@@ -113,6 +123,7 @@ fun FinishScreen(navigate: (NavigationPaths) -> Unit){
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally
         ){
+
 // btn help_project
             Button(
                 modifier = Modifier
@@ -123,7 +134,7 @@ fun FinishScreen(navigate: (NavigationPaths) -> Unit){
                 ),
                 shape = RoundedCornerShape(15.dp),
                 onClick = {
-
+                    navigate(NavigationPaths.Rate)
                 }
             ) {
                 Box(
@@ -142,7 +153,6 @@ fun FinishScreen(navigate: (NavigationPaths) -> Unit){
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Normal,
                         color = MaterialTheme.colorScheme.onBackground,
-
                     )
                 }
 
@@ -161,14 +171,13 @@ fun FinishScreen(navigate: (NavigationPaths) -> Unit){
                 ),
                 shape = RoundedCornerShape(15.dp),
                 onClick = {
-
+                    navigate(NavigationPaths.Choose)
                 }
             ) {
                 Text(
                     stringResource(R.string.go_to_quizzes),
                     fontSize = 30.sp,
                     fontWeight = FontWeight.Normal,
-
                     )
             }
         }

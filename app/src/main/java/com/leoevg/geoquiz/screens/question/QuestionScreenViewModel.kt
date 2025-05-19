@@ -1,11 +1,13 @@
 package com.leoevg.geoquiz.screens.question
 
+import android.R.attr.onClick
 import androidx.lifecycle.ViewModel
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.data.manager.SharedPrefManager
 import com.leoevg.geoquiz.data.model.Question
 import com.leoevg.geoquiz.data.model.TypeGame
 import com.leoevg.geoquiz.data.service.AudioService
+import com.leoevg.geoquiz.navigation.NavigationPaths
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -19,6 +21,7 @@ class QuestionScreenViewModel @AssistedInject constructor(
     @Assisted private val question: Question,
     @Assisted private val typeGame: TypeGame,
     @Assisted private val updateScore: (Double) -> Unit,
+    @Assisted private val navigate: (NavigationPaths) -> Unit,
     // @Assisted - анотация "я сам передам эти параметры", DaggerHilt не должен их мне давать
     private val prefManager: SharedPrefManager,
     private val audioService: AudioService
@@ -42,12 +45,15 @@ class QuestionScreenViewModel @AssistedInject constructor(
             QuestionScreenEvent.SilentModeBtnClicked -> onSilentModeBtnClicked()
         }
     }
+
     private fun onApplyBtnClicked(question: Question){
+        // отработка ошибки
         if (state.value.selectedAnswer == "") {
-            _state.update { it.copy(error = "ВЫБЕРИ СКА") }
+            _state.update { it.copy(error = "PICK SMTH!!") }
             return
         }
 
+        // Основная адища
         if (state.value.selectedAnswer == question.rightAnswer){
             var score: Double = typeGame.typeGameQuestionCost
             if (state.value.isHintUsed){
@@ -97,6 +103,7 @@ class QuestionScreenViewModel @AssistedInject constructor(
         if (_state.value.isSilentModeEnabled){
             audioService.playSound(R.raw.tadam)
         }
+        navigate(NavigationPaths.Finish)
     }
 
     private fun onHintBtnClicked(){
@@ -108,7 +115,7 @@ class QuestionScreenViewModel @AssistedInject constructor(
     }
 
     private fun onImageDoubleBtnClicked(){
-
+        // TODO: расширение на весь экран
     }
 
     private fun onOptionSelected(selectedOption: String){
@@ -123,7 +130,8 @@ class QuestionScreenViewModel @AssistedInject constructor(
         fun create(
             question: Question,
             typeGame: TypeGame,
-            updateScore: (Double) -> Unit
+            updateScore: (Double) -> Unit,
+            navigate: (NavigationPaths) -> Unit
         ): QuestionScreenViewModel
     }
 }

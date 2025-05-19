@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Logout
+import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -37,7 +38,9 @@ import androidx.compose.material3.IconButton
 
 
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material.icons.outlined.Star
+import kotlin.math.max
 
 @Composable
 fun RateScreen(
@@ -50,44 +53,17 @@ fun RateScreen(
             .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally,
     ){
-        Row (
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 6.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ){
-            Icon(
-                painter = painterResource(R.drawable.home_button),
-                contentDescription = "home button icon",
-                modifier = Modifier.size(24.dp),
-                tint = MaterialTheme.colorScheme.onBackground
-            )
-            Text(
-                stringResource(R.string.quiz_results),
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Normal,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-            Icon(
-                imageVector = Icons.AutoMirrored.Outlined.Logout,
-                contentDescription = "Logout btn",
-                modifier = Modifier.clickable {
-                    FirebaseAuth.getInstance().signOut()
-//TODO: не забыть настроить- popBackStack()
-                    navigate(NavigationPaths.Login)
-                },
-                tint = MaterialTheme.colorScheme.onBackground
-            )
-        }
+
         Text(
             stringResource(R.string.rate_us),
             modifier = Modifier
-                .padding(top = 40.dp),
-            fontSize = 44.sp,
+                .padding(top = 60.dp),
+            fontSize = 60.sp,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground
-
         )
+
+        RatingViewStateful(5)
 
 
 // Bottom
@@ -97,7 +73,8 @@ fun RateScreen(
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally
         ){
-// btn help_project
+
+// btn give you content
             Button(
                 modifier = Modifier
                     .fillMaxWidth(fraction = 0.6f)
@@ -111,19 +88,19 @@ fun RateScreen(
                 }
             ) {
                 Box(
-                    modifier = Modifier.height(100.dp),
+                    modifier = Modifier.height(150.dp),
                     contentAlignment = Alignment.BottomCenter
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.icon_help_project),
-                        contentDescription = "help_project_icon_button",
+                        imageVector = Icons.Filled.CameraAlt,
+                        contentDescription = "camera icon",
                         tint = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier
-                            .size(100.dp)
+                            .size(150.dp)
                     )
                     Text(
-                        stringResource(R.string.help_project).uppercase(),
-                        fontSize = 13.sp,
+                        stringResource(R.string.send_content).uppercase(),
+                        fontSize = 18.sp,
                         fontWeight = FontWeight.Normal,
                         color = MaterialTheme.colorScheme.onBackground,
                     )
@@ -152,6 +129,23 @@ fun RateScreen(
     }
 
 }
+
+@Composable
+fun RatingViewStateful(
+    maxRating: Int = 5,
+){
+    Row(modifier = Modifier) {
+        repeat(maxRating){
+            Icon(
+                imageVector = Icons.Filled.StarBorder,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary
+            )
+        }
+    }
+}
+
+
 
 @Composable
 @Preview(showBackground = true)

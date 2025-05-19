@@ -59,7 +59,7 @@ fun QuestionScreen(
     currentScore: Double,
     updateScore: (Double) -> Unit,
     viewModel: QuestionScreenViewModel = hiltViewModel<QuestionScreenViewModel, QuestionScreenViewModel.QuestionScreenViewModelFactory> { factory ->
-        factory.create(question, typeGame, updateScore)
+        factory.create(question, typeGame, updateScore, navigate)
     }
 ){
 // преобразование stateFlow в обычный для composable
