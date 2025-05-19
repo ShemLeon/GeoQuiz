@@ -40,12 +40,15 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material.icons.outlined.Star
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import kotlin.math.max
 
 @Composable
 fun RateScreen(
     navigate: (NavigationPaths) -> Unit
 ){
+
     Column (
         modifier = Modifier
             .fillMaxWidth()
@@ -134,6 +137,7 @@ fun RateScreen(
 fun RatingViewStateful(
     maxRating: Int = 5,
 ){
+    val raiting = remember { mutableStateOf(0) }
     Row(modifier = Modifier) {
         repeat(maxRating){
             Icon(

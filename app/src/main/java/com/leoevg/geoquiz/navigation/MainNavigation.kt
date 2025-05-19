@@ -85,6 +85,9 @@ fun MainNavigation(
             FinishScreen(
                 navigate = {
                     navController.navigate(it)
+                },
+                popBackStack = {
+                    navController.popBackStack()
                 }
 
             )
