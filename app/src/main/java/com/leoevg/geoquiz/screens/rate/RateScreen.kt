@@ -42,6 +42,7 @@ import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import com.leoevg.geoquiz.screens.register.RegisterScreenEvent
 import kotlin.math.max
 
 @Composable
@@ -56,7 +57,6 @@ fun RateScreen(
             .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally,
     ){
-
         Text(
             stringResource(R.string.rate_us),
             modifier = Modifier
@@ -87,7 +87,7 @@ fun RateScreen(
                 ),
                 shape = RoundedCornerShape(15.dp),
                 onClick = {
-
+                    onEvent(RateScreenEvent.GoToQuizesBtnClicked)
                 }
             ) {
                 Box(
@@ -119,7 +119,7 @@ fun RateScreen(
                 ),
                 shape = RoundedCornerShape(15.dp),
                 onClick = {
-
+                    onEvent(RateScreenEvent.GoToQuizesBtnClicked)
                 }
             ) {
                 Text(
@@ -133,22 +133,38 @@ fun RateScreen(
 
 }
 
+
 @Composable
 fun RatingViewStateful(
     maxRating: Int = 5,
-){
-    val raiting = remember { mutableStateOf(0) }
-    Row(modifier = Modifier) {
-        repeat(maxRating){
-            Icon(
-                imageVector = Icons.Filled.StarBorder,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary
-            )
+) {
+    val rating = remember { mutableStateOf(0) }
+    
+    Row(
+        modifier = Modifier
+            .padding(vertical = 16.dp)
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        repeat(maxRating) { index ->
+            IconButton(
+                onClick = { rating.value = index + 1 }
+            ) {
+                Icon(
+                    imageVector = if (index < rating.value) {
+                        Icons.Filled.Star
+                    } else {
+                        Icons.Filled.StarBorder
+                    },
+                    contentDescription = "Rate ${index + 1}",
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(40.dp)
+                )
+            }
         }
     }
 }
-
 
 
 @Composable

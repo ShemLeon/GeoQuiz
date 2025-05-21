@@ -2,7 +2,6 @@ package com.leoevg.geoquiz.screens.question
 
 import com.leoevg.geoquiz.data.model.Question
 
-
 sealed interface QuestionScreenEvent {
     data class OptionSelected(val selectedOption: String): QuestionScreenEvent
     data object HintBtnClicked: QuestionScreenEvent
@@ -11,5 +10,4 @@ sealed interface QuestionScreenEvent {
     data object ImageDoubleClicked: QuestionScreenEvent
     data object SilentModeBtnClicked: QuestionScreenEvent
     data object NightModeBtnClicked: QuestionScreenEvent
-
 }

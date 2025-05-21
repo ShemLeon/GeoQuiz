@@ -86,9 +86,10 @@ fun MainNavigation(
                 navigate = {
                     navController.navigate(it)
                 },
-                popBackStack = {
-                    navController.popBackStack()
-                }
+                // TODO: почистить попбекстак
+//                popBackStack = {
+//                    navController.popBackStack()
+//                }
 
             )
         }
