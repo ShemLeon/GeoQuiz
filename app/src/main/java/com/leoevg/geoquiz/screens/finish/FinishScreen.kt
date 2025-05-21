@@ -159,8 +159,6 @@ fun FinishScreen(
 
             }
 
-
-
 // btn back
             Button(
                 modifier = Modifier

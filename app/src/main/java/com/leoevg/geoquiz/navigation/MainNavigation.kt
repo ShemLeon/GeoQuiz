@@ -98,8 +98,10 @@ fun MainNavigation(
             RateScreen(
                 navigate = {
                     navController.navigate(it)
+                },
+                popBackStack = {
+                   navController.popBackStack()
                 }
-
             )
         }
 

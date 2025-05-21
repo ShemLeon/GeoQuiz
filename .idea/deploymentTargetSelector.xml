@@ -19,7 +19,7 @@
       <SelectionState runConfigName="RateScreenPreview">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="RateScreenDarkPreview">
+      <SelectionState runConfigName="UserpicScreenDarkPreview">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

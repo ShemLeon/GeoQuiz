@@ -5,5 +5,4 @@ sealed interface LoginScreenEvent {
     data class  PasswordChanged(val password: String): LoginScreenEvent
 
     data object LoginBtnClicked: LoginScreenEvent
-
 }

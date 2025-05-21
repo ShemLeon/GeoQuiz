@@ -11,5 +11,5 @@ sealed interface NavigationPaths{
       @Serializable data class Quiz(val typeGame: TypeGame): NavigationPaths
       @Serializable data object Finish: NavigationPaths
       @Serializable data object Rate: NavigationPaths
-
+      @Serializable data object Userpic: NavigationPaths
 }

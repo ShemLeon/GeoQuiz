@@ -1,7 +1,6 @@
-package com.leoevg.geoquiz.screens.rate
+package com.leoevg.geoquiz.screens.userpic
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,12 +8,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.Logout
-import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -29,52 +28,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.firebase.auth.FirebaseAuth
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.navigation.NavigationPaths
-
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
-import androidx.compose.material3.IconButton
-
-
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.StarBorder
-import androidx.compose.material.icons.outlined.Star
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.leoevg.geoquiz.screens.login.LoginScreenEvent
-import com.leoevg.geoquiz.screens.login.LoginScreenState
-import com.leoevg.geoquiz.screens.login.LoginScreenViewModel
-import com.leoevg.geoquiz.screens.register.RegisterScreenEvent
-import com.leoevg.geoquiz.ui.components.LoadingDialog
-import kotlin.math.max
 
 @Composable
-fun RateScreen(
+fun UserpicScreen(
     navigate: (NavigationPaths) -> Unit,
-    popBackStack: () -> Unit
-) {
-    val viewModel: RateScreenViewModel = hiltViewModel()
-    val state by viewModel.state.collectAsStateWithLifecycle()
-
-    LoadingDialog(isLoading = state.isLoading)
-    RateScreenContent(
-        navigate = navigate,
-        state = state,
-        onEvent = viewModel::onEvent
-    )
-}
-
-@Composable
-fun RateScreenContent(
-    modifier: Modifier = Modifier,
-    state: RateScreenState = RateScreenState(),
-    onEvent: (RateScreenEvent) -> Unit,
-    navigate: (NavigationPaths) -> Unit
-){
+    ){
     Column (
         modifier = Modifier
             .fillMaxWidth()
@@ -82,21 +43,67 @@ fun RateScreenContent(
             .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally,
     ){
-        Text(
-            stringResource(R.string.rate_us),
+// title
+        Row (
             modifier = Modifier
-                .padding(top = 60.dp),
-            fontSize = 60.sp,
+                .fillMaxWidth()
+                .padding(top = 6.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ){
+            Text(
+                stringResource(R.string.userpic_content),
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Normal,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            repeat(3) {
+                Icon(
+                    imageVector = Icons.Filled.Star,
+                    contentDescription = "home button icon",
+                    modifier = Modifier.size(24.dp),
+                    tint = MaterialTheme.colorScheme.onBackground
+                )
+            }
+        }
+// Congratulations
+        Text(
+            stringResource(R.string.congratulations),
+            modifier = Modifier
+                .padding(top = 40.dp),
+            fontSize = 44.sp,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground
         )
-// Stars
-        RatingViewStateful(
-            maxRating = 5,
-            onRatingChanged = { stars ->
-                onEvent(RateScreenEvent.StarsChanged(stars))
-            }
+        Text(
+            stringResource(R.string.your_score_is),
+            modifier = Modifier.padding(top = 20.dp),
+            fontSize = 44.sp,
+            fontWeight = FontWeight.Normal,
+            color = MaterialTheme.colorScheme.onBackground
         )
+        Text(
+            stringResource(R.string.number_points),
+            modifier = Modifier.padding(top = 70.dp),
+            fontSize = 160.sp,
+            fontWeight = FontWeight.Normal,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+        Text(
+            stringResource(R.string.points),
+            modifier = Modifier
+                .offset(y=(-20).dp),
+            fontSize = 44.sp,
+            fontWeight = FontWeight.Normal,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+        Text(
+            stringResource(R.string.max_score),
+            modifier = Modifier,
+            fontSize = 30.sp,
+            fontWeight = FontWeight.Normal,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+
 
 // Bottom
         Column (
@@ -106,7 +113,7 @@ fun RateScreenContent(
             horizontalAlignment = Alignment.CenterHorizontally
         ){
 
-// btn give you content
+// btn help_project
             Button(
                 modifier = Modifier
                     .fillMaxWidth(fraction = 0.6f)
@@ -116,28 +123,33 @@ fun RateScreenContent(
                 ),
                 shape = RoundedCornerShape(15.dp),
                 onClick = {
-                //    navigate(NavigationPaths.Userpic)
+                    navigate(NavigationPaths.Rate)
                 }
             ) {
                 Box(
-                    modifier = Modifier.height(150.dp),
+                    modifier = Modifier.height(100.dp),
                     contentAlignment = Alignment.BottomCenter
                 ) {
                     Icon(
-                        imageVector = Icons.Filled.CameraAlt,
-                        contentDescription = "camera icon",
+                        painter = painterResource(R.drawable.icon_help_project),
+                        contentDescription = "help_project_icon_button",
                         tint = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier
-                            .size(150.dp)
+                            .size(100.dp)
                     )
                     Text(
-                        stringResource(R.string.send_content).uppercase(),
-                        fontSize = 18.sp,
+                        stringResource(R.string.help_project).uppercase(),
+                        fontSize = 13.sp,
                         fontWeight = FontWeight.Normal,
                         color = MaterialTheme.colorScheme.onBackground,
                     )
                 }
+
+
             }
+
+
+
 // btn back
             Button(
                 modifier = Modifier
@@ -155,77 +167,28 @@ fun RateScreenContent(
                     stringResource(R.string.go_to_quizzes),
                     fontSize = 30.sp,
                     fontWeight = FontWeight.Normal,
-                    )
-            }
-        }
-    }
-
-}
-
-
-@Composable
-fun RatingViewStateful(
-    maxRating: Int = 5,
-    onRatingChanged: (Int) -> Unit = {}
-) {
-    val rating = remember { mutableStateOf(0) }
-    
-    Row(
-        modifier = Modifier
-            .padding(vertical = 16.dp)
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        repeat(maxRating) { index ->
-            IconButton(
-                onClick = {
-                    rating.value = index + 1
-                    onRatingChanged(index + 1) // вызов
-                }
-            ) {
-                Icon(
-                    imageVector = if (index < rating.value) {
-                        Icons.Filled.Star
-                    } else {
-                        Icons.Filled.StarBorder
-                    },
-                    contentDescription = "Rate ${index + 1}",
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(40.dp)
                 )
             }
         }
     }
 }
 
-
 @Composable
 @Preview(showBackground = true)
-fun RateScreenPreview(){
+fun UserpicScreenPreview(){
     GeoQuizTheme(
         darkTheme = false
     ) {
-        RateScreenContent(
-            modifier = Modifier,
-            state = RateScreenState(),
-            onEvent = {},
-            navigate = {}
-        )
+        UserpicScreen {  }
     }
 }
 
 @Composable
 @Preview(showBackground = false)
-fun RateScreenDarkPreview(){
+fun UserpicScreenDarkPreview(){
     GeoQuizTheme(
         darkTheme = true
     ) {
-        RateScreenContent(
-            modifier = Modifier,
-            state = RateScreenState(),
-            onEvent = {},
-            navigate = {}
-        )
+        UserpicScreen {  }
     }
 }
