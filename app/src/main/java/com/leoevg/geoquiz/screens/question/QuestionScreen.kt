@@ -17,8 +17,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -98,7 +100,8 @@ fun QuestionScreenContent(
         modifier = modifier
             .background(color = MaterialTheme.colorScheme.background)
             .fillMaxSize()
-            .padding(horizontal = 10.dp),
+            .padding(horizontal = 10.dp)
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
     ){
         Row(
@@ -320,7 +323,9 @@ fun OptionAnswersSection(
 
 ){
     LazyVerticalGrid(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(((answerOptions.size / 2 + answerOptions.size % 2) * 80).dp),
         columns = GridCells.Fixed(2),
         horizontalArrangement = Arrangement.Start,
         contentPadding = PaddingValues(horizontal = 2.dp)
