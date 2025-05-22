@@ -2,6 +2,7 @@ package com.leoevg.geoquiz.screens.question
 
 import android.R.attr.onClick
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.data.manager.SharedPrefManager
 import com.leoevg.geoquiz.data.model.Question
@@ -15,6 +16,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlin.Unit
 
 @HiltViewModel(assistedFactory = QuestionScreenViewModel.QuestionScreenViewModelFactory::class)
 class QuestionScreenViewModel @AssistedInject constructor(
@@ -22,6 +24,7 @@ class QuestionScreenViewModel @AssistedInject constructor(
     @Assisted private val typeGame: TypeGame,
     @Assisted private val updateScore: (Double) -> Unit,
     @Assisted private val navigate: (NavigationPaths) -> Unit,
+    @Assisted private val openNextQuestion: () -> Unit,
     // @Assisted - анотация "я сам передам эти параметры", DaggerHilt не должен их мне давать
     private val prefManager: SharedPrefManager,
     private val audioService: AudioService
@@ -60,15 +63,18 @@ class QuestionScreenViewModel @AssistedInject constructor(
                 score /= 2
             }
 
-            updateScore(score)
+            updateScore(state.value.currentScore+score)
             // TODO change screen
-            // TODO +score
+
+
         } else {
             _state.update { it.copy(isAnswerRight = false) }
             // TODO color red - TIME PAUSE & NEXT SCREEN
             _state.update { it.copy(error = "UNKNOWN ERROR") }
-            return
+
         }
+
+        openNextQuestion()
 
     }
 
@@ -108,7 +114,7 @@ class QuestionScreenViewModel @AssistedInject constructor(
     }
 
     private fun onHintBtnClicked(){
-        if (_state.value.isHintUsed){
+        if (!_state.value.isHintUsed){
             _state.update {
                 it.copy(isHintUsed = true)
             }
@@ -132,7 +138,8 @@ class QuestionScreenViewModel @AssistedInject constructor(
             question: Question,
             typeGame: TypeGame,
             updateScore: (Double) -> Unit,
-            navigate: (NavigationPaths) -> Unit
+            navigate: (NavigationPaths) -> Unit,
+            openNextQuestion: () -> Unit
         ): QuestionScreenViewModel
     }
 }

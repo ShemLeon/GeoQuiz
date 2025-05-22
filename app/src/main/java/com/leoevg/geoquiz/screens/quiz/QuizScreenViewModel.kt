@@ -21,6 +21,14 @@ class QuizScreenViewModel @Inject constructor(
     var currentQuiz by mutableStateOf<Quiz?>(null)
     var currentQuestionIndex by mutableIntStateOf(0)
 
+    fun moveToNextQuestion(): Boolean{
+        if (currentQuiz==null || currentQuestionIndex>=(currentQuiz?.questions?.size?:0)) {
+            return false
+        }
+        currentQuestionIndex++
+        return true
+    }
+
 // реализация получения вопросов
     fun loadQuiz(quizTypeGame: String) {
         viewModelScope.launch(Dispatchers.IO){

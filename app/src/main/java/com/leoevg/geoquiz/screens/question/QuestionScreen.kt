@@ -62,17 +62,19 @@ fun QuestionScreen(
     typeGame: TypeGame,
     currentScore: Double,
     updateScore: (Double) -> Unit,
+    openNextQuestion: () -> Unit,
     viewModel: QuestionScreenViewModel = hiltViewModel<QuestionScreenViewModel, QuestionScreenViewModel.QuestionScreenViewModelFactory> { factory ->
-        factory.create(question, typeGame, updateScore, navigate)
+        factory.create(question, typeGame, updateScore, navigate, openNextQuestion)
     }
 ){
 // преобразование stateFlow в обычный для composable
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
+
     LaunchedEffect(state.error) {
         state.error?.let {
-            Toast.makeText(context, "Pick smth", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
         }
     }
 
@@ -118,7 +120,7 @@ fun QuestionScreenContent(
                 color = MaterialTheme.colorScheme.onBackground
             )
             Text(
-                text = "0 ${stringResource(R.string.val_points)}",
+                text = "$currentScore ${stringResource(R.string.val_points)}",
                 fontSize = 25.sp,
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center,

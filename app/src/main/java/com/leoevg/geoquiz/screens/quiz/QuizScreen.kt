@@ -4,7 +4,11 @@ import android.util.Log.e
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.currentComposer
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.leoevg.geoquiz.navigation.NavigationPaths
@@ -14,6 +18,7 @@ import com.leoevg.geoquiz.ui.components.LoadingDialog
 
 // Добавь эти импорты в начало файла
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.leoevg.geoquiz.data.model.Question
 import com.leoevg.geoquiz.data.model.AnswerOption
 import com.leoevg.geoquiz.data.model.TypeGame
@@ -26,7 +31,8 @@ fun QuizScreen(
 ){
     val context = LocalContext.current
     val viewModel = hiltViewModel<QuizScreenViewModel>()
-    var currentScore = 0.0
+    var currentScore by remember { mutableDoubleStateOf(0.0) }
+
 
     // блок запустится 1 раз для загрузки квиза с определенным typeGame
     LaunchedEffect(Unit) {
@@ -43,6 +49,9 @@ fun QuizScreen(
             currentScore = currentScore,
             updateScore = { newScore ->
                 currentScore = newScore
+            },
+            openNextQuestion = {
+                val result = viewModel.moveToNextQuestion()
             }
         )
     } ?: run {
@@ -73,6 +82,7 @@ fun QuizScreenPreview() {
         navigate = {},
         typeGame = typeGames[0],
         currentScore = 0.0,
-        updateScore = {}
+        updateScore = {},
+        openNextQuestion = {  }
     )
 }
