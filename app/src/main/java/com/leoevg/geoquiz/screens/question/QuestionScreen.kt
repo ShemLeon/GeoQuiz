@@ -25,6 +25,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -50,6 +51,7 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.leoevg.geoquiz.data.model.TypeGame
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
+import org.checkerframework.checker.units.qual.Length
 
 @Composable
 fun QuestionScreen(
@@ -64,6 +66,13 @@ fun QuestionScreen(
 ){
 // преобразование stateFlow в обычный для composable
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    val context = LocalContext.current
+    LaunchedEffect(state.error) {
+        state.error?.let {
+            Toast.makeText(context, "Pick smth", Toast.LENGTH_LONG).show()
+        }
+    }
 
     GeoQuizTheme(darkTheme = state.isNightModeEnabled) {
         QuestionScreenContent(
@@ -254,8 +263,7 @@ fun QuestionScreenContent(
                     contentPadding = PaddingValues(vertical = 15.dp),
                     shape = RoundedCornerShape(25.dp),
                     onClick = {
-                        // TODO - починить
-                       // onEvent(QuestionScreenEvent.ApplyBtnClicked)
+                        onEvent(QuestionScreenEvent.ApplyBtnClicked)
                     }
                 ) {
                     Icon(

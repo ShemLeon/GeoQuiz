@@ -36,7 +36,7 @@ class QuestionScreenViewModel @AssistedInject constructor(
         // SOLID
         when(event){
             // по событиям из view (евенты) вызываем функции
-            is QuestionScreenEvent.ApplyBtnClicked -> onApplyBtnClicked(event.question)
+            QuestionScreenEvent.ApplyBtnClicked -> onApplyBtnClicked()
             QuestionScreenEvent.FinishBtnClicked -> onFinishBtnClicked()
             QuestionScreenEvent.HintBtnClicked -> onHintBtnClicked()
             QuestionScreenEvent.ImageDoubleClicked -> onImageDoubleBtnClicked()
@@ -46,7 +46,7 @@ class QuestionScreenViewModel @AssistedInject constructor(
         }
     }
 
-    private fun onApplyBtnClicked(question: Question){
+    private fun onApplyBtnClicked(){
         // отработка ошибки
         if (state.value.selectedAnswer == "") {
             _state.update { it.copy(error = "PICK SMTH!!") }
@@ -59,6 +59,7 @@ class QuestionScreenViewModel @AssistedInject constructor(
             if (state.value.isHintUsed){
                 score /= 2
             }
+
             updateScore(score)
             // TODO change screen
             // TODO +score
