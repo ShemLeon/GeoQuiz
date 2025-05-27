@@ -248,7 +248,7 @@ fun QuestionScreenContent(
         )
         Column (
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxWidth(),
             verticalArrangement = Arrangement.Bottom
         ){
             Row (
@@ -266,9 +266,6 @@ fun QuestionScreenContent(
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.secondary
                     ),
-//                    colors = ButtonDefaults.buttonColors(
-//                        containerColor = BlueGrey
-//                    ),
                     contentPadding = PaddingValues(vertical = 15.dp),
                     shape = RoundedCornerShape(25.dp),
                     onClick = {

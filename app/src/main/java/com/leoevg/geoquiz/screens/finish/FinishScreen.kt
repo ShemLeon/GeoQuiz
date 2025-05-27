@@ -36,8 +36,8 @@ import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
 
 @Composable
 fun FinishScreen(
-    navigate: (NavigationPaths) -> Unit,
-
+    finalScore: Double,
+    navigate: (NavigationPaths) -> Unit = {}
 ){
     Column (
         modifier = Modifier
@@ -93,7 +93,7 @@ fun FinishScreen(
             color = MaterialTheme.colorScheme.onBackground
         )
         Text(
-            stringResource(R.string.number_points),
+            text = finalScore.toString(),
             modifier = Modifier.padding(top = 70.dp),
             fontSize = 160.sp,
             fontWeight = FontWeight.Normal,
@@ -168,15 +168,13 @@ fun FinishScreen(
                     containerColor = MaterialTheme.colorScheme.primary
                 ),
                 shape = RoundedCornerShape(15.dp),
-                onClick = {
-                    navigate(NavigationPaths.Choose)
-                }
+                onClick = { navigate(NavigationPaths.Choose) }
             ) {
                 Text(
                     stringResource(R.string.go_to_quizzes),
                     fontSize = 30.sp,
-                    fontWeight = FontWeight.Normal,
-                    )
+                    fontWeight = FontWeight.Normal
+                )
             }
         }
     }
@@ -188,7 +186,7 @@ fun FinishScreenPreview(){
     GeoQuizTheme(
         darkTheme = false
     ) {
-    FinishScreen {  }
+        FinishScreen(finalScore = 95.0)
     }
 }
 
@@ -198,6 +196,6 @@ fun FinishScreenDarkPreview(){
     GeoQuizTheme(
         darkTheme = true
     ) {
-        FinishScreen {  }
+        FinishScreen(finalScore = 90.0)
     }
 }

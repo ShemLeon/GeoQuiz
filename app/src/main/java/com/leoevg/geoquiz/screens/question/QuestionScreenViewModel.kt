@@ -113,7 +113,7 @@ class QuestionScreenViewModel @AssistedInject constructor(
         if (_state.value.isSilentModeEnabled){
             audioService.playSound(R.raw.tadam)
         }
-        navigate(NavigationPaths.Finish)
+        navigate(NavigationPaths.Finish(finalScore = _state.value.currentScore))
     }
 
     private fun onHintBtnClicked(){

@@ -78,19 +78,24 @@ fun MainNavigation(
         ) {
             val quizInfo = it.toRoute<NavigationPaths.Quiz>()
             // нужно передать выбор типа квиза из ChooseScreen сюда
-            QuizScreen(typeGame = quizInfo.typeGame) { navController.navigate(it) }
+            QuizScreen(
+                typeGame = quizInfo.typeGame,
+                navigate = { navController.navigate(it) },
+                popBackStack = { navController.popBackStack() }
+            )
         }
 
         composable<NavigationPaths.Finish> {
+            val finishScreenInfo = it.toRoute<NavigationPaths.Finish>()
             FinishScreen(
+                finalScore = finishScreenInfo.finalScore,
                 navigate = {
-                    navController.navigate(it)
-                },
-                // TODO: почистить попбекстак
-//                popBackStack = {
-//                    navController.popBackStack()
-//                }
-
+                    navController.navigate(it) {
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                    }
+                }
             )
         }
 

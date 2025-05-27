@@ -21,8 +21,9 @@ class QuizScreenViewModel @Inject constructor(
     var currentQuiz by mutableStateOf<Quiz?>(null)
     var currentQuestionIndex by mutableIntStateOf(0)
 
-    fun moveToNextQuestion(): Boolean{
-        if (currentQuiz==null || currentQuestionIndex>=(currentQuiz?.questions?.size?:0)) {
+    fun moveToNextQuestion(): Boolean {
+        // проверяем находимся ли на последнем вопросе
+        if ((currentQuestionIndex + 1) == (currentQuiz?.questions?.size?:0)) {
             return false
         }
         currentQuestionIndex++
