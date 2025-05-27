@@ -51,7 +51,7 @@ fun QuizScreen(
                 currentScore = newScore
             },
             openNextQuestion = {
-                val result = viewModel.moveToNextQuestion()
+                viewModel.moveToNextQuestion()
             }
         )
     } ?: run {

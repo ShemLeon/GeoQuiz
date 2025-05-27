@@ -35,14 +35,21 @@ fun AnswerOptionItem(
     isAnswerRight: Boolean? = null,
     onClick: () -> Unit = {}
 ){
+    val answerResultIndicationColor = if (isAnswerRight == true) Color.Green else Color.Red
     Row (
         modifier = modifier
-            .border(2.dp, if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent
-                ,RoundedCornerShape(15.dp))
-            .background(color = if (isAnswerRight == false) MaterialTheme.colorScheme.error else Color.Transparent)
+            .border(
+                2.dp,
+
+                if (isAnswerRight != null) answerResultIndicationColor
+                else if (isSelected) MaterialTheme.colorScheme.primary
+                else Color.Transparent,
+
+                RoundedCornerShape(15.dp)
+            )
+            .background(color = Color.Transparent)
             .padding(horizontal = 8.dp, vertical = 5.dp)
-            .clickable { onClick() }
-            ,
+            .clickable { onClick() },
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
 

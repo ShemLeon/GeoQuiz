@@ -1,5 +1,7 @@
 package com.leoevg.geoquiz.screens.question
 
+import android.R.attr.onClick
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -50,10 +52,8 @@ import com.leoevg.geoquiz.ui.components.AnswerOptionItem
 import com.leoevg.geoquiz.ui.theme.Blue
 import kotlin.Unit
 import androidx.compose.runtime.getValue
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.leoevg.geoquiz.data.model.TypeGame
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
-import org.checkerframework.checker.units.qual.Length
 
 @Composable
 fun QuestionScreen(
@@ -67,10 +67,14 @@ fun QuestionScreen(
         factory.create(question, typeGame, updateScore, navigate, openNextQuestion)
     }
 ){
-// преобразование stateFlow в обычный для composable
+    val context = LocalContext.current
+
+    // преобразование stateFlow в обычный для composable
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    val context = LocalContext.current
+    LaunchedEffect(question) {
+        viewModel.updateState(question, currentScore)
+    }
 
     LaunchedEffect(state.error) {
         state.error?.let {
@@ -321,8 +325,7 @@ fun OptionAnswersSection(
     answerOptions: List<AnswerOption>,
     selectedAnswerOption: String?,
     isAnswerRight: Boolean?,
-    onItemSelected: (String) -> Unit,
-
+    onItemSelected: (String) -> Unit
 ){
     LazyVerticalGrid(
         modifier = Modifier
@@ -338,9 +341,11 @@ fun OptionAnswersSection(
                     .fillMaxWidth(0.95f) // Ограничиваем ширину элемента внутри ячейки
                     .padding(horizontal = 3.dp, vertical = 1.dp)
             ){
+                val isSelected = selectedAnswerOption == currentOptionItem.optAnswer
                 AnswerOptionItem(
                     answerOption = currentOptionItem,
-                    isSelected = selectedAnswerOption == currentOptionItem.optAnswer,
+                    isSelected = isSelected,
+                    isAnswerRight = if (isSelected) isAnswerRight else null,
                     onClick = {
                         // передает id нового выбранного item.
                         onItemSelected(currentOptionItem.optAnswer)

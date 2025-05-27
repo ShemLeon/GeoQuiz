@@ -2,6 +2,7 @@ package com.leoevg.geoquiz.screens.question
 
 import android.R.attr.onClick
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.data.manager.SharedPrefManager
@@ -13,14 +14,17 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlin.Unit
 
 @HiltViewModel(assistedFactory = QuestionScreenViewModel.QuestionScreenViewModelFactory::class)
 class QuestionScreenViewModel @AssistedInject constructor(
-    @Assisted private val question: Question,
+    @Assisted private var question: Question,
     @Assisted private val typeGame: TypeGame,
     @Assisted private val updateScore: (Double) -> Unit,
     @Assisted private val navigate: (NavigationPaths) -> Unit,
@@ -57,25 +61,24 @@ class QuestionScreenViewModel @AssistedInject constructor(
         }
 
         // Основная адища
-        if (state.value.selectedAnswer == question.rightAnswer){
+        val result = if (state.value.selectedAnswer == question.rightAnswer){
             var score: Double = typeGame.typeGameQuestionCost
             if (state.value.isHintUsed){
                 score /= 2
             }
+            score += state.value.currentScore
 
-            updateScore(state.value.currentScore+score)
-            // TODO change screen
-
-
+            updateScore(score)
+            true
         } else {
-            _state.update { it.copy(isAnswerRight = false) }
-            // TODO color red - TIME PAUSE & NEXT SCREEN
-            _state.update { it.copy(error = "UNKNOWN ERROR") }
-
+            false
         }
 
-        openNextQuestion()
-
+        viewModelScope.launch {
+            _state.update { it.copy(isAnswerRight = result) }
+            delay(500)
+            openNextQuestion()
+        }
     }
 
     private fun onNightModeBtnClicked(){
@@ -129,6 +132,15 @@ class QuestionScreenViewModel @AssistedInject constructor(
         _state.update {
             it.copy(selectedAnswer = selectedOption)
         }
+    }
+
+    fun updateState(question: Question, currentScore: Double) {
+        _state.update { QuestionScreenState(
+            isSilentModeEnabled = it.isSilentModeEnabled,
+            isNightModeEnabled = it.isNightModeEnabled,
+            currentScore = currentScore
+        ) }
+        this.question = question
     }
 
     @AssistedFactory
