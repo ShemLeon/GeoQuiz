@@ -25,6 +25,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -52,6 +54,8 @@ import com.leoevg.geoquiz.ui.components.AnswerOptionItem
 import com.leoevg.geoquiz.ui.theme.Blue
 import kotlin.Unit
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import com.leoevg.geoquiz.data.model.TypeGame
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
 
@@ -140,6 +144,7 @@ fun QuestionScreenContent(
             verticalAlignment = Alignment.CenterVertically
         ){
             Text(
+                // TODO: сделать динамическое изменение номера вопроса
                 text =  "${stringResource(R.string.question)} 1",
                 fontSize = 35.sp,
                 fontWeight = FontWeight.SemiBold,
@@ -190,12 +195,24 @@ fun QuestionScreenContent(
                 .aspectRatio(1f) // расположение квадратиком
                 .padding(top=30.dp)
         ){
-            AsyncImage(
-                model = question.picturesUrls[0],
-                contentDescription = "Question image",
+            Card(
                 modifier = Modifier
                     .fillMaxSize()
-            )
+                    .padding(2.dp),
+                shape = RoundedCornerShape(12.dp),
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 2.dp
+                ),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.background
+                )
+            ) {
+                AsyncImage(
+                    model = question.picturesUrls[0],
+                    contentDescription = "Question image",
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
 // Hint
             Button(
                 modifier = Modifier
@@ -221,22 +238,9 @@ fun QuestionScreenContent(
             }
         }
 
-        Row (
-            horizontalArrangement = Arrangement.Start,
-            modifier = Modifier.fillMaxWidth()
-        ){
-            Text(
-                text = stringResource(R.string.choose_correct_answer),
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Light,
-                textAlign = TextAlign.Start,
-                modifier = Modifier
-                    .padding(start = 10.dp),
-                color = MaterialTheme.colorScheme.onBackground,
-            )
-        }
 // Grid
         OptionAnswersSection(
+            //TODO: вообще не чувствую этого модифаера педдинг
             modifier = Modifier.padding(top=15.dp),
             answerOptions = question.answerOptions,
             selectedAnswerOption = state.selectedAnswer,
@@ -248,8 +252,10 @@ fun QuestionScreenContent(
         )
         Column (
             modifier = Modifier
-                .fillMaxWidth(),
-            verticalArrangement = Arrangement.Bottom
+                .fillMaxWidth()
+                .padding(top=15.dp)
+            ,
+        //    verticalArrangement = Arrangement.Bottom
         ){
             Row (
                 verticalAlignment = Alignment.CenterVertically,
