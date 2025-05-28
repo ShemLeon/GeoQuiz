@@ -1,9 +1,7 @@
 package com.leoevg.geoquiz.screens.question
 
-import android.R.attr.onClick
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.data.manager.SharedPrefManager
 import com.leoevg.geoquiz.data.model.Question
@@ -19,7 +17,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlin.Unit
 
 @HiltViewModel(assistedFactory = QuestionScreenViewModel.QuestionScreenViewModelFactory::class)
@@ -29,7 +26,7 @@ class QuestionScreenViewModel @AssistedInject constructor(
     @Assisted private val updateScore: (Double) -> Unit,
     @Assisted private val navigate: (NavigationPaths) -> Unit,
     @Assisted private val openNextQuestion: () -> Unit,
-    // @Assisted - анотация "я сам передам эти параметры", DaggerHilt не должен их мне давать
+
     private val prefManager: SharedPrefManager,
     private val audioService: AudioService
 ) : ViewModel() {
@@ -84,7 +81,6 @@ class QuestionScreenViewModel @AssistedInject constructor(
     private fun onNightModeBtnClicked(){
         val isNightModeEnable = prefManager.getBoolValueByKey("darkWorks", true)
         prefManager.putBoolValue("darkWorks", !isNightModeEnable)
-        // state = state.copy(isNightModeEnabled = !isNightModeEnable)
         _state.update {
             it.copy(isNightModeEnabled = !isNightModeEnable)
         }
@@ -155,6 +151,12 @@ class QuestionScreenViewModel @AssistedInject constructor(
         ): QuestionScreenViewModel
     }
 }
+
+
+
+
+
+
 
 
 

@@ -77,7 +77,7 @@ fun MainNavigation(
             )
         ) {
             val quizInfo = it.toRoute<NavigationPaths.Quiz>()
-            // нужно передать выбор типа квиза из ChooseScreen сюда
+            // Передача выбранного типа квиза из ChooseScreen
             QuizScreen(
                 typeGame = quizInfo.typeGame,
                 navigate = { navController.navigate(it) },

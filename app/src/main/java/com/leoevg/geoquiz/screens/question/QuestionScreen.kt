@@ -1,7 +1,5 @@
 package com.leoevg.geoquiz.screens.question
 
-import android.R.attr.onClick
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -54,8 +52,6 @@ import com.leoevg.geoquiz.ui.components.AnswerOptionItem
 import com.leoevg.geoquiz.ui.theme.Blue
 import kotlin.Unit
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import com.leoevg.geoquiz.data.model.TypeGame
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
 
@@ -67,7 +63,8 @@ fun QuestionScreen(
     currentScore: Double,
     updateScore: (Double) -> Unit,
     openNextQuestion: () -> Unit,
-    viewModel: QuestionScreenViewModel = hiltViewModel<QuestionScreenViewModel, QuestionScreenViewModel.QuestionScreenViewModelFactory> { factory ->
+    viewModel: QuestionScreenViewModel = hiltViewModel<QuestionScreenViewModel,
+            QuestionScreenViewModel.QuestionScreenViewModelFactory> { factory ->
         factory.create(question, typeGame, updateScore, navigate, openNextQuestion)
     }
 ){
