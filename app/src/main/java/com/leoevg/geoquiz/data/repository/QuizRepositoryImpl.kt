@@ -23,7 +23,7 @@ class QuizRepositoryImpl: QuizRepository {
             val hint = questionSnapshot.child(CHILD_HINT).value.toString()
             val rightAnswer = questionSnapshot.child(CHILD_RIGHT).value.toString()
 
-            // @ map - фича котлина, упростит код и пройдется по всем элементам и получит что-то из них
+            // @map - фича котлина, упростит код и пройдется по всем элементам и получит что-то из них
             // оно соберет целый новый лист новых значений
             val picturesUrls = questionSnapshot.child(CHILD_PICTURES).children.map { pictureSnapshot ->
                 return@map pictureSnapshot.value.toString()

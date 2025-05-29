@@ -109,7 +109,14 @@ class QuestionScreenViewModel @AssistedInject constructor(
         if (_state.value.isSilentModeEnabled){
             audioService.playSound(R.raw.tadam)
         }
+
+         // TODO: Здесь добавить логику обновления максимального результата
+//         viewModelScope.launch {
+//             userRepository.updateMaxResultByUserId("", _state.value.currentScore)
+//         }
         navigate(NavigationPaths.Finish(finalScore = _state.value.currentScore))
+
+
     }
 
     private fun onHintBtnClicked(){

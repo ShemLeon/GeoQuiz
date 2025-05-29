@@ -1,7 +1,7 @@
 package com.leoevg.geoquiz.screens.finish
 
+import android.R.attr.text
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,16 +29,27 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.firebase.auth.FirebaseAuth
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.navigation.NavigationPaths
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 
 @Composable
 fun FinishScreen(
     finalScore: Double,
-    navigate: (NavigationPaths) -> Unit = {}
+    navigate: (NavigationPaths) -> Unit = {},
+    viewModel: FinishScreenViewModel = hiltViewModel()
 ){
+    val maxScore by viewModel.maxScore.collectAsStateWithLifecycle()
+    LaunchedEffect(Unit) {
+        viewModel.loadMaxScore()
+    }
+
     Column (
         modifier = Modifier
             .fillMaxWidth()
@@ -107,8 +118,13 @@ fun FinishScreen(
             fontWeight = FontWeight.Normal,
             color = MaterialTheme.colorScheme.onBackground
         )
+// MaxScore
         Text(
-            stringResource(R.string.max_score),
+            text = if (maxScore !=null) {
+                stringResource(R.string.max_score) + "${maxScore}"
+            } else {
+                stringResource(R.string.max_score) + "..."
+            },
             modifier = Modifier,
             fontSize = 30.sp,
             fontWeight = FontWeight.Normal,

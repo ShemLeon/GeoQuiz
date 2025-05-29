@@ -9,6 +9,7 @@ import com.leoevg.geoquiz.data.util.getCompletedResult
 import com.leoevg.geoquiz.domain.repository.AuthRepository
 
 class AuthRepositoryImpl : AuthRepository {
+
     override suspend fun login(
         email: String,
         password: String
@@ -16,6 +17,7 @@ class AuthRepositoryImpl : AuthRepository {
         return FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password).
             getCompletedResult()
     }
+
     override suspend fun register(
         nickname: String,
         email: String,
@@ -24,7 +26,6 @@ class AuthRepositoryImpl : AuthRepository {
         // возвращает null able - null  "возможный" объект аутхрезалт
         val result = FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
             .getCompletedResult()
-
         // ?: - "Елвис оператор" - проверяет или  выражение null
         val uid = (result?.user?.uid) ?: return null
         val user = User(uid, nickname, email)

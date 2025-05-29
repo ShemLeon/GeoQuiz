@@ -2,8 +2,10 @@ package com.leoevg.geoquiz.di
 
 import com.leoevg.geoquiz.data.repository.AuthRepositoryImpl
 import com.leoevg.geoquiz.data.repository.QuizRepositoryImpl
+import com.leoevg.geoquiz.data.repository.UserRepositoryImpl
 import com.leoevg.geoquiz.domain.repository.AuthRepository
 import com.leoevg.geoquiz.domain.repository.QuizRepository
+import com.leoevg.geoquiz.domain.repository.UserRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,6 +26,12 @@ object RepositoryModule {
     @Singleton
     fun provideQuizRepository(): QuizRepository {
         return QuizRepositoryImpl()
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserRepository(): UserRepository {
+        return UserRepositoryImpl()
     }
 }
 
