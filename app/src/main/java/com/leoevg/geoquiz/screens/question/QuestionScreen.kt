@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,6 +22,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -52,6 +55,7 @@ import com.leoevg.geoquiz.ui.components.AnswerOptionItem
 import com.leoevg.geoquiz.ui.theme.Blue
 import kotlin.Unit
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.vector.ImageVector
 import com.leoevg.geoquiz.data.model.TypeGame
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
 
@@ -102,7 +106,13 @@ fun QuestionScreenContent(
     onEvent: (QuestionScreenEvent) -> Unit
 ){
     val context = LocalContext.current  // context for hint
-// Цвет фона
+
+    Box(
+        modifier = modifier
+            .background(color = MaterialTheme.colorScheme.background)
+            .fillMaxSize()
+    ) {
+
     Column(
         modifier = modifier
             .background(color = MaterialTheme.colorScheme.background)
@@ -110,13 +120,13 @@ fun QuestionScreenContent(
             .padding(horizontal = 10.dp)
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
-    ){
+    ) {
         Row(
             modifier = Modifier
                 .padding(top = 10.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.Start
-        ){
+        ) {
             Text(
                 text = stringResource(R.string.your_score),
                 fontSize = 25.sp,
@@ -133,27 +143,27 @@ fun QuestionScreenContent(
                 color = MaterialTheme.colorScheme.onBackground
             )
         }
-        Row (
+        Row(
             modifier = Modifier
                 .padding(top = 10.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
-        ){
+        ) {
             Text(
                 // TODO: сделать динамическое изменение номера вопроса
-                text =  "${stringResource(R.string.question)} 1",
+                text = "${stringResource(R.string.question)} 1",
                 fontSize = 35.sp,
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onBackground
             )
 // Silent & DarkMode
-            Row (
+            Row(
                 modifier = Modifier.height(40.dp), // фиксированная высота Row с иконками
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically
-            ){
+            ) {
                 Icon(
                     painter = painterResource(
                         if (state.isSilentModeEnabled)
@@ -165,7 +175,7 @@ fun QuestionScreenContent(
                     contentDescription = "volumeUp_icon_button",
                     modifier = Modifier
                         .aspectRatio(1f) // Сохраняем пропорции (квадрат)
-                        .clickable{
+                        .clickable {
                             onEvent(QuestionScreenEvent.SilentModeBtnClicked)
 
                         }
@@ -179,7 +189,7 @@ fun QuestionScreenContent(
                     ),
                     tint = MaterialTheme.colorScheme.onBackground,
                     contentDescription = "light_mode_icon",
-                    modifier = Modifier.clickable{
+                    modifier = Modifier.clickable {
                         onEvent(QuestionScreenEvent.NightModeBtnClicked)
                     }
                 )
@@ -238,34 +248,32 @@ fun QuestionScreenContent(
 // Grid
         OptionAnswersSection(
             //TODO: вообще не чувствую этого модифаера педдинг
-            modifier = Modifier.padding(top=15.dp),
+            modifier = Modifier.padding(top = 15.dp),
             answerOptions = question.answerOptions,
             selectedAnswerOption = state.selectedAnswer,
             isAnswerRight = state.isAnswerRight,
             // нам надо передать события, что произошло и передать в него выбранный id
-            onItemSelected = {
-                    optionAnswer -> onEvent(QuestionScreenEvent.OptionSelected(optionAnswer))
+            onItemSelected = { optionAnswer ->
+                onEvent(QuestionScreenEvent.OptionSelected(optionAnswer))
             }
         )
-        Column (
+    }
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
             modifier = Modifier
+                .align(Alignment.BottomCenter)
                 .fillMaxWidth()
-                .padding(top=15.dp)
-            ,
-        //    verticalArrangement = Arrangement.Bottom
-        ){
-            Row (
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 10.dp)
-                    .height(56.dp)
+                .padding(horizontal = 10.dp)
+                .padding(bottom = 10.dp)
+                .height(90.dp)
             ){
 // Apply
                 Button(
                     modifier = Modifier
-                        .weight(1f),
+                        .fillMaxHeight(fraction = 0.9f)
+                        .fillMaxWidth(fraction = 0.7f),
+          //              .weight(1f),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.secondary
                     ),
@@ -284,39 +292,46 @@ fun QuestionScreenContent(
                     )
                     Text(
                         stringResource(R.string.apply),
-                        fontSize = 20.sp,
+                        fontSize = 30.sp,
                         fontWeight = FontWeight.Normal,
                         modifier = Modifier
                             .padding(start = 10.dp),
                         color = MaterialTheme.colorScheme.onBackground,
                     )
                 }
-            }
-// Finish
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth(fraction = 0.99f)
-                    .padding(bottom = 20.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                ),
-                contentPadding = PaddingValues(vertical = 10.dp),
-                shape = RoundedCornerShape(15.dp),
-                onClick = {
-                    onEvent(QuestionScreenEvent.FinishBtnClicked)
+                // Finish
+                Button(
+                    modifier = Modifier
+                        .fillMaxHeight(fraction = 0.9f)
+                        .weight(1f),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary
+                    ),
+                    contentPadding = PaddingValues(vertical = 10.dp),
+                    shape = RoundedCornerShape(15.dp),
+                    onClick = {
+                        onEvent(QuestionScreenEvent.FinishBtnClicked)
+                    }
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.icon_finish),
+                        tint = MaterialTheme.colorScheme.background,
+                        contentDescription = "finish_icon_button",
+                        modifier = Modifier.size(44.dp)
+                        )
+//                    Text(
+//                        stringResource(R.string.finish),
+//                        fontSize = 20.sp,
+//                        fontWeight = FontWeight.Normal,
+//                        color = MaterialTheme.colorScheme.background
+//                    )
                 }
-            ) {
-                Text(
-                    stringResource(R.string.finish),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Normal,
-                    color = MaterialTheme.colorScheme.background
-                )
             }
+
         }
     }
 
-}
+
 
 
 @Composable
