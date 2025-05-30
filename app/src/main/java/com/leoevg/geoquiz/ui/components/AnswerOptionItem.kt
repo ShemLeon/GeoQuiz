@@ -40,15 +40,13 @@ fun AnswerOptionItem(
         modifier = modifier
             .border(
                 2.dp,
-
                 if (isAnswerRight != null) answerResultIndicationColor
                 else if (isSelected) MaterialTheme.colorScheme.primary
                 else Color.Transparent,
-
                 RoundedCornerShape(15.dp)
             )
             .background(color = Color.Transparent)
-            .padding(horizontal = 8.dp, vertical = 5.dp)
+            .padding(horizontal = 6.dp, vertical = 5.dp)
             .clickable { onClick() },
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
@@ -66,7 +64,7 @@ fun AnswerOptionItem(
             fontWeight = FontWeight.Normal,
             color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier
-                .padding(start = 5.dp),
+                .padding(start = 2.dp),
         )
     }
 }
