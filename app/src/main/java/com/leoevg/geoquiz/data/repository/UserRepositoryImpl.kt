@@ -11,7 +11,7 @@ class UserRepositoryImpl : UserRepository {
     // Получение максимума
     override suspend fun getMaxResultByUserId(
         email: String
-    ): Double? {
+    ): Int? {
         return try {
             val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return null
             val snapshot = FirebaseDatabase.getInstance().reference
@@ -20,13 +20,13 @@ class UserRepositoryImpl : UserRepository {
              .child(CHILD_CURRENT_MAX_SCORE)
              .getDataOnce()
 
-            snapshot.getValue(Double::class.java)
+            snapshot.getValue(Int::class.java)
         } catch (e: Exception) {
             null}
     }
 
 // Обновление максимума
-    override suspend fun updateMaxResultByUserId(email: String, newMaxScore: Double): Boolean {
+    override suspend fun updateMaxResultByUserId(email: String, newMaxScore: Int): Boolean {
         return try {
             val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return false
             FirebaseDatabase.getInstance().reference

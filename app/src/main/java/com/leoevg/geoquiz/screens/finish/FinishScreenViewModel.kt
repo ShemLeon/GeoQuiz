@@ -14,8 +14,8 @@ import javax.inject.Inject
 class FinishScreenViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : ViewModel(){
-    private val _maxscore = MutableStateFlow<Double?>(null)
-    val maxScore: StateFlow<Double?> = _maxscore
+    private val _maxscore = MutableStateFlow<Int?>(null)
+    val maxScore: StateFlow<Int?> = _maxscore
 
     fun loadMaxScore(){
         viewModelScope.launch {

@@ -60,8 +60,8 @@ fun QuestionScreen(
     question: Question,
     navigate: (NavigationPaths) -> Unit,
     typeGame: TypeGame,
-    currentScore: Double,
-    updateScore: (Double) -> Unit,
+    currentScore: Int,
+    updateScore: (Int) -> Unit,
     openNextQuestion: () -> Unit,
     viewModel: QuestionScreenViewModel = hiltViewModel<QuestionScreenViewModel,
             QuestionScreenViewModel.QuestionScreenViewModelFactory> { factory ->
@@ -97,7 +97,7 @@ fun QuestionScreen(
 fun QuestionScreenContent(
     modifier: Modifier = Modifier,
     question: Question,
-    currentScore: Double,
+    currentScore: Int,
     state: QuestionScreenState = QuestionScreenState(),
     onEvent: (QuestionScreenEvent) -> Unit
 ){
@@ -378,7 +378,7 @@ fun QuestionScreenPreview() {
             ),
             picturesUrls = listOf("https://picsum.photos/400/400")
         ),
-        currentScore = 10.0
+        currentScore = 10
     ) { }
 }}
 
@@ -404,7 +404,7 @@ fun QuestionScreenDarkPreview() {
             ),
             picturesUrls = listOf("https://picsum.photos/400/400")
         ),
-        currentScore = 10.0
+        currentScore = 10
     ) { }
 }}
 

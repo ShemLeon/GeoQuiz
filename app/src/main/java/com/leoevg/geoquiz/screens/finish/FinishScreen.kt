@@ -41,7 +41,7 @@ import androidx.compose.runtime.getValue
 
 @Composable
 fun FinishScreen(
-    finalScore: Double,
+    finalScore: Int,
     navigate: (NavigationPaths) -> Unit = {},
     viewModel: FinishScreenViewModel = hiltViewModel()
 ){
@@ -202,7 +202,7 @@ fun FinishScreenPreview(){
     GeoQuizTheme(
         darkTheme = false
     ) {
-        FinishScreen(finalScore = 95.0)
+        FinishScreen(finalScore = 95)
     }
 }
 
@@ -212,6 +212,6 @@ fun FinishScreenDarkPreview(){
     GeoQuizTheme(
         darkTheme = true
     ) {
-        FinishScreen(finalScore = 90.0)
+        FinishScreen(finalScore = 90)
     }
 }

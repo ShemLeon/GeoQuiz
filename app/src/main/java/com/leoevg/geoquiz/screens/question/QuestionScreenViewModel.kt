@@ -7,6 +7,7 @@ import com.leoevg.geoquiz.data.manager.SharedPrefManager
 import com.leoevg.geoquiz.data.model.Question
 import com.leoevg.geoquiz.data.model.TypeGame
 import com.leoevg.geoquiz.data.service.AudioService
+import com.leoevg.geoquiz.domain.repository.UserRepository
 import com.leoevg.geoquiz.navigation.NavigationPaths
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -23,12 +24,13 @@ import kotlin.Unit
 class QuestionScreenViewModel @AssistedInject constructor(
     @Assisted private var question: Question,
     @Assisted private val typeGame: TypeGame,
-    @Assisted private val updateScore: (Double) -> Unit,
+    @Assisted private val updateScore: (Int) -> Unit,
     @Assisted private val navigate: (NavigationPaths) -> Unit,
     @Assisted private val openNextQuestion: () -> Unit,
 
     private val prefManager: SharedPrefManager,
-    private val audioService: AudioService
+    private val audioService: AudioService,
+    private val userRepository: UserRepository
 ) : ViewModel() {
     private val _state = MutableStateFlow(QuestionScreenState(
         isSilentModeEnabled = prefManager.getBoolValueByKey("darkWorks", true),
@@ -59,7 +61,7 @@ class QuestionScreenViewModel @AssistedInject constructor(
 
         // Основная адища
         val result = if (state.value.selectedAnswer == question.rightAnswer){
-            var score: Double = typeGame.typeGameQuestionCost
+            var score: Int = typeGame.typeGameQuestionCost
             if (state.value.isHintUsed){
                 score /= 2
             }
@@ -105,15 +107,18 @@ class QuestionScreenViewModel @AssistedInject constructor(
 
 
     private fun onFinishBtnClicked (){
-    // Play sound only if !isSilentModeEnable
+        // Play sound only if !isSilentModeEnable
         if (_state.value.isSilentModeEnabled){
             audioService.playSound(R.raw.tadam)
         }
 
-         // TODO: Здесь добавить логику обновления максимального результата
-//         viewModelScope.launch {
-//             userRepository.updateMaxResultByUserId("", _state.value.currentScore)
-//         }
+        // Сохранить результат как максимальный, если он больше текущего максимума
+         viewModelScope.launch {
+             val currentMaxScore = userRepository.getMaxResultByUserId("") ?: 0
+             if (_state.value.currentScore > currentMaxScore) {
+                 userRepository.updateMaxResultByUserId("", _state.value.currentScore)
+             }
+         }
         navigate(NavigationPaths.Finish(finalScore = _state.value.currentScore))
 
 
@@ -137,7 +142,7 @@ class QuestionScreenViewModel @AssistedInject constructor(
         }
     }
 
-    fun updateState(question: Question, currentScore: Double) {
+    fun updateState(question: Question, currentScore: Int) {
         _state.update { QuestionScreenState(
             isSilentModeEnabled = it.isSilentModeEnabled,
             isNightModeEnabled = it.isNightModeEnabled,
@@ -152,7 +157,7 @@ class QuestionScreenViewModel @AssistedInject constructor(
         fun create(
             question: Question,
             typeGame: TypeGame,
-            updateScore: (Double) -> Unit,
+            updateScore: (Int) -> Unit,
             navigate: (NavigationPaths) -> Unit,
             openNextQuestion: () -> Unit
         ): QuestionScreenViewModel
