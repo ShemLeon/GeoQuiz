@@ -65,6 +65,7 @@ fun QuestionScreen(
     navigate: (NavigationPaths) -> Unit,
     typeGame: TypeGame,
     currentScore: Int,
+    currentQuestionNumber: Int,
     updateScore: (Int) -> Unit,
     openNextQuestion: () -> Unit,
     viewModel: QuestionScreenViewModel = hiltViewModel<QuestionScreenViewModel,
@@ -91,6 +92,7 @@ fun QuestionScreen(
         QuestionScreenContent(
             question = question,
             currentScore = currentScore,
+            currentQuestionNumber = currentQuestionNumber,
             state = state,
             onEvent = viewModel::onEvent
         )
@@ -102,6 +104,7 @@ fun QuestionScreenContent(
     modifier: Modifier = Modifier,
     question: Question,
     currentScore: Int,
+    currentQuestionNumber: Int,
     state: QuestionScreenState = QuestionScreenState(),
     onEvent: (QuestionScreenEvent) -> Unit
 ){
@@ -109,7 +112,6 @@ fun QuestionScreenContent(
 
     Box(
         modifier = modifier
-            .background(color = MaterialTheme.colorScheme.background)
             .fillMaxSize()
     ) {
 
@@ -152,7 +154,7 @@ fun QuestionScreenContent(
         ) {
             Text(
                 // TODO: сделать динамическое изменение номера вопроса
-                text = "${stringResource(R.string.question)} 1",
+                text = "${stringResource(R.string.question)} $currentQuestionNumber",
                 fontSize = 35.sp,
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center,
@@ -202,24 +204,31 @@ fun QuestionScreenContent(
                 .aspectRatio(1f) // расположение квадратиком
                 .padding(top=30.dp)
         ){
-            Card(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(2.dp),
-                shape = RoundedCornerShape(12.dp),
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 2.dp
-                ),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.background
-                )
-            ) {
+//            Card(
+//                modifier = Modifier
+//                    .fillMaxSize()
+//                    .padding(2.dp),
+//                shape = RoundedCornerShape(12.dp),
+//                elevation = CardDefaults.cardElevation(
+//                    defaultElevation = 2.dp
+//                ),
+//                colors = CardDefaults.cardColors(
+//                    containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.02f)
+//                    //        containerColor = MaterialTheme.colorScheme.background
+//                )
+//            ) {
                 AsyncImage(
                     model = question.picturesUrls[0],
                     contentDescription = "Question image",
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(20.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.05f),
+                            shape = RoundedCornerShape(12.dp)
+                        )
                 )
-            }
+            //}
 // Hint
             Button(
                 modifier = Modifier
@@ -393,7 +402,8 @@ fun QuestionScreenPreview() {
             ),
             picturesUrls = listOf("https://picsum.photos/400/400")
         ),
-        currentScore = 10
+        currentScore = 10,
+        currentQuestionNumber = 1
     ) { }
 }}
 
@@ -419,7 +429,8 @@ fun QuestionScreenDarkPreview() {
             ),
             picturesUrls = listOf("https://picsum.photos/400/400")
         ),
-        currentScore = 10
+        currentScore = 10,
+        currentQuestionNumber = 1
     ) { }
 }}
 

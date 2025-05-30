@@ -45,6 +45,7 @@ fun QuizScreen(
             navigate = navigate,
             typeGame = typeGame,
             currentScore = currentScore,
+            currentQuestionNumber = viewModel.currentQuestionIndex + 1,
             updateScore = { newScore ->
                 currentScore = newScore
             },
@@ -85,6 +86,7 @@ fun QuizScreenPreview() {
         typeGame = typeGames[0],
         currentScore = 0,
         updateScore = {},
+        currentQuestionNumber = 1,
         openNextQuestion = {  }
     )
 }
