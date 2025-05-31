@@ -46,8 +46,9 @@ fun FinishScreen(
     viewModel: FinishScreenViewModel = hiltViewModel()
 ){
     val maxScore by viewModel.maxScore.collectAsStateWithLifecycle()
+
     LaunchedEffect(Unit) {
-        viewModel.loadMaxScore()
+        viewModel.proceedMaxScore(finalScore)
     }
 
     Column (

@@ -10,28 +10,25 @@ import com.leoevg.geoquiz.domain.repository.UserRepository
 class UserRepositoryImpl : UserRepository {
     // Получение максимума
     override suspend fun getMaxResultByUserId(
-        email: String
+        uId: String
     ): Int? {
         return try {
-            val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return null
-            val snapshot = FirebaseDatabase.getInstance().reference
+           val snapshot = FirebaseDatabase.getInstance().reference
              .child(NODE_USERS)
-             .child(uid)
+             .child(uId)
              .child(CHILD_CURRENT_MAX_SCORE)
              .getDataOnce()
-
             snapshot.getValue(Int::class.java)
         } catch (e: Exception) {
             null}
     }
 
 // Обновление максимума
-    override suspend fun updateMaxResultByUserId(email: String, newMaxScore: Int): Boolean {
+    override suspend fun updateMaxResultByUserId(uId: String, newMaxScore: Int): Boolean {
         return try {
-            val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return false
             FirebaseDatabase.getInstance().reference
                 .child(NODE_USERS)
-                .child(uid)
+                .child(uId)
                 .child(CHILD_CURRENT_MAX_SCORE)
                 .setValue(newMaxScore)
             true

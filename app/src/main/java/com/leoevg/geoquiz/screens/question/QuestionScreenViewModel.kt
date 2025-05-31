@@ -112,13 +112,7 @@ class QuestionScreenViewModel @AssistedInject constructor(
             audioService.playSound(R.raw.tadam)
         }
 
-        // Сохранить результат как максимальный, если он больше текущего максимума
-         viewModelScope.launch {
-             val currentMaxScore = userRepository.getMaxResultByUserId("") ?: 0
-             if (_state.value.currentScore > currentMaxScore) {
-                 userRepository.updateMaxResultByUserId("", _state.value.currentScore)
-             }
-         }
+
         navigate(NavigationPaths.Finish(finalScore = _state.value.currentScore))
 
 
