@@ -1,8 +1,16 @@
 package com.leoevg.geoquiz.screens.question
 
+import android.R.attr.label
 import android.widget.Toast
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.animateSize
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -55,7 +63,13 @@ import com.leoevg.geoquiz.ui.components.AnswerOptionItem
 import com.leoevg.geoquiz.ui.theme.Blue
 import kotlin.Unit
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.zIndex
 import com.leoevg.geoquiz.data.model.TypeGame
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
 
@@ -109,6 +123,16 @@ fun QuestionScreenContent(
     onEvent: (QuestionScreenEvent) -> Unit
 ){
     val context = LocalContext.current  // context for hint
+    var isImageZoomed by remember { mutableStateOf(false) }
+
+    val transition = updateTransition(targetState = isImageZoomed, label = "ZoomTransition")
+
+    val fullImageSize by transition.animateDp(
+        transitionSpec = { tween(durationMillis = 300) },
+        label = "FullImageSize"
+    ) { zoomed ->
+        if (zoomed) 500.dp else 0.dp
+    }
 
     Box(
         modifier = modifier
@@ -204,19 +228,6 @@ fun QuestionScreenContent(
                 .aspectRatio(1f) // расположение квадратиком
                 .padding(top=30.dp)
         ){
-//            Card(
-//                modifier = Modifier
-//                    .fillMaxSize()
-//                    .padding(2.dp),
-//                shape = RoundedCornerShape(12.dp),
-//                elevation = CardDefaults.cardElevation(
-//                    defaultElevation = 2.dp
-//                ),
-//                colors = CardDefaults.cardColors(
-//                    containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.02f)
-//                    //        containerColor = MaterialTheme.colorScheme.background
-//                )
-//            ) {
                 AsyncImage(
                     model = question.picturesUrls[0],
                     contentDescription = "Question image",
@@ -227,8 +238,14 @@ fun QuestionScreenContent(
                             color = MaterialTheme.colorScheme.primary.copy(alpha = 0.05f),
                             shape = RoundedCornerShape(12.dp)
                         )
+                        .pointerInput(Unit) {
+                            detectTapGestures(
+                                onDoubleTap = {
+                                    isImageZoomed = true
+                                }
+                            )
+                        }
                 )
-            //}
 // Hint
             Button(
                 modifier = Modifier
@@ -338,7 +355,28 @@ fun QuestionScreenContent(
             }
 
         }
+
+    if (isImageZoomed) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black.copy(alpha = 0.4f))
+                .clickable { isImageZoomed = false }
+                .zIndex(1f),
+            contentAlignment = Alignment.Center
+        ) {
+            AsyncImage(
+                model = question.picturesUrls[0],
+                contentDescription = null,
+                modifier = Modifier
+                    .size(fullImageSize)
+                    .aspectRatio(1f)
+                    .animateContentSize(),
+                contentScale = ContentScale.Fit
+            )
+        }
     }
+}
 
 
 
