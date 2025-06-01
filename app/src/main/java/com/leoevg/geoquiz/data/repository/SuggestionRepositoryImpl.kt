@@ -13,9 +13,7 @@ class SuggestionRepositoryImpl: SuggestionRepository{
             id = UUID.randomUUID().toString(),
             country = country,
             imageUrl = imageUrl
-            )
+        )
         FirebaseDatabase.getInstance().reference.child(NODE_SUGGESTIONS).child(suggestion.id).setValue(suggestion.getAsMap())
     }
-
-
 }
