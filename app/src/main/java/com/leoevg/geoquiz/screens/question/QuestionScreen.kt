@@ -1,13 +1,9 @@
 package com.leoevg.geoquiz.screens.question
 
-import android.R.attr.label
 import android.widget.Toast
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateDp
-import androidx.compose.animation.core.animateSize
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -66,6 +62,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.colorspace.Illuminant.C
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
@@ -88,7 +85,6 @@ fun QuestionScreen(
     }
 ){
     val context = LocalContext.current
-
     // преобразование stateFlow в обычный для composable
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -122,23 +118,24 @@ fun QuestionScreenContent(
     state: QuestionScreenState = QuestionScreenState(),
     onEvent: (QuestionScreenEvent) -> Unit
 ){
+    // Стейты
     val context = LocalContext.current  // context for hint
-    var isImageZoomed by remember { mutableStateOf(false) }
 
+    var isImageZoomed by remember { mutableStateOf(false) }
+    // анимация разворачивания по времени
     val transition = updateTransition(targetState = isImageZoomed, label = "ZoomTransition")
 
     val fullImageSize by transition.animateDp(
-        transitionSpec = { tween(durationMillis = 300) },
+        transitionSpec = { tween(durationMillis = 500) },
         label = "FullImageSize"
-    ) { zoomed ->
-        if (zoomed) 500.dp else 0.dp
+    ){ zoomed ->
+        if (zoomed) 400.dp else 0.dp
     }
 
     Box(
         modifier = modifier
             .fillMaxSize()
     ) {
-
     Column(
         modifier = modifier
             .background(color = MaterialTheme.colorScheme.background)
@@ -238,14 +235,15 @@ fun QuestionScreenContent(
                             color = MaterialTheme.colorScheme.primary.copy(alpha = 0.05f),
                             shape = RoundedCornerShape(12.dp)
                         )
-                        .pointerInput(Unit) {
-                            detectTapGestures(
-                                onDoubleTap = {
+                        .pointerInput(Unit){ // мод для "тапания пальцами"
+                            detectTapGestures( // слушатель для тапов
+                                onDoubleTap = { // исполнение после дабл тапа
                                     isImageZoomed = true
                                 }
                             )
                         }
                 )
+
 // Hint
             Button(
                 modifier = Modifier
@@ -345,38 +343,43 @@ fun QuestionScreenContent(
                         contentDescription = "finish_icon_button",
                         modifier = Modifier.size(44.dp)
                         )
-//                    Text(
-//                        stringResource(R.string.finish),
-//                        fontSize = 20.sp,
-//                        fontWeight = FontWeight.Normal,
-//                        color = MaterialTheme.colorScheme.background
-//                    )
                 }
             }
 
         }
 
-    if (isImageZoomed) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.4f))
-                .clickable { isImageZoomed = false }
-                .zIndex(1f),
-            contentAlignment = Alignment.Center
-        ) {
-            AsyncImage(
-                model = question.picturesUrls[0],
-                contentDescription = null,
-                modifier = Modifier
-                    .size(fullImageSize)
-                    .aspectRatio(1f)
-                    .animateContentSize(),
-                contentScale = ContentScale.Fit
-            )
+    if (isImageZoomed){
+            Box(
+                modifier= Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha=0.9f))
+                    .clickable{ isImageZoomed = false}
+                    .zIndex(1f),
+                contentAlignment = Alignment.Center
+            ){
+                AsyncImage(
+                    model = question.picturesUrls[0],
+                    contentDescription = "Question image",
+                    modifier = Modifier
+                        .size(fullImageSize) // Используем анимированный размер
+                        .padding(20.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.05f),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                        .pointerInput(Unit){ // мод для "тапания пальцами"
+                            detectTapGestures( // слушатель для тапов
+                                onDoubleTap = { // исполнение после дабл тапа
+                                    var isZoomed: Boolean = false
+                                    isZoomed = !isZoomed
+                                }
+                            )
+                        },
+                    contentScale = ContentScale.Crop
+                )
+            }
         }
     }
-}
 
 
 
