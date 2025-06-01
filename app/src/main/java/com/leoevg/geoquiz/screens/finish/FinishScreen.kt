@@ -1,6 +1,5 @@
 package com.leoevg.geoquiz.screens.finish
 
-import android.R.attr.text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,6 +20,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -32,19 +34,16 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.leoevg.geoquiz.R
+import com.leoevg.geoquiz.domain.repository.UserRepository
 import com.leoevg.geoquiz.navigation.NavigationPaths
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 
 @Composable
 fun FinishScreen(
     finalScore: Int,
     navigate: (NavigationPaths) -> Unit = {},
     viewModel: FinishScreenViewModel = hiltViewModel()
-){
+) {
     val maxScore by viewModel.maxScore.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
@@ -197,22 +196,54 @@ fun FinishScreen(
     }
 }
 
+
+
+
+// Preview Functions and Fake Repository ---
+class FakeUserRepositoryForPreview(private var initialMaxScore: Int? = 100) : UserRepository {
+    override suspend fun getMaxResultByUserId(uid: String): Int? {
+        return initialMaxScore
+    }
+    override suspend fun updateMaxResultByUserId(uid: String, result: Int): Boolean {
+        if (result > (initialMaxScore ?: 0)) {
+            initialMaxScore = result
+        }
+        return true // Возвращаем true, так как в фейковой реализации операция всегда "успешна"
+    }
+}
+
+
+
 @Composable
-@Preview(showBackground = true)
-fun FinishScreenPreview(){
+@Preview(showBackground = true, name = "Finish Screen Light")
+fun FinishScreenLightPreview() {
     GeoQuizTheme(
         darkTheme = false
     ) {
-        FinishScreen(finalScore = 95)
+        val previewViewModel = remember {
+            FinishScreenViewModel(FakeUserRepositoryForPreview(initialMaxScore = 120))
+        }
+        FinishScreen(
+            finalScore = 95,
+            navigate = { },
+            viewModel = previewViewModel
+        )
     }
 }
 
 @Composable
-@Preview(showBackground = false)
-fun FinishScreenDarkPreview(){
+@Preview(showBackground = false, name = "Finish Screen Dark")
+fun FinishScreenDarkPreview() {
     GeoQuizTheme(
         darkTheme = true
     ) {
-        FinishScreen(finalScore = 90)
+        val previewViewModel = remember {
+            FinishScreenViewModel(FakeUserRepositoryForPreview(initialMaxScore = 75))
+        }
+        FinishScreen(
+            finalScore = 90,
+            navigate = { },
+            viewModel = previewViewModel
+        )
     }
 }
