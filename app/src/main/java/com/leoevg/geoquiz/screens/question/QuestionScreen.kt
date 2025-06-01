@@ -2,6 +2,7 @@ package com.leoevg.geoquiz.screens.question
 
 import android.widget.Toast
 import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
@@ -63,12 +64,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.colorspace.Illuminant.C
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.zIndex
 import com.leoevg.geoquiz.data.model.TypeGame
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
+import androidx.compose.ui.graphics.graphicsLayer
 
 @Composable
 fun QuestionScreen(
@@ -125,11 +128,12 @@ fun QuestionScreenContent(
     // анимация разворачивания по времени
     val transition = updateTransition(targetState = isImageZoomed, label = "ZoomTransition")
 
-    val fullImageSize by transition.animateDp(
+    val imageScale by transition.animateFloat(
         transitionSpec = { tween(durationMillis = 500) },
-        label = "FullImageSize"
+        label = "ImageScale"
     ){ zoomed ->
-        if (zoomed) 400.dp else 0.dp
+        if (zoomed) 1f else 0f
+
     }
 
     Box(
@@ -200,7 +204,6 @@ fun QuestionScreenContent(
                         .aspectRatio(1f) // Сохраняем пропорции (квадрат)
                         .clickable {
                             onEvent(QuestionScreenEvent.SilentModeBtnClicked)
-
                         }
                 )
                 Icon(
@@ -348,7 +351,7 @@ fun QuestionScreenContent(
 
         }
 
-    if (isImageZoomed){
+    if (isImageZoomed) {
             Box(
                 modifier= Modifier
                     .fillMaxSize()
@@ -361,7 +364,11 @@ fun QuestionScreenContent(
                     model = question.picturesUrls[0],
                     contentDescription = "Question image",
                     modifier = Modifier
-                        .size(fullImageSize) // Используем анимированный размер
+                        .fillMaxWidth() // Пропорционально
+                        .graphicsLayer {
+                            scaleX = imageScale
+                            scaleY = imageScale
+                        }
                         .padding(20.dp)
                         .background(
                             color = MaterialTheme.colorScheme.primary.copy(alpha = 0.05f),
@@ -369,13 +376,15 @@ fun QuestionScreenContent(
                         )
                         .pointerInput(Unit){ // мод для "тапания пальцами"
                             detectTapGestures( // слушатель для тапов
+                                onTap = { // исполнение после одиночного тапа
+                                    isImageZoomed = false // Сворачиваем изображение
+                                },
                                 onDoubleTap = { // исполнение после дабл тапа
-                                    var isZoomed: Boolean = false
-                                    isZoomed = !isZoomed
+                                    isImageZoomed = false // Сворачиваем изображение
                                 }
                             )
                         },
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Fit // Вместо обрезки - подгон под размер
                 )
             }
         }
