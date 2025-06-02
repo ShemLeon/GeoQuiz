@@ -44,14 +44,27 @@ fun FinishScreen(
     navigate: (NavigationPaths) -> Unit = {},
     viewModel: FinishScreenViewModel = hiltViewModel()
 ) {
-    val maxScore by viewModel.maxScore.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        viewModel.proceedMaxScore(finalScore)
+        viewModel.proceedMaxScore()
     }
 
+    FinishScreenContent(
+        modifier = Modifier,
+        state = state,
+        navigate = navigate
+    )
+}
+
+@Composable
+fun FinishScreenContent(
+    modifier: Modifier = Modifier,
+    state: FinishScreenState,
+    navigate: (NavigationPaths) -> Unit = {}
+) {
     Column (
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 10.dp)
             .background(MaterialTheme.colorScheme.background),
@@ -104,7 +117,7 @@ fun FinishScreen(
             color = MaterialTheme.colorScheme.onBackground
         )
         Text(
-            text = finalScore.toString(),
+            text = "finalScore.toString()",
             modifier = Modifier.padding(top = 70.dp),
             fontSize = 160.sp,
             fontWeight = FontWeight.Normal,
@@ -120,11 +133,7 @@ fun FinishScreen(
         )
 // MaxScore
         Text(
-            text = if (maxScore !=null) {
-                stringResource(R.string.max_score) + "${maxScore}"
-            } else {
-                stringResource(R.string.max_score) + "..."
-            },
+            text = stringResource(R.string.max_score) + (state.maxScore?.let { state.maxScore } ?: "..."),
             modifier = Modifier,
             fontSize = 30.sp,
             fontWeight = FontWeight.Normal,
@@ -150,7 +159,7 @@ fun FinishScreen(
                 ),
                 shape = RoundedCornerShape(15.dp),
                 onClick = {
-                    navigate(NavigationPaths.Rate)
+                    // TODO: open rating view and option to add new photo for question
                 }
             ) {
                 Box(
@@ -175,7 +184,7 @@ fun FinishScreen(
 
             }
 
-// btn back
+            // btn go to quizzes
             Button(
                 modifier = Modifier
                     .fillMaxWidth(fraction = 0.99f)
@@ -196,38 +205,13 @@ fun FinishScreen(
     }
 }
 
-
-
-
-// Preview Functions and Fake Repository ---
-class FakeUserRepositoryForPreview(private var initialMaxScore: Int? = 100) : UserRepository {
-    override suspend fun getMaxResultByUserId(uid: String): Int? {
-        return initialMaxScore
-    }
-    override suspend fun updateMaxResultByUserId(uid: String, result: Int): Boolean {
-        if (result > (initialMaxScore ?: 0)) {
-            initialMaxScore = result
-        }
-        return true // Возвращаем true, так как в фейковой реализации операция всегда "успешна"
-    }
-}
-
-
-
 @Composable
 @Preview(showBackground = true, name = "Finish Screen Light")
 fun FinishScreenLightPreview() {
     GeoQuizTheme(
         darkTheme = false
     ) {
-        val previewViewModel = remember {
-            FinishScreenViewModel(FakeUserRepositoryForPreview(initialMaxScore = 120))
-        }
-        FinishScreen(
-            finalScore = 95,
-            navigate = { },
-            viewModel = previewViewModel
-        )
+        FinishScreenContent(state = FinishScreenState())
     }
 }
 
@@ -237,13 +221,6 @@ fun FinishScreenDarkPreview() {
     GeoQuizTheme(
         darkTheme = true
     ) {
-        val previewViewModel = remember {
-            FinishScreenViewModel(FakeUserRepositoryForPreview(initialMaxScore = 75))
-        }
-        FinishScreen(
-            finalScore = 90,
-            navigate = { },
-            viewModel = previewViewModel
-        )
+        FinishScreenContent(state = FinishScreenState())
     }
 }
