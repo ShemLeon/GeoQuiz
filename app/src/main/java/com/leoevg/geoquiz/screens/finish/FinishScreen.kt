@@ -42,7 +42,9 @@ import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
 fun FinishScreen(
     finalScore: Int,
     navigate: (NavigationPaths) -> Unit = {},
-    viewModel: FinishScreenViewModel = hiltViewModel()
+    viewModel: FinishScreenViewModel = hiltViewModel<FinishScreenViewModel, FinishScreenViewModel.FinishScreenViewModelFactory>{factory ->
+        factory.create(finalScore)
+    }
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -117,7 +119,7 @@ fun FinishScreenContent(
             color = MaterialTheme.colorScheme.onBackground
         )
         Text(
-            text = "finalScore.toString()",
+            text = state.finalScore.toString(),
             modifier = Modifier.padding(top = 70.dp),
             fontSize = 160.sp,
             fontWeight = FontWeight.Normal,
@@ -139,7 +141,6 @@ fun FinishScreenContent(
             fontWeight = FontWeight.Normal,
             color = MaterialTheme.colorScheme.onBackground
         )
-
 
 // Bottom
         Column (

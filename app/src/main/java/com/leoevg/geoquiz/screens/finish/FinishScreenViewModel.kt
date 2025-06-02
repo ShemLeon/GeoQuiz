@@ -4,52 +4,42 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.leoevg.geoquiz.domain.repository.UserRepository
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class FinishScreenViewModel @Inject constructor(
+
+@HiltViewModel(assistedFactory = FinishScreenViewModel.FinishScreenViewModelFactory::class)
+class FinishScreenViewModel @AssistedInject constructor(
+    @Assisted private val finalScore: Int,
     private val userRepository: UserRepository
 ) : ViewModel() {
-    private val _state = MutableStateFlow(FinishScreenState())
+    private val _state = MutableStateFlow(FinishScreenState(finalScore = finalScore))
     val state: StateFlow<FinishScreenState> = _state.asStateFlow()
 
     fun proceedMaxScore() {
-//        val isPreviewMode = userRepository is FakeUserRepositoryForPreview
-//        val currentUid: String? = if (isPreviewMode) {
-//            "fake_preview_user_id"
-//        } else {
-//            FirebaseAuth.getInstance().currentUser?.uid
-//        }
-//        if (currentUid != null) {
-//            viewModelScope.launch(Dispatchers.IO) {
-//                // 1. Получаем текущий максимальный результат
-//                val currentMaxInDb = userRepository.getMaxResultByUserId(currentUid)
-//                _maxScore.value = currentMaxInDb // Обновляем Flow для UI
-//                // 2. Обновляем в БД, если новый результат лучше
-//                if (finalScore > (currentMaxInDb ?: 0)) {
-//                    userRepository.updateMaxResultByUserId(currentUid, finalScore)
-//                    // 3. После успешного обновления в БД, снова обновляем Flow новым значением
-//                    _maxScore.value = finalScore
-//                }
-//            }
-//        } else {
-//            if (isPreviewMode) {
-//                viewModelScope.launch(Dispatchers.IO) {
-//                    val previewMaxScore = userRepository.getMaxResultByUserId("fake_preview_user_id")
-//                    _maxScore.value = previewMaxScore
-//                    if (finalScore > (previewMaxScore ?: 0)) {
-//                        _maxScore.value = finalScore
-//                    }
-//                }
-//            } else {
-//                _maxScore.value = null
-//            }
-//        }
+        FirebaseAuth.getInstance().currentUser?.uid?.let {
+            viewModelScope.launch(Dispatchers.IO) {
+                // 1. Получаем текущий максимальный результат
+                val currentMaxInDb = userRepository.getMaxResultByUserId(it)?:0
+                _state.update { it.copy(maxScore = currentMaxInDb) }
+                // 2.
+                if (finalScore>currentMaxInDb) userRepository.updateMaxResultByUserId(it, finalScore)
+
+            }
+        }
+    }
+
+    @AssistedFactory
+    interface FinishScreenViewModelFactory{
+        fun create(finalScore: Int): FinishScreenViewModel
     }
 }
+
