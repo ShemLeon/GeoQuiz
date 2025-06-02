@@ -197,8 +197,6 @@ fun FinishScreen(
 }
 
 
-
-
 // Preview Functions and Fake Repository ---
 class FakeUserRepositoryForPreview(private var initialMaxScore: Int? = 100) : UserRepository {
     override suspend fun getMaxResultByUserId(uid: String): Int? {
