@@ -8,7 +8,6 @@ import java.util.UUID
 
 class SuggestionRepositoryImpl: SuggestionRepository{
     override fun createSuggestion(country: String, imageUrl: String) {
-        TODO("Not yet implemented")
         val suggestion = Suggestion(
             id = UUID.randomUUID().toString(),
             country = country,

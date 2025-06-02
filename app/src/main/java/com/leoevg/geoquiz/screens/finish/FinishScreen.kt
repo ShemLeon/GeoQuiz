@@ -159,9 +159,7 @@ fun FinishScreenContent(
                     containerColor = MaterialTheme.colorScheme.background
                 ),
                 shape = RoundedCornerShape(15.dp),
-                onClick = {
-                    // TODO: open rating view and option to add new photo for question
-                }
+                onClick = { navigate(NavigationPaths.Rate) }
             ) {
                 Box(
                     modifier = Modifier.height(100.dp),

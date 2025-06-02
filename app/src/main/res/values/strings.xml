@@ -46,5 +46,6 @@
 
     <string name="answer_opt">Country</string>
 
-
+    <string name="gallery_permission_needed">Gallery permission needed to pick an image</string>
+    <string name="failed_to_get_image">Failed to get image from gallery</string>
 </resources>

@@ -1,5 +1,12 @@
 package com.leoevg.geoquiz.screens.rate
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -38,8 +45,12 @@ import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
 import com.leoevg.geoquiz.ui.components.LoadingDialog
 
 @Composable
@@ -50,11 +61,36 @@ fun RateScreen(
     val viewModel: RateScreenViewModel = hiltViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    val context = LocalContext.current
+
+    val pickImageLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        uri?.let {
+            viewModel.onEvent(RateScreenEvent.ImagePicked(uri))
+        } ?: run {
+            Toast.makeText(context, context.getString(R.string.failed_to_get_image), Toast.LENGTH_LONG).show()
+        }
+    }
+    val requestPermissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+        if (isGranted) {
+            pickImageLauncher.launch("image/*")
+        } else {
+            Toast.makeText(context, context.getString(R.string.gallery_permission_needed), Toast.LENGTH_LONG).show()
+        }
+    }
+    val checkGalleryPermissionAndPickImage = {
+        val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) Manifest.permission.READ_MEDIA_IMAGES else Manifest.permission.READ_EXTERNAL_STORAGE
+        if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED)
+            requestPermissionLauncher.launch(permission)
+        else
+            pickImageLauncher.launch("image/*")
+    }
+
     LoadingDialog(isLoading = state.isLoading)
     RateScreenContent(
         navigate = navigate,
         state = state,
-        onEvent = viewModel::onEvent
+        onEvent = viewModel::onEvent,
+        checkGalleryPermissionAndPickImage = checkGalleryPermissionAndPickImage
     )
 }
 
@@ -63,10 +99,11 @@ fun RateScreenContent(
     modifier: Modifier = Modifier,
     state: RateScreenState = RateScreenState(),
     onEvent: (RateScreenEvent) -> Unit,
-    navigate: (NavigationPaths) -> Unit
+    navigate: (NavigationPaths) -> Unit,
+    checkGalleryPermissionAndPickImage: () -> Unit
 ){
     Column (
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 10.dp)
             .background(MaterialTheme.colorScheme.background),
@@ -96,38 +133,48 @@ fun RateScreenContent(
             horizontalAlignment = Alignment.CenterHorizontally
         ){
 
-// btn give you content
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth(fraction = 0.6f)
-                    .padding(bottom = 20.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.background
-                ),
-                shape = RoundedCornerShape(15.dp),
-                onClick = {
-                //    navigate(NavigationPaths.Userpic)
-                }
-            ) {
-                Box(
-                    modifier = Modifier.height(150.dp),
-                    contentAlignment = Alignment.BottomCenter
+            // btn give you content
+            state.pickedImageUri?.let {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(it)
+                        .build(),
+                    contentDescription = "Picked image",
+                    modifier = Modifier
+                        .padding(bottom = 20.dp)
+                )
+            } ?: run {
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth(fraction = 0.6f)
+                        .padding(bottom = 20.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.background
+                    ),
+                    shape = RoundedCornerShape(15.dp),
+                    onClick = { checkGalleryPermissionAndPickImage() }
                 ) {
-                    Icon(
-                        imageVector = Icons.Filled.CameraAlt,
-                        contentDescription = "camera icon",
-                        tint = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier
-                            .size(150.dp)
-                    )
-                    Text(
-                        stringResource(R.string.send_content).uppercase(),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Normal,
-                        color = MaterialTheme.colorScheme.onBackground,
-                    )
+                    Box(
+                        modifier = Modifier.height(150.dp),
+                        contentAlignment = Alignment.BottomCenter
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.CameraAlt,
+                            contentDescription = "camera icon",
+                            tint = MaterialTheme.colorScheme.onBackground,
+                            modifier = Modifier
+                                .size(150.dp)
+                        )
+                        Text(
+                            stringResource(R.string.send_content).uppercase(),
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Normal,
+                            color = MaterialTheme.colorScheme.onBackground,
+                        )
+                    }
                 }
             }
+
 // btn back
             Button(
                 modifier = Modifier
@@ -144,8 +191,8 @@ fun RateScreenContent(
                 Text(
                     stringResource(R.string.go_to_quizzes),
                     fontSize = 30.sp,
-                    fontWeight = FontWeight.Normal,
-                    )
+                    fontWeight = FontWeight.Normal
+                )
             }
         }
     }
@@ -200,7 +247,8 @@ fun RateScreenPreview(){
             modifier = Modifier,
             state = RateScreenState(),
             onEvent = {},
-            navigate = {}
+            navigate = {},
+            checkGalleryPermissionAndPickImage = {}
         )
     }
 }
@@ -215,7 +263,8 @@ fun RateScreenDarkPreview(){
             modifier = Modifier,
             state = RateScreenState(),
             onEvent = {},
-            navigate = {}
+            navigate = {},
+            checkGalleryPermissionAndPickImage = {}
         )
     }
 }

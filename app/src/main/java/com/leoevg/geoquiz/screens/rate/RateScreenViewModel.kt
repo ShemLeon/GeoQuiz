@@ -1,5 +1,6 @@
 package com.leoevg.geoquiz.screens.rate
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.leoevg.geoquiz.navigation.NavigationPaths
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,11 +25,15 @@ class RateScreenViewModel @Inject constructor( ): ViewModel( ){
         // SOLID
         when(event){
             is RateScreenEvent.StarsChanged -> onStarsSelected(event.selectedStars)
+            is RateScreenEvent.ImagePicked -> onImagePicked(event.imageUri)
             RateScreenEvent.SendContentBtnClicked -> onSendContentBtnClicked()
             RateScreenEvent.GoToQuizesBtnClicked -> onGoToQuizesBtnClicked()
         }
     }
 
+    private fun onImagePicked(imageUri: Uri) {
+        _state.update { it.copy(pickedImageUri = imageUri) }
+    }
 
     private fun onStarsSelected(stars: Int) {  // Исправить сигнатуру
         _state.update { it.copy(stars = stars) }
