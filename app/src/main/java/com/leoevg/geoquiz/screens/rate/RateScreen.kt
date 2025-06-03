@@ -61,22 +61,29 @@ fun RateScreen(
     val viewModel: RateScreenViewModel = hiltViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    // 2. запросить у пользователя разрешение на галерею. через Activity For Result Launcher -
+    // объект/диалоговое окно, которое запустим для получения результата. и передать 2 аргумента:
+    // 1- контракт на действие  - requestPermissionLauncher
+    // 2 - что делать с результатом контракта
+    // 3 - контракт на получение одного изображения - pickImageLauncher
     val context = LocalContext.current
-
-    val pickImageLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+    val pickImageLauncher = rememberLauncherForActivityResult(
+          ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
             viewModel.onEvent(RateScreenEvent.ImagePicked(uri))
         } ?: run {
             Toast.makeText(context, context.getString(R.string.failed_to_get_image), Toast.LENGTH_LONG).show()
         }
     }
-    val requestPermissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+    val requestPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()) { isGranted ->
         if (isGranted) {
             pickImageLauncher.launch("image/*")
         } else {
             Toast.makeText(context, context.getString(R.string.gallery_permission_needed), Toast.LENGTH_LONG).show()
         }
     }
+
     val checkGalleryPermissionAndPickImage = {
         val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) Manifest.permission.READ_MEDIA_IMAGES else Manifest.permission.READ_EXTERNAL_STORAGE
         if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED)
@@ -132,7 +139,6 @@ fun RateScreenContent(
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally
         ){
-
             // btn give you content
             state.pickedImageUri?.let {
                 AsyncImage(

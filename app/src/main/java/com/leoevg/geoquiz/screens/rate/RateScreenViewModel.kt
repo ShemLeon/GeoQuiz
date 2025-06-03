@@ -27,7 +27,7 @@ class RateScreenViewModel @Inject constructor( ): ViewModel( ){
             is RateScreenEvent.StarsChanged -> onStarsSelected(event.selectedStars)
             is RateScreenEvent.ImagePicked -> onImagePicked(event.imageUri)
             RateScreenEvent.SendContentBtnClicked -> onSendContentBtnClicked()
-            RateScreenEvent.GoToQuizesBtnClicked -> onGoToQuizesBtnClicked()
+            RateScreenEvent.GoToQuizzesBtnClicked -> onGoToQuizesBtnClicked()
         }
     }
 
