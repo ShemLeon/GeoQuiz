@@ -139,8 +139,9 @@ fun RateScreenContent(
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally
         ){
-            // btn give you content
+// Btn give you content
             state.pickedImageUri?.let {
+                // если изображение выбрано - отображаем его
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
                         .data(it)
@@ -149,6 +150,7 @@ fun RateScreenContent(
                     modifier = Modifier
                         .padding(bottom = 20.dp)
                 )
+                // действие выбора
             } ?: run {
                 Button(
                     modifier = Modifier
