@@ -9,6 +9,6 @@ sealed interface  RateScreenEvent {
     data object GoToQuizzesBtnClicked: RateScreenEvent
     data object SendContentBtnClicked: RateScreenEvent
 
-    data class ImagePicked(val imageUri: Uri): RateScreenEvent
+    data class ImagePicked(val imageUri: Uri, val countryName: String): RateScreenEvent
 }
 

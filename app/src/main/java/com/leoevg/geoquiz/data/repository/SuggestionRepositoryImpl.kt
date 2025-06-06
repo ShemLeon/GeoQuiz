@@ -15,4 +15,6 @@ class SuggestionRepositoryImpl: SuggestionRepository{
         )
         FirebaseDatabase.getInstance().reference.child(NODE_SUGGESTIONS).child(suggestion.id).setValue(suggestion.getAsMap())
     }
+
+
 }

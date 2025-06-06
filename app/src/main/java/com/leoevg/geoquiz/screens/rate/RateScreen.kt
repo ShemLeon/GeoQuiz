@@ -70,7 +70,7 @@ fun RateScreen(
     val pickImageLauncher = rememberLauncherForActivityResult(
           ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
-            viewModel.onEvent(RateScreenEvent.ImagePicked(uri))
+            viewModel.onEvent(RateScreenEvent.ImagePicked(uri, "sadsad"))
         } ?: run {
             Toast.makeText(context, context.getString(R.string.failed_to_get_image), Toast.LENGTH_LONG).show()
         }

@@ -4,5 +4,7 @@ import android.net.Uri
 data class RateScreenState(
     val stars: Int? = null,
     val isLoading: Boolean = false,
-    val pickedImageUri: Uri? = null
+    val countryName: String? = null,
+    val pickedImageUri: Uri? = null,
+    val error: String? = null
 )
