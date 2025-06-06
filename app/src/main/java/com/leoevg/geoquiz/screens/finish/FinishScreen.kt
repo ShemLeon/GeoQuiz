@@ -22,7 +22,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -34,7 +33,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.leoevg.geoquiz.R
-import com.leoevg.geoquiz.domain.repository.UserRepository
 import com.leoevg.geoquiz.navigation.NavigationPaths
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
 
@@ -42,7 +40,8 @@ import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
 fun FinishScreen(
     finalScore: Int,
     navigate: (NavigationPaths) -> Unit = {},
-    viewModel: FinishScreenViewModel = hiltViewModel<FinishScreenViewModel, FinishScreenViewModel.FinishScreenViewModelFactory>{factory ->
+    viewModel: FinishScreenViewModel = hiltViewModel<FinishScreenViewModel, FinishScreenViewModel.FinishScreenViewModelFactory>{
+        factory ->
         factory.create(finalScore)
     }
 ) {
@@ -51,7 +50,6 @@ fun FinishScreen(
     LaunchedEffect(Unit) {
         viewModel.proceedMaxScore()
     }
-
     FinishScreenContent(
         modifier = Modifier,
         state = state,
@@ -64,9 +62,9 @@ fun FinishScreenContent(
     modifier: Modifier = Modifier,
     state: FinishScreenState,
     navigate: (NavigationPaths) -> Unit = {}
-) {
+){
     Column (
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 10.dp)
             .background(MaterialTheme.colorScheme.background),
@@ -135,12 +133,14 @@ fun FinishScreenContent(
         )
 // MaxScore
         Text(
-            text = stringResource(R.string.max_score) + (state.maxScore?.let { state.maxScore } ?: "..."),
+            text = stringResource(R.string.max_score)
+                    + (state.maxScore?.let { state.maxScore  } ?: "..."),
             modifier = Modifier,
             fontSize = 30.sp,
             fontWeight = FontWeight.Normal,
             color = MaterialTheme.colorScheme.onBackground
         )
+
 
 // Bottom
         Column (
@@ -159,7 +159,9 @@ fun FinishScreenContent(
                     containerColor = MaterialTheme.colorScheme.background
                 ),
                 shape = RoundedCornerShape(15.dp),
-                onClick = { navigate(NavigationPaths.Rate) }
+                onClick = {
+                    navigate(NavigationPaths.Rate)
+                }
             ) {
                 Box(
                     modifier = Modifier.height(100.dp),
@@ -183,7 +185,7 @@ fun FinishScreenContent(
 
             }
 
-            // btn go to quizzes
+// btn back
             Button(
                 modifier = Modifier
                     .fillMaxWidth(fraction = 0.99f)
@@ -203,6 +205,7 @@ fun FinishScreenContent(
         }
     }
 }
+
 
 @Composable
 @Preview(showBackground = true, name = "Finish Screen Light")

@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-
 @HiltViewModel(assistedFactory = FinishScreenViewModel.FinishScreenViewModelFactory::class)
 class FinishScreenViewModel @AssistedInject constructor(
     @Assisted private val finalScore: Int,
@@ -25,16 +24,16 @@ class FinishScreenViewModel @AssistedInject constructor(
     val state: StateFlow<FinishScreenState> = _state.asStateFlow()
 
     fun proceedMaxScore() {
-        FirebaseAuth.getInstance().currentUser?.uid?.let {
-            viewModelScope.launch(Dispatchers.IO) {
-                // 1. Получаем текущий максимальный результат
-                val currentMaxInDb = userRepository.getMaxResultByUserId(it)?:0
-                _state.update { it.copy(maxScore = currentMaxInDb) }
-                // 2.
-                if (finalScore>currentMaxInDb) userRepository.updateMaxResultByUserId(it, finalScore)
-
+            FirebaseAuth.getInstance().currentUser?.uid?.let {
+                viewModelScope.launch(Dispatchers.IO) {
+                    // 1. Получаем максимальный результат из БД
+                    val currentMaxInDb = userRepository.getMaxResultByUserId(it)?:0
+                   _state.update { it.copy(maxScore = currentMaxInDb) }
+                    // 2. Обновляем его
+                    if (finalScore>currentMaxInDb)
+                        userRepository.updateMaxResultByUserId(it, finalScore)
+                }
             }
-        }
     }
 
     @AssistedFactory
@@ -42,4 +41,3 @@ class FinishScreenViewModel @AssistedInject constructor(
         fun create(finalScore: Int): FinishScreenViewModel
     }
 }
-

@@ -1,5 +1,4 @@
 package com.leoevg.geoquiz.screens.rate
-
 import android.net.Uri
 
 data class RateScreenState(
