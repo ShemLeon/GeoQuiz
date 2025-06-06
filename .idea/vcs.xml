@@ -3,6 +3,5 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/code2prompt-mcp" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/code2prompt-mcp/code2prompt-mcp" vcs="Git" />
   </component>
 </project>

@@ -75,6 +75,7 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.realtime.database)
+    implementation(libs.firebase.storage)
 
     implementation(libs.dagger.hilt.android)
     implementation(libs.android.hilt.navigation.compose)

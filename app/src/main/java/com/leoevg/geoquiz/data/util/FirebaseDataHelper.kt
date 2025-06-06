@@ -1,10 +1,13 @@
 package com.leoevg.geoquiz.data.util
+import android.net.Uri
 import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.UploadTask
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -37,16 +40,24 @@ suspend fun Task<AuthResult>.getCompletedResult(): AuthResult? {
     }
 }
 
+suspend fun UploadTask.getCompletedResult(): UploadTask.TaskSnapshot {
+    return suspendCancellableCoroutine { continuation ->
+        this.addOnCompleteListener {
+            if (it.isSuccessful)
+                continuation.resume(it.result)
+            else
+                continuation.resumeWithException(RuntimeException("Failed to upload image to Firebase Storage"))
+        }
+    }
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
+suspend fun Task<Uri>.getCompletedResult(): Uri {
+    return suspendCancellableCoroutine { continuation ->
+        this.addOnCompleteListener {
+            if (it.isSuccessful)
+                continuation.resume(it.result)
+            else
+                continuation.resumeWithException(RuntimeException("Failed to get Firebase Storage downloadUrl for uploaded image"))
+        }
+    }
+}

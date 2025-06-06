@@ -2,16 +2,22 @@ package com.leoevg.geoquiz.screens.rate
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.leoevg.geoquiz.domain.repository.FirebaseStorageRepository
 import com.leoevg.geoquiz.navigation.NavigationPaths
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 @HiltViewModel
-class RateScreenViewModel @Inject constructor( ): ViewModel( ){
+class RateScreenViewModel @Inject constructor(
+    private val firebaseStorageRepository: FirebaseStorageRepository
+): ViewModel( ){
     // state вьюхи
     private val _state = MutableStateFlow(RateScreenState())
     val state: StateFlow<RateScreenState> = _state
@@ -31,8 +37,13 @@ class RateScreenViewModel @Inject constructor( ): ViewModel( ){
         }
     }
 
-    private fun onImagePicked(imageUri: Uri) {
+    private fun onImagePicked(imageUri: Uri, countryName: String = "israel") {
         _state.update { it.copy(pickedImageUri = imageUri) }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val downloadUrl = firebaseStorageRepository.uploadImage(countryName, imageUri)
+
+        }
     }
 
     private fun onStarsSelected(stars: Int) {  // Исправить сигнатуру
