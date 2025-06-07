@@ -39,7 +39,7 @@ suspend fun Task<AuthResult>.getCompletedResult(): AuthResult? {
         }
     }
 }
-
+// Todo: закрыть вопрос
 suspend fun UploadTask.getCompletedResult(): UploadTask.TaskSnapshot {
     return suspendCancellableCoroutine { continuation ->
         this.addOnCompleteListener {
