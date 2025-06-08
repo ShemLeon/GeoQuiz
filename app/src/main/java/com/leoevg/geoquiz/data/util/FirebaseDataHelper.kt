@@ -27,6 +27,7 @@ suspend fun DatabaseReference.getDataOnce(): DataSnapshot{
     }
 }
 
+
 suspend fun Task<AuthResult>.getCompletedResult(): AuthResult? {
     // асинхронная таска в Firebase
     return suspendCancellableCoroutine { continuation ->
@@ -39,7 +40,8 @@ suspend fun Task<AuthResult>.getCompletedResult(): AuthResult? {
         }
     }
 }
-// Todo: закрыть вопрос
+
+
 suspend fun UploadTask.getCompletedResult(): UploadTask.TaskSnapshot {
     return suspendCancellableCoroutine { continuation ->
         this.addOnCompleteListener {

@@ -46,7 +46,7 @@ class RateScreenViewModel @Inject constructor(
 
     private fun onImagePicked(imageUri: Uri, countryName: String = "israel" ) {
         _state.update { it.copy(pickedImageUri = imageUri) }
-
+/*
         viewModelScope.launch(Dispatchers.IO) {
             val downloadUrl = firebaseStorageRepository.uploadImage(countryName, imageUri)
             if (downloadUrl == null) {
@@ -58,6 +58,8 @@ class RateScreenViewModel @Inject constructor(
             }
             suggestionRepository.createSuggestion(countryName, downloadUrl)
         }
+        
+ */
     }
 
     private fun onStarsSelected(stars: Int) {  // Исправить сигнатуру
