@@ -45,7 +45,10 @@
     <string name="userpic_content">Country</string>
 
     <string name="answer_opt">Country</string>
+    <string name="country_name">Country name</string>
 
     <string name="gallery_permission_needed">Gallery permission needed to pick an image</string>
     <string name="failed_to_get_image">Failed to get image from gallery</string>
+
+    <string name="save">Save</string>
 </resources>

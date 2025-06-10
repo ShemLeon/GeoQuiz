@@ -26,7 +26,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -42,15 +42,23 @@ import androidx.compose.material3.IconButton
 
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarBorder
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
+import com.leoevg.geoquiz.screens.login.LoginScreenEvent
 import com.leoevg.geoquiz.ui.components.LoadingDialog
 
 @Composable
@@ -70,7 +78,8 @@ fun RateScreen(
     val pickImageLauncher = rememberLauncherForActivityResult(
           ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
-            viewModel.onEvent(RateScreenEvent.ImagePicked(uri, "sadsad"))
+            viewModel.onEvent(RateScreenEvent.ImagePicked(uri))
+            viewModel.onEvent(RateScreenEvent.CountryBottomSheetRequested)
         } ?: run {
             Toast.makeText(context, context.getString(R.string.failed_to_get_image), Toast.LENGTH_LONG).show()
         }
@@ -101,6 +110,7 @@ fun RateScreen(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RateScreenContent(
     modifier: Modifier = Modifier,
@@ -109,6 +119,50 @@ fun RateScreenContent(
     navigate: (NavigationPaths) -> Unit,
     checkGalleryPermissionAndPickImage: () -> Unit
 ){
+    if (state.countryBottomSheetRequested) {
+        ModalBottomSheet(
+            onDismissRequest = { onEvent(RateScreenEvent.CountryBottomSheetDismissed) }
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(15.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = stringResource(R.string.country_name)
+                )
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 20.dp),
+                    value = state.countryName?:"",
+                    onValueChange = {
+                        // it - новое значение введенное юзером, евентом передаем его в viewModel
+                        onEvent(RateScreenEvent.CountryNameChanged(it))
+                    },
+                    placeholder = { Text(stringResource(R.string.country_name)) },
+                    shape = RoundedCornerShape(15.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        unfocusedBorderColor = Color.Transparent,
+                        disabledContainerColor = MaterialTheme.colorScheme.secondary,
+                        focusedContainerColor = MaterialTheme.colorScheme.secondary,
+                        errorContainerColor = MaterialTheme.colorScheme.secondary,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
+                    )
+                )
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth(0.8f)
+                        .padding(top = 10.dp),
+                    onClick = { onEvent(RateScreenEvent.SaveSuggestionBtnClicked) }
+                ) {
+                    Text(text = stringResource(R.string.save))
+                }
+            }
+        }
+    }
+
     Column (
         modifier = modifier
             .fillMaxWidth()

@@ -20,7 +20,7 @@ class FirebaseStorageRepositoryImpl : FirebaseStorageRepository {
                 .getCompletedResult()
             val downloadUrl = FirebaseStorage
                 .getInstance()
-                .reference.child(countryName)
+                .reference.child(STORAGE_SUGGESTIONS_FOLDER).child(countryName)
                 .downloadUrl.getTaskUriCompletedResult()
             return downloadUrl.toString()
         } catch (e: RuntimeException) {

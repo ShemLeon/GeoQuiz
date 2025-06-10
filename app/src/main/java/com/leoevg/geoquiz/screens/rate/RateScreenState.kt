@@ -6,5 +6,6 @@ data class RateScreenState(
     val isLoading: Boolean = false,
     val countryName: String? = null,
     val pickedImageUri: Uri? = null,
-    val error: String? = null
+    val error: String? = null,
+    val countryBottomSheetRequested: Boolean = false
 )

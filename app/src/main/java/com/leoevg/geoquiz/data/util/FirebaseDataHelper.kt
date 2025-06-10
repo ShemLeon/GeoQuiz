@@ -60,7 +60,7 @@ suspend fun Task<Uri>.getTaskUriCompletedResult(): Uri {
                 continuation.resume(it.result)
             else
                 continuation.resumeWithException(
-                    RuntimeException("Failed to get Firebase Storage downloadUrl for uploaded image")
+                    RuntimeException("Failed to get Firebase Storage downloadUrl for uploaded image, error: ${it.exception?.message}")
                 )
         }
     }

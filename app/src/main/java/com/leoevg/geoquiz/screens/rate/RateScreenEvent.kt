@@ -8,7 +8,10 @@ sealed interface  RateScreenEvent {
     data class StarsChanged(val selectedStars: Int): RateScreenEvent
     data object GoToQuizzesBtnClicked: RateScreenEvent
     data object SendContentBtnClicked: RateScreenEvent
-
-    data class ImagePicked(val imageUri: Uri, val countryName: String): RateScreenEvent
+    data class CountryNameChanged(val countryName: String): RateScreenEvent
+    data class ImagePicked(val imageUri: Uri): RateScreenEvent
+    data object CountryBottomSheetRequested: RateScreenEvent
+    data object CountryBottomSheetDismissed: RateScreenEvent
+    data object SaveSuggestionBtnClicked: RateScreenEvent
 }
 

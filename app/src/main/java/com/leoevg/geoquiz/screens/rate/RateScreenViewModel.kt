@@ -38,32 +38,37 @@ class RateScreenViewModel @Inject constructor(
         // SOLID
         when(event){
             is RateScreenEvent.StarsChanged -> onStarsSelected(event.selectedStars)
-            is RateScreenEvent.ImagePicked -> onImagePicked(event.imageUri, event.countryName)
+            is RateScreenEvent.ImagePicked -> onImagePicked(event.imageUri)
             RateScreenEvent.SendContentBtnClicked -> onSendContentBtnClicked()
             RateScreenEvent.GoToQuizzesBtnClicked -> onGoToQuizesBtnClicked()
+            is RateScreenEvent.CountryNameChanged -> onCountryNameChanged(event.countryName)
+            RateScreenEvent.CountryBottomSheetDismissed -> onCountryBottomSheetDismissed()
+            RateScreenEvent.CountryBottomSheetRequested -> onCountryBottomSheetRequested()
+            RateScreenEvent.SaveSuggestionBtnClicked -> onSaveSuggestionBtnClicked()
         }
     }
 
-    private fun onImagePicked(imageUri: Uri, countryName: String = "israel" ) {
+    private fun onSaveSuggestionBtnClicked() {
+        onCountryBottomSheetDismissed()
+        saveSuggestion()
+    }
+
+    private fun onCountryBottomSheetDismissed() {
+        _state.update { it.copy(countryBottomSheetRequested = false) }
+    }
+
+    private fun onCountryBottomSheetRequested() {
+        _state.update { it.copy(countryBottomSheetRequested = true) }
+    }
+
+    private fun onCountryNameChanged(countryName: String) {
+        _state.update { it.copy(countryName = countryName) }
+    }
+
+    private fun onImagePicked(imageUri: Uri) {
         _state.update {
             it.copy(pickedImageUri = imageUri)
         }
-
-        viewModelScope.launch(Dispatchers.IO) {
-            val downloadUrl = firebaseStorageRepository.uploadImage(countryName, imageUri)
-
-
-            if (downloadUrl == null) {
-                Log.d("RateScreenViewModel", "firebaseStorageRepository has a problem")
-                _state.update {
-                    it.copy(error = "Что-то с загрузкой")
-                }
-                return@launch // завершаем корутину
-            }
-            suggestionRepository.createSuggestion(countryName, downloadUrl)
-        }
-
-
     }
 
     private fun onStarsSelected(stars: Int) {  // Исправить сигнатуру
@@ -76,6 +81,29 @@ class RateScreenViewModel @Inject constructor(
 
     private fun onGoToQuizesBtnClicked(){
 
+    }
+
+    private fun saveSuggestion() {
+        val countryName = state.value.countryName
+        val pickedImageUri = state.value.pickedImageUri
+        if (countryName == null || pickedImageUri == null) {
+            _state.update { it.copy(error = "Error: country name or picked image uri is null") }
+            return
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            _state.update { it.copy(isLoading = true) }
+            val downloadUrl = firebaseStorageRepository.uploadImage(countryName, pickedImageUri)
+
+            if (downloadUrl == null) {
+                Log.d("RateScreenViewModel", "firebaseStorageRepository has a problem")
+                _state.update {
+                    it.copy(error = "Что-то с загрузкой")
+                }
+                return@launch // завершаем корутину
+            }
+            suggestionRepository.createSuggestion(countryName, downloadUrl)
+            _state.update { it.copy(isLoading = false) }
+        }
     }
 }
 
