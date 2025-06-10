@@ -12,6 +12,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,9 +30,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.navigation.NavigationPaths
 import com.leoevg.geoquiz.ui.components.LoadingDialog
-import com.leoevg.geoquiz.ui.theme.Bg
-import com.leoevg.geoquiz.ui.theme.Blue
-import com.leoevg.geoquiz.ui.theme.BlueGrey
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
 
 import kotlin.Unit
@@ -45,6 +43,16 @@ fun LoginScreen(
     val viewModel: LoginScreenViewModel = hiltViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+//    onClick = {
+//        coroutineScope.launch {
+//            snackbarHostState.showSnackbar(
+//                message = "Action close -->",
+//                actionLabel = "Close"
+//            )
+//        }
+//    }
+
+
     // LaunchedEffect - блок, который срабатывает когда переданная
     // в него зависимость изменяется.
     // в данном случае - переход на след экран
@@ -56,13 +64,22 @@ fun LoginScreen(
         }
     }
     LoadingDialog(isLoading = state.isLoading)
-    LoginScreenContent(
-        navigate = navigate,
-        state = state,
-        onEvent = viewModel::onEvent
-        // onEvent должен принять в себя лямда блок, который в принципе, тоже есть функция.
-        // :: - ссылка на функцию
-    )
+    Scaffold(
+        snackbarHost = {
+            viewModel.snackbarHostState
+        }
+    ) {
+
+        LoginScreenContent(
+            modifier = Modifier.padding(it),
+            navigate = navigate,
+            state = state,
+            onEvent = viewModel::onEvent
+            // onEvent должен принять в себя лямда блок, который в принципе, тоже есть функция.
+            // :: - ссылка на функцию
+        )
+    }
+
 }
 
 @Composable

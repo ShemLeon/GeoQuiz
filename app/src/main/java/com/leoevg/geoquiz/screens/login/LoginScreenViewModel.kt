@@ -1,5 +1,6 @@
 package com.leoevg.geoquiz.screens.login
 
+import androidx.compose.material3.SnackbarHostState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.leoevg.geoquiz.domain.repository.AuthRepository
@@ -19,6 +20,7 @@ class LoginScreenViewModel @Inject constructor(
     // state вьюхи
     private val _state = MutableStateFlow(LoginScreenState())
     val state: StateFlow<LoginScreenState> = _state
+    val snackbarHostState = SnackbarHostState()
 
     fun onEvent(event: LoginScreenEvent){
         // SOLID
@@ -41,7 +43,12 @@ class LoginScreenViewModel @Inject constructor(
 
     private fun onLoginBtnClicked(){
         if (state.value.email.isEmpty() || state.value.password.isEmpty()) {
-            _state.update{it.copy(error = "Fields cannot be empty")}
+            viewModelScope.launch {
+                snackbarHostState.showSnackbar(
+                    message = "Fields cannot be empty",
+                    actionLabel = "Close"
+                )
+            }
             return
         }
         _state.update{it.copy(error = null)}
