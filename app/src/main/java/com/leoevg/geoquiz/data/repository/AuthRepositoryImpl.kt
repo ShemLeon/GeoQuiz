@@ -5,6 +5,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.leoevg.geoquiz.data.model.User
 import com.leoevg.geoquiz.data.util.NODE_USERS
+import com.leoevg.geoquiz.data.util.getAuthTaskCompletedResult
 import com.leoevg.geoquiz.data.util.getCompletedResult
 import com.leoevg.geoquiz.domain.repository.AuthRepository
 
@@ -14,8 +15,10 @@ class AuthRepositoryImpl : AuthRepository {
         email: String,
         password: String
     ): AuthResult? {
-        return FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password).
-            getCompletedResult()
+        return FirebaseAuth
+            .getInstance()
+            .signInWithEmailAndPassword(email, password)
+            .getAuthTaskCompletedResult()
     }
 
     override suspend fun register(
@@ -25,7 +28,7 @@ class AuthRepositoryImpl : AuthRepository {
     ): AuthResult? {
         // возвращает null able - null  "возможный" объект аутхрезалт
         val result = FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
-            .getCompletedResult()
+            .getAuthTaskCompletedResult()
         // ?: - "Елвис оператор" - проверяет или  выражение null
         val uid = (result?.user?.uid) ?: return null
         val user = User(uid, nickname, email)

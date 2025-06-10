@@ -45,21 +45,25 @@ class RateScreenViewModel @Inject constructor(
     }
 
     private fun onImagePicked(imageUri: Uri, countryName: String = "israel" ) {
-        _state.update { it.copy(pickedImageUri = imageUri) }
-/*
+        _state.update {
+            it.copy(pickedImageUri = imageUri)
+        }
+
         viewModelScope.launch(Dispatchers.IO) {
             val downloadUrl = firebaseStorageRepository.uploadImage(countryName, imageUri)
+
+
             if (downloadUrl == null) {
                 Log.d("RateScreenViewModel", "firebaseStorageRepository has a problem")
                 _state.update {
-                    it.copy(error("Что-то с загрузкой"))
+                    it.copy(error = "Что-то с загрузкой")
                 }
                 return@launch // завершаем корутину
             }
             suggestionRepository.createSuggestion(countryName, downloadUrl)
         }
-        
- */
+
+
     }
 
     private fun onStarsSelected(stars: Int) {  // Исправить сигнатуру

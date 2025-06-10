@@ -28,7 +28,7 @@ suspend fun DatabaseReference.getDataOnce(): DataSnapshot{
 }
 
 
-suspend fun Task<AuthResult>.getCompletedResult(): AuthResult? {
+suspend fun Task<AuthResult>.getAuthTaskCompletedResult(): AuthResult? {
     // асинхронная таска в Firebase
     return suspendCancellableCoroutine { continuation ->
         this.addOnCompleteListener {
@@ -53,13 +53,15 @@ suspend fun UploadTask.getCompletedResult(): UploadTask.TaskSnapshot {
     }
 }
 
-suspend fun Task<Uri>.getCompletedResult(): Uri {
+suspend fun Task<Uri>.getTaskUriCompletedResult(): Uri {
     return suspendCancellableCoroutine { continuation ->
         this.addOnCompleteListener {
             if (it.isSuccessful)
                 continuation.resume(it.result)
             else
-                continuation.resumeWithException(RuntimeException("Failed to get Firebase Storage downloadUrl for uploaded image"))
+                continuation.resumeWithException(
+                    RuntimeException("Failed to get Firebase Storage downloadUrl for uploaded image")
+                )
         }
     }
 }

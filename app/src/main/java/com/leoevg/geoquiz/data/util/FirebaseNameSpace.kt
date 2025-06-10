@@ -15,6 +15,8 @@ const val CHILD_RIGHT = "right"
 const val CHILD_PICTURES = "pictures"
 const val CHILD_ANSWERS = "answers"
 
+const val STORAGE_SUGGESTIONS_FOLDER = "Suggestions"
+
 
 
 
