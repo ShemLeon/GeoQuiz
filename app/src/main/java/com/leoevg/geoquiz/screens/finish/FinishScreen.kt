@@ -61,7 +61,7 @@ fun FinishScreen(
     val progress by animateLottieCompositionAsState(
         composition,
         iterations = 1,
-        speed = 1f,
+        speed = 0.5f,
         restartOnPlay = false
     )
 
