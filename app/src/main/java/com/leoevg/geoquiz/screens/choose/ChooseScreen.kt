@@ -65,7 +65,7 @@ fun ChooseScreen(
         ){
             Row (
                 modifier = Modifier.fillMaxWidth()
-                    .padding(top = 50.dp),
+                    .padding(top = 40.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ){
@@ -91,7 +91,7 @@ fun ChooseScreen(
 // Прокрутка
             LazyRow(
                 modifier = Modifier
-                    .padding(top = 30.dp)
+                    .padding(top = 20.dp)
                     .background(MaterialTheme.colorScheme.background),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ){
@@ -111,7 +111,7 @@ fun ChooseScreen(
                 fontSize = 20.sp,
                 textAlign = TextAlign.Start,
                 modifier = Modifier
-                    .padding(top = 50.dp)
+                    .padding(top = 30.dp)
                     .padding(horizontal = 5.dp)
                     .fillMaxWidth(),
                 color = MaterialTheme.colorScheme.onBackground
@@ -122,8 +122,6 @@ fun ChooseScreen(
                 modifier = Modifier
                     .padding(top = 50.dp)
             )
-
-
         }
 
         Column (
@@ -135,7 +133,7 @@ fun ChooseScreen(
             Button(
                 modifier = Modifier
                     .fillMaxWidth(fraction = 0.99f)
-                    .padding(bottom = 40.dp),
+                    .padding(bottom = 30.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primary
                 ),

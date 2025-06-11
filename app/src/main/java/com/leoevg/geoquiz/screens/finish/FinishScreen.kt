@@ -35,6 +35,15 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.navigation.NavigationPaths
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
+import androidx.compose.runtime.getValue
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
+import com.airbnb.lottie.compose.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.window.Dialog
 
 @Composable
 fun FinishScreen(
@@ -46,6 +55,27 @@ fun FinishScreen(
     }
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    var showAnimation by remember { mutableStateOf(true) }
+    val composition by rememberLottieComposition(LottieCompositionSpec.Asset("animation/AnimationFinish.json"))
+    val progress by animateLottieCompositionAsState(
+        composition,
+        iterations = 1,
+        speed = 1f,
+        restartOnPlay = false
+    )
+    LaunchedEffect(progress) {
+        if (progress == 1f) {
+            showAnimation = false
+        }
+    }
+    LottieAnimation(
+        composition,
+        progress,
+        modifier = Modifier.fillMaxSize()
+    )
+
+
 
     LaunchedEffect(Unit) {
         viewModel.proceedMaxScore()
@@ -63,6 +93,15 @@ fun FinishScreenContent(
     state: FinishScreenState,
     navigate: (NavigationPaths) -> Unit = {}
 ){
+    // Загружаем композицию анимации из assets
+    val composition by rememberLottieComposition(
+        LottieCompositionSpec.Asset("your_animation.json")) // Замените "your_animation.json" на имя вашего файла
+    // Контролируем прогресс анимации
+    val progress by animateLottieCompositionAsState(
+        composition = composition,
+        iterations = LottieConstants.IterateForever // или 1, если нужно проиграть один раз
+        // restartOnPlay = false // можно добавить, если не нужно перезапускать при рекомпозиции, когда shouldPlay = true
+    )
     Column (
         modifier = Modifier
             .fillMaxWidth()

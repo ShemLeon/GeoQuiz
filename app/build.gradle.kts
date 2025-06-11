@@ -71,6 +71,10 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.coil.network)
 
+    // animation
+    implementation(libs.lottie.compose)
+
+
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth)
