@@ -50,7 +50,7 @@ fun FinishScreen(
     finalScore: Int,
     navigate: (NavigationPaths) -> Unit = {},
     viewModel: FinishScreenViewModel = hiltViewModel<FinishScreenViewModel, FinishScreenViewModel.FinishScreenViewModelFactory>{
-        factory ->
+            factory ->
         factory.create(finalScore)
     }
 ) {
@@ -64,27 +64,36 @@ fun FinishScreen(
         speed = 1f,
         restartOnPlay = false
     )
+
     LaunchedEffect(progress) {
         if (progress == 1f) {
             showAnimation = false
         }
     }
-    LottieAnimation(
-        composition,
-        progress,
-        modifier = Modifier.fillMaxSize()
-    )
 
+    Box(modifier = Modifier.fillMaxSize()) {
+        // Сначала отрисовываем основной контент
+        FinishScreenContent(
+            modifier = Modifier,
+            state = state,
+            navigate = navigate
+        )
 
+        // Затем поверх него отрисовываем анимацию
+        if (showAnimation) {
+            LottieAnimation(
+                composition,
+                progress,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Transparent) // Добавляем прозрачный фон
+            )
+        }
+    }
 
     LaunchedEffect(Unit) {
         viewModel.proceedMaxScore()
     }
-    FinishScreenContent(
-        modifier = Modifier,
-        state = state,
-        navigate = navigate
-    )
 }
 
 @Composable
@@ -93,15 +102,6 @@ fun FinishScreenContent(
     state: FinishScreenState,
     navigate: (NavigationPaths) -> Unit = {}
 ){
-    // Загружаем композицию анимации из assets
-    val composition by rememberLottieComposition(
-        LottieCompositionSpec.Asset("your_animation.json")) // Замените "your_animation.json" на имя вашего файла
-    // Контролируем прогресс анимации
-    val progress by animateLottieCompositionAsState(
-        composition = composition,
-        iterations = LottieConstants.IterateForever // или 1, если нужно проиграть один раз
-        // restartOnPlay = false // можно добавить, если не нужно перезапускать при рекомпозиции, когда shouldPlay = true
-    )
     Column (
         modifier = Modifier
             .fillMaxWidth()
