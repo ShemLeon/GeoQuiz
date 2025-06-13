@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,6 +35,10 @@ import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
 
 import kotlin.Unit
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
@@ -42,20 +47,9 @@ fun LoginScreen(
 ){
     val viewModel: LoginScreenViewModel = hiltViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
 
-//    onClick = {
-//        coroutineScope.launch {
-//            snackbarHostState.showSnackbar(
-//                message = "Action close -->",
-//                actionLabel = "Close"
-//            )
-//        }
-//    }
-
-
-    // LaunchedEffect - блок, который срабатывает когда переданная
-    // в него зависимость изменяется.
-    // в данном случае - переход на след экран
     LaunchedEffect(state.isLoggedIn) {
         if (state.isLoggedIn) {
             popBackStack() // чистит стак, чтобы при нажатии
@@ -64,22 +58,31 @@ fun LoginScreen(
         }
     }
     LoadingDialog(isLoading = state.isLoading)
+
+
     Scaffold(
         snackbarHost = {
-            viewModel.snackbarHostState
+            snackbarHostState
         }
     ) {
-
         LoginScreenContent(
             modifier = Modifier.padding(it),
             navigate = navigate,
             state = state,
-            onEvent = viewModel::onEvent
+            onEvent = viewModel::onEvent,
+            showSnackBar = { textLabel: String, actionLabel: String ->
+                coroutineScope.launch {
+                    snackbarHostState.showSnackbar(
+                        message = textLabel,
+                        actionLabel = actionLabel
+                    )
+                }
+            }
             // onEvent должен принять в себя лямда блок, который в принципе, тоже есть функция.
             // :: - ссылка на функцию
         )
-    }
 
+    }
 }
 
 @Composable
@@ -87,8 +90,10 @@ fun LoginScreenContent(
     modifier: Modifier = Modifier,
     state: LoginScreenState = LoginScreenState(),
     onEvent: (LoginScreenEvent) -> Unit,
-    navigate: (NavigationPaths) -> Unit
+    navigate: (NavigationPaths) -> Unit,
+    showSnackBar: (String, String) -> Unit
 ){
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -169,7 +174,9 @@ fun LoginScreenContent(
                 ),
                 shape = RoundedCornerShape(15.dp),
                 onClick = {
+                    showSnackBar("Fields cannot be empty", "Close")
                     onEvent(LoginScreenEvent.LoginBtnClicked)
+
                 }
             ) {
                 Text(
@@ -209,7 +216,8 @@ fun LoginScreenPreview(){
             modifier = Modifier,
             state = LoginScreenState(),
             onEvent = {},
-            navigate = {}
+            navigate = {},
+            showSnackBar = { textLabel: String, actionLabel: String -> }
         )
     }
 }
@@ -224,7 +232,8 @@ fun LoginScreenDarkPreview(){
             modifier = Modifier,
             state = LoginScreenState(),
             onEvent = {},
-            navigate = {}
+            navigate = {},
+            showSnackBar = { textLabel: String, actionLabel: String -> }
         )
     }
 }

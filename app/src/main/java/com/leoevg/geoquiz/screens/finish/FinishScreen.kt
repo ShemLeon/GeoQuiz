@@ -35,15 +35,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.navigation.NavigationPaths
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
-import androidx.compose.runtime.getValue
 import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.airbnb.lottie.compose.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.window.Dialog
 
 @Composable
 fun FinishScreen(
