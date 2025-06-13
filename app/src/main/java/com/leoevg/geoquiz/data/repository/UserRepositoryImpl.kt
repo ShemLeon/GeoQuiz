@@ -3,6 +3,7 @@ package com.leoevg.geoquiz.data.repository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.leoevg.geoquiz.data.util.CHILD_CURRENT_MAX_SCORE
+import com.leoevg.geoquiz.data.util.CHILD_IS_ADMIN
 import com.leoevg.geoquiz.data.util.NODE_USERS
 import com.leoevg.geoquiz.data.util.getDataOnce
 import com.leoevg.geoquiz.domain.repository.UserRepository
@@ -32,6 +33,19 @@ class UserRepositoryImpl : UserRepository {
                 .child(CHILD_CURRENT_MAX_SCORE)
                 .setValue(newMaxScore)
             true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    override suspend fun isAdmin(userId: String): Boolean {
+        return try {
+            (FirebaseDatabase.getInstance().reference
+                .child(NODE_USERS)
+                .child(userId)
+                .child(CHILD_IS_ADMIN)
+                .getDataOnce()
+                .value ?: false).toString().toBoolean()
         } catch (e: Exception) {
             false
         }

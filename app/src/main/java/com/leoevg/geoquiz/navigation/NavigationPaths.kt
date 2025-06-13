@@ -12,5 +12,4 @@ sealed interface NavigationPaths{
 
       @Serializable data class Finish(val finalScore: Int): NavigationPaths
       @Serializable data object Rate: NavigationPaths
-      @Serializable data object Userpic: NavigationPaths
 }

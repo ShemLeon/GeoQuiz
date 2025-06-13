@@ -6,6 +6,7 @@ const val NODE_SUGGESTIONS = "Suggestions"
 
 const val CHILD_NICKNAME = "nickname"
 const val CHILD_EMAIL = "email"
+const val CHILD_IS_ADMIN = "admin"
 const val CHILD_CURRENT_MAX_SCORE = "currentMaxScore"
 
 const val CHILD_QUESTIONS = "Questions"
