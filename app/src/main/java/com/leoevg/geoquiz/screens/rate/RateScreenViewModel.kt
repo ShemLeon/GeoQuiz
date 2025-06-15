@@ -2,10 +2,8 @@ package com.leoevg.geoquiz.screens.rate
 
 import android.net.Uri
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.leoevg.geoquiz.data.model.Suggestion
 import com.leoevg.geoquiz.domain.repository.FirebaseStorageRepository
 import com.leoevg.geoquiz.domain.repository.SuggestionRepository
 import com.leoevg.geoquiz.navigation.NavigationPaths
@@ -16,7 +14,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.math.log
 
 
 @HiltViewModel

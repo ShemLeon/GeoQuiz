@@ -38,6 +38,7 @@ object RepositoryModule {
         return UserRepositoryImpl()
     }
 
+
     @Provides
     @Singleton
     fun provideSuggestionRepository(): SuggestionRepository {

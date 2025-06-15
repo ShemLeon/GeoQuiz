@@ -13,8 +13,8 @@ class SuggestionRepositoryImpl: SuggestionRepository{
             country = country,
             imageUrl = imageUrl
         )
-        FirebaseDatabase.getInstance().reference.child(NODE_SUGGESTIONS).child(suggestion.id).setValue(suggestion.getAsMap())
+        FirebaseDatabase.getInstance().reference
+            .child(NODE_SUGGESTIONS).child(suggestion.id)
+            .setValue(suggestion.getAsMap())
     }
-
-
 }

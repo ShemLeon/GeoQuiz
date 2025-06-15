@@ -19,7 +19,6 @@ suspend fun DatabaseReference.getDataOnce(): DataSnapshot{
             override fun onDataChange(snapshot: DataSnapshot) {
                 continuation.resume(snapshot)
             }
-
             override fun onCancelled(error: DatabaseError) {
                 continuation.resumeWithException(RuntimeException(error.message))
             }
@@ -41,7 +40,7 @@ suspend fun Task<AuthResult>.getAuthTaskCompletedResult(): AuthResult? {
     }
 }
 
-
+// Выгрузка фото
 suspend fun UploadTask.getCompletedResult(): UploadTask.TaskSnapshot {
     return suspendCancellableCoroutine { continuation ->
         this.addOnCompleteListener {

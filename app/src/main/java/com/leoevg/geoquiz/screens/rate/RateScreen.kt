@@ -71,7 +71,7 @@ fun RateScreen(
 
     // 2. запросить у пользователя разрешение на галерею. через Activity For Result Launcher -
     // объект/диалоговое окно, которое запустим для получения результата. и передать 2 аргумента:
-    // 1- контракт на действие  - requestPermissionLauncher
+    // 1- контракт на действие - requestPermissionLauncher
     // 2 - что делать с результатом контракта
     // 3 - контракт на получение одного изображения - pickImageLauncher
     val context = LocalContext.current
