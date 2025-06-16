@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Logout
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -27,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -35,6 +37,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.firebase.auth.FirebaseAuth
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.data.model.typeGames
@@ -42,8 +46,28 @@ import com.leoevg.geoquiz.navigation.NavigationPaths
 import com.leoevg.geoquiz.ui.components.GameModelItem
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
 
+import kotlin.Unit
+
 @Composable
 fun ChooseScreen(
+    navigate: (NavigationPaths) -> Unit,
+    onQuizSelected: (NavigationPaths.Quiz) -> Unit,
+    popBackStack: () -> Unit
+) {
+    val viewModel: ChooseScreenViewModel = hiltViewModel()
+    val isUserAnAdmin by viewModel.isAdmin.collectAsStateWithLifecycle()
+
+    ChooseScreenContent(
+        isUserAnAdmin = isUserAnAdmin,
+        navigate = navigate,
+        onQuizSelected = onQuizSelected,
+        popBackStack = popBackStack
+    )
+}
+
+@Composable
+fun ChooseScreenContent(
+    isUserAnAdmin: Boolean = false,
     navigate: (NavigationPaths) -> Unit = {},
     onQuizSelected: (NavigationPaths.Quiz) -> Unit = {},
     popBackStack: () -> Unit = {}
@@ -77,16 +101,32 @@ fun ChooseScreen(
                     modifier = Modifier,
                     color = MaterialTheme.colorScheme.onBackground
                 )
-                Icon(
-                    imageVector = Icons.AutoMirrored.Outlined.Logout,
-                    contentDescription = "Logout btn",
-                    modifier = Modifier.clickable {
-                        FirebaseAuth.getInstance().signOut()
-                        popBackStack()
-                        navigate(NavigationPaths.Login)
-                    },
-                    tint = MaterialTheme.colorScheme.onBackground
-                )
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    if (isUserAnAdmin) {
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = "Admin btn",
+                            tint = Color.Red,
+                            modifier = Modifier.clickable {
+                                navigate(NavigationPaths.Admin)
+                            }
+                        )
+                    }
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Outlined.Logout,
+                        contentDescription = "Logout btn",
+                        modifier = Modifier.padding(start = 10.dp).clickable {
+                            FirebaseAuth.getInstance().signOut()
+                            popBackStack()
+                            navigate(NavigationPaths.Login)
+                        },
+                        tint = MaterialTheme.colorScheme.onBackground
+                    )
+                }
+
             }
 // Прокрутка
             LazyRow(
@@ -167,7 +207,11 @@ fun ChooseScreenPreview() {
     GeoQuizTheme(
         darkTheme = false
     ) {
-        ChooseScreen { }
+        ChooseScreenContent(
+            navigate = {},
+            onQuizSelected = {},
+            popBackStack = {}
+        )
     }
 }
 
@@ -177,6 +221,10 @@ fun ChooseScreenDarkPreview(){
     GeoQuizTheme(
         darkTheme = true
     ){
-    ChooseScreen {  }
-}
+        ChooseScreenContent(
+            navigate = {},
+            onQuizSelected = {},
+            popBackStack = {}
+        )
+    }
 }
