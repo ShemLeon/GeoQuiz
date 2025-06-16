@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -59,10 +60,9 @@ fun LoginScreen(
     }
     LoadingDialog(isLoading = state.isLoading)
 
-
     Scaffold(
         snackbarHost = {
-            snackbarHostState
+            SnackbarHost(snackbarHostState)
         }
     ) {
         LoginScreenContent(
@@ -78,8 +78,6 @@ fun LoginScreen(
                     )
                 }
             }
-            // onEvent должен принять в себя лямда блок, который в принципе, тоже есть функция.
-            // :: - ссылка на функцию
         )
 
     }
@@ -93,7 +91,6 @@ fun LoginScreenContent(
     navigate: (NavigationPaths) -> Unit,
     showSnackBar: (String, String) -> Unit
 ){
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -176,7 +173,6 @@ fun LoginScreenContent(
                 onClick = {
                     showSnackBar("Fields cannot be empty", "Close")
                     onEvent(LoginScreenEvent.LoginBtnClicked)
-
                 }
             ) {
                 Text(
