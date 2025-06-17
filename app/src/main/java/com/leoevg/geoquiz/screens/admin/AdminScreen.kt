@@ -32,10 +32,15 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.leoevg.geoquiz.ui.components.LoadingDialog
 import kotlin.String
+import com.leoevg.geoquiz.ui.theme.DarkGreen
+import com.leoevg.geoquiz.ui.theme.DarkRed
+
 
 @Composable
 fun AdminScreen(
@@ -83,12 +88,13 @@ fun AdminScreenContent(
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             text = "AdminScreen"
         )
+
         Row (
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -98,13 +104,14 @@ fun AdminScreenContent(
                 .padding(bottom = 10.dp)
                 .height(90.dp)
         ){
+// Approve
             Button(
                 modifier = Modifier
                     .fillMaxHeight(fraction = 0.9f)
-                    .fillMaxWidth(fraction = 0.7f),
+                    .fillMaxWidth(fraction = 0.6f),
                 //              .weight(1f),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.onSurface
+                    containerColor = DarkGreen
                 ),
                 contentPadding = PaddingValues(vertical = 15.dp),
                 shape = RoundedCornerShape(25.dp),
@@ -114,15 +121,20 @@ fun AdminScreenContent(
                 }
             ) {
                 Text(
-                    stringResource(R.string.approve)
+                    stringResource(R.string.approve),
+                    fontSize = 40.sp,
+                    fontWeight = FontWeight.SemiBold
                 )
             }
+
+
+ // Reject
             Button(
                 modifier = Modifier
                     .fillMaxHeight(fraction = 0.9f)
                     .weight(1f),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary
+                    containerColor = DarkRed
                 ),
                 contentPadding = PaddingValues(vertical = 10.dp),
                 shape = RoundedCornerShape(15.dp),
@@ -132,7 +144,9 @@ fun AdminScreenContent(
                 }
             ) {
                 Text(
-                    stringResource(R.string.reject)
+                    stringResource(R.string.reject),
+                    fontSize = 40.sp,
+                    fontWeight = FontWeight.SemiBold
                 )
             }
     }
