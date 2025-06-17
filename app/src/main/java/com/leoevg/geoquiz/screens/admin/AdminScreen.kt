@@ -1,9 +1,18 @@
 package com.leoevg.geoquiz.screens.admin
 
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,16 +35,22 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.navigation.NavigationPaths
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil3.compose.AsyncImage
 import com.leoevg.geoquiz.ui.components.LoadingDialog
 import kotlin.String
 import com.leoevg.geoquiz.ui.theme.DarkGreen
@@ -86,24 +101,67 @@ fun AdminScreenContent(
     navigate: (NavigationPaths) -> Unit,
     showSnackBar: (String, String) -> Unit
 ) {
+    var isImageZoomed by remember { mutableStateOf(false) }
+    // анимация разворачивания по времени
+    val transition = updateTransition(targetState = isImageZoomed, label = "ZoomTransition")
+    val imageScale by transition.animateFloat(
+        transitionSpec = { tween(durationMillis = 500) },
+        label = "ImageScale"
+    ){ zoomed ->
+        if (zoomed) 1f else 0f
+    }
+
     Column(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.SpaceBetween,
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
+
     ) {
         Text(
             text = "AdminScreen"
         )
+        Row() {
+            // Image
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(1f) // расположение квадратиком
+                    .padding(top=30.dp)
+            ) {
+                AsyncImage(
+                    model = "",
+                    contentDescription = "Suggested image",
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(20.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.05f),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                        .pointerInput(Unit) { // мод для "тапания пальцами"
+                            detectTapGestures( // слушатель для тапов
+                                onDoubleTap = { // исполнение после дабл тапа
+                                    isImageZoomed = true
+                                }
+                            )
+                        }
+                )
+            }
 
-        Row (
-            verticalAlignment = Alignment.CenterVertically,
+
+
+
+        }
+        Spacer(modifier = Modifier.weight(1f)) // Выталкивает всё, что ниже, к низу
+        Row(
+            verticalAlignment = Alignment.Bottom,
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 10.dp)
                 .padding(bottom = 10.dp)
                 .height(90.dp)
-        ){
+        ) {
 // Approve
             Button(
                 modifier = Modifier
@@ -126,9 +184,7 @@ fun AdminScreenContent(
                     fontWeight = FontWeight.SemiBold
                 )
             }
-
-
- // Reject
+// Reject
             Button(
                 modifier = Modifier
                     .fillMaxHeight(fraction = 0.9f)
@@ -149,13 +205,49 @@ fun AdminScreenContent(
                     fontWeight = FontWeight.SemiBold
                 )
             }
+        }
     }
 
 
-
-
+    if (isImageZoomed) {
+        Box(
+            modifier= Modifier
+                .fillMaxSize()
+                .background(Color.Black.copy(alpha=0.9f))
+                .clickable{ isImageZoomed = false}
+                .zIndex(1f),
+            contentAlignment = Alignment.Center
+        ){
+            AsyncImage(
+                model = "",
+                contentDescription = "Question image",
+                modifier = Modifier
+                    .fillMaxWidth() // Пропорционально
+                    .graphicsLayer {
+                        scaleX = imageScale
+                        scaleY = imageScale
+                    }
+                    .padding(20.dp)
+                    .background(
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.05f),
+                        shape = RoundedCornerShape(12.dp)
+                    )
+                    .pointerInput(Unit){ // мод для "тапания пальцами"
+                        detectTapGestures( // слушатель для тапов
+                            onTap = { // исполнение после одиночного тапа
+                                isImageZoomed = false // Сворачиваем изображение
+                            },
+                            onDoubleTap = { // исполнение после дабл тапа
+                                isImageZoomed = false // Сворачиваем изображение
+                            }
+                        )
+                    },
+                contentScale = ContentScale.Fit // Вместо обрезки - подгон под размер
+            )
+        }
     }
 }
+
 
 @Composable
 @Preview(showBackground = true, uiMode = 1)

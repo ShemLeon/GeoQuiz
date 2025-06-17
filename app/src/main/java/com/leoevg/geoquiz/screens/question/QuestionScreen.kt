@@ -125,8 +125,14 @@ fun QuestionScreenContent(
         label = "ImageScale"
     ){ zoomed ->
         if (zoomed) 1f else 0f
-
     }
+    /*
+    val fullImageSize by transition.animateDp(
+      transitionSpec = { tween(durationMillis = 500) },
+      label = "FullImageSize"
+      ){ zoomed ->
+         if (zoomed) 400.dp else 0.dp}
+     */
 
     Box(
         modifier = modifier
@@ -170,7 +176,6 @@ fun QuestionScreenContent(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                // TODO: сделать динамическое изменение номера вопроса
                 text = "${stringResource(R.string.question)} $currentQuestionNumber",
                 fontSize = 35.sp,
                 fontWeight = FontWeight.SemiBold,
