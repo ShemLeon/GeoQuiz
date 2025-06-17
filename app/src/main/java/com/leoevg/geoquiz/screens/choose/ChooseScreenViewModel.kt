@@ -19,14 +19,17 @@ class ChooseScreenViewModel @Inject constructor(
     private val _isAdmin = MutableStateFlow<Boolean>(false)
     val isAdmin = _isAdmin.asStateFlow()
 
+    // проверка или текущий пользователь обладает правами администратора
     fun checkIfUserIsAdmin() {
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        // чтобы не блочить пользователю UI делаем корутину IO
         viewModelScope.launch(Dispatchers.IO) {
             val isUserAnAdmin = userRepository.isAdmin(userId)
             _isAdmin.update { isUserAnAdmin }
         }
     }
 
+    // узнать что такое инит
     init {
         checkIfUserIsAdmin()
     }

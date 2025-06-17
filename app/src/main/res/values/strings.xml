@@ -70,4 +70,11 @@
     <string name="failed_to_get_image">Failed to get image from gallery</string>
 
     <string name="save">Save</string>
+
+    <string name="approve">Approve</string>
+    <string name="reject">Reject</string>
+    <string name="suggested_type_game">Suggested type game</string>
+    <string name="suggested_country_name">Suggested country name</string>
+
+
 </resources>
