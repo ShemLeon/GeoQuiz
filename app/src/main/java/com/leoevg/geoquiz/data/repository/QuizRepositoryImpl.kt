@@ -38,7 +38,7 @@ class QuizRepositoryImpl: QuizRepository {
             }
 
             return@map Question(
-                id = questionSnapshot.key?.toInt() ?: -1,
+                id = questionSnapshot.key ?: "",
                 rightAnswer = rightAnswer,
                 hint = hint,
                 answerOptions = answerOptions,

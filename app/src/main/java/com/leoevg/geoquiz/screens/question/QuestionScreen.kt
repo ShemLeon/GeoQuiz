@@ -435,7 +435,7 @@ fun QuestionScreenPreview() {
     ){
     QuestionScreenContent(
         question = Question(
-            id = 1,
+            id = "1",
             rightAnswer = "Ответ 1",
             hint = "Тестовая подсказка",
             answerOptions = listOf(
@@ -462,7 +462,7 @@ fun QuestionScreenDarkPreview() {
     ){
     QuestionScreenContent(
         question = Question(
-            id = 1,
+            id = "1",
             rightAnswer = "Ответ 1",
             hint = "Тестовая подсказка",
             answerOptions = listOf(
