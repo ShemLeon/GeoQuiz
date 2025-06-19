@@ -4,6 +4,7 @@ package com.leoevg.geoquiz.data.util
 const val NODE_USERS = "Users"
 const val NODE_SUGGESTIONS = "Suggestions"
 
+
 const val CHILD_NICKNAME = "nickname"
 const val CHILD_EMAIL = "email"
 const val CHILD_IS_ADMIN = "admin"
@@ -18,6 +19,8 @@ const val CHILD_ANSWERS = "answers"
 
 const val STORAGE_SUGGESTIONS_FOLDER = "Suggestions"
 
+const val CHILD_IMAGE_URL_SUGGESTION = "imageUrl"
+const val CHILD_COUNTRY_SUGGESTION = "country"
 
 
 

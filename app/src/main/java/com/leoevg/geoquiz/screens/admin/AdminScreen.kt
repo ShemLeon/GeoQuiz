@@ -128,7 +128,7 @@ fun AdminScreenContent(
                     .padding(top=30.dp)
             ) {
                 AsyncImage(
-                    model = "",
+                    model = state.currentSuggestion?.imageUrl?:"",
                     contentDescription = "Suggested image",
                     modifier = Modifier
                         .fillMaxSize()
@@ -146,11 +146,13 @@ fun AdminScreenContent(
                         }
                 )
             }
-
-
-
-
         }
+        Text(
+            modifier = Modifier.padding(top = 10.dp),
+            text = "Country: ${state.currentSuggestion?.country?:"null Country"}",
+            fontSize = 20.sp
+            )
+
         Spacer(modifier = Modifier.weight(1f)) // Выталкивает всё, что ниже, к низу
         Row(
             verticalAlignment = Alignment.Bottom,
@@ -195,7 +197,7 @@ fun AdminScreenContent(
                 shape = RoundedCornerShape(15.dp),
                 onClick = {
                     showSnackBar("Fields cannot be empty", "Close")
-                    onEvent(AdminScreenEvent.RejectBtnClicked)
+                    onEvent(AdminScreenEvent.RejectSuggestionClicked)
                 }
             ) {
                 Text(

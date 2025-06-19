@@ -6,10 +6,12 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.leoevg.geoquiz.domain.repository.FirebaseStorageRepository
+import com.leoevg.geoquiz.domain.repository.SuggestionRepository
 import com.leoevg.geoquiz.screens.login.LoginScreenEvent
 import com.leoevg.geoquiz.screens.login.LoginScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -17,7 +19,8 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class AdminScreenViewModel @Inject constructor(
-    private val firebaseStorage: FirebaseStorageRepository
+    private val firebaseStorage: FirebaseStorageRepository,
+    private val suggestionRepository: SuggestionRepository
 ): ViewModel(){
     private val _state = MutableStateFlow(AdminScreenState())
     val state: StateFlow<AdminScreenState> = _state
@@ -28,10 +31,14 @@ class AdminScreenViewModel @Inject constructor(
         when(event){
             is AdminScreenEvent.SuggestedTypeGame -> onSuggestedTypeGameChanged(event.typeGame)
             is AdminScreenEvent.SuggestedCountryName -> onSuggestedCountryName(event.countryName)
+            AdminScreenEvent.RejectSuggestionClicked -> onRejectBtnClicked()
             AdminScreenEvent.ApproveBtnClicked -> onApproveBtnClicked()
-            AdminScreenEvent.RejectBtnClicked -> onRejectBtnClicked()
-
         }
+    }
+
+    private fun onRejectBtnClicked(){
+        if (state.value.currentSuggestion == null) return
+        deleteSuggestion(state.value.currentSuggestion!!.id)
     }
 
     private fun onSuggestedTypeGameChanged(typeGame: String){
@@ -51,15 +58,38 @@ class AdminScreenViewModel @Inject constructor(
         return
     }
 
+    private fun loadSuggestions(){
+        viewModelScope.launch(Dispatchers.IO) {
 
-    private fun onRejectBtnClicked(){
-        viewModelScope.launch {
-            snackbarHostState.showSnackbar(
-                message = "Fields cannot be empty",
-                actionLabel = "Close"
-            )
+            val list = suggestionRepository.loadSuggestions()
+            _state.update {
+                it.copy(
+                    suggestionsList = list,
+                    currentSuggestion = list[0]
+                )
+            }
         }
-        return
+    }
+
+    private fun deleteSuggestion(id: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            suggestionRepository.deleteSuggestion(id)
+            val suggestionsList = _state.value.suggestionsList.toMutableList()
+            suggestionsList.removeAt(0)
+            val nextSuggestion = suggestionsList.firstOrNull()
+            _state.update {
+                it.copy(
+                    suggestionsList = suggestionsList,
+                    currentSuggestion = nextSuggestion
+                )
+            }
+        }
+    }
+
+
+
+    init {
+        loadSuggestions()
     }
 }
 
