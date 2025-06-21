@@ -37,6 +37,7 @@ import com.leoevg.geoquiz.navigation.NavigationPaths
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
 import kotlinx.coroutines.launch
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -67,6 +68,12 @@ fun AdminScreen(
     val coroutineScope = rememberCoroutineScope()
 
     LoadingDialog(isLoading = state.isLoading)
+
+    LaunchedEffect(state.isChooseGameModeDialogRequested) {
+        if (state.isChooseGameModeDialogRequested) {
+
+        }
+    }
 
     Scaffold(
         snackbarHost = {

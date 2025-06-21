@@ -49,13 +49,7 @@ class AdminScreenViewModel @Inject constructor(
     }
 
     private fun onApproveBtnClicked(){
-        viewModelScope.launch {
-            snackbarHostState.showSnackbar(
-                message = "Fields cannot be empty",
-                actionLabel = "Close"
-            )
-        }
-        return
+
     }
 
     private fun loadSuggestions(){

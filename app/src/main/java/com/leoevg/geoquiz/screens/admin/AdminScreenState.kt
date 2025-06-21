@@ -11,6 +11,6 @@ data class AdminScreenState(
     var error: String? = null,
     val isApproved: Boolean = false,
     val isRejected: Boolean = false,
-    val isLoading: Boolean = false
-
+    val isLoading: Boolean = false,
+    val isChooseGameModeDialogRequested: Boolean = false
 )
