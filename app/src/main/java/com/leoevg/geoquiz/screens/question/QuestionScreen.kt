@@ -403,7 +403,7 @@ fun OptionAnswersSection(
     onItemSelected: (String) -> Unit
 ){
     LazyVerticalGrid(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(((answerOptions.size / 2 + answerOptions.size % 2) * 80).dp),
         columns = GridCells.Fixed(2),
@@ -413,7 +413,7 @@ fun OptionAnswersSection(
         items(answerOptions){currentOptionItem ->
             Box(
                 modifier = Modifier
-                    .fillMaxWidth(0.95f) // Ограничиваем ширину элемента внутри ячейки
+                    .fillMaxWidth() // Ограничиваем ширину элемента внутри ячейки
                     .padding(horizontal = 3.dp, vertical = 1.dp)
             ){
                 val isSelected = selectedAnswerOption == currentOptionItem.optAnswer

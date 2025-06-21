@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -38,6 +39,7 @@ fun AnswerOptionItem(
     val answerResultIndicationColor = if (isAnswerRight == true) Color.Green else Color.Red
     Row (
         modifier = modifier
+            .fillMaxWidth()
             .border(
                 2.dp,
                 if (isAnswerRight != null) answerResultIndicationColor
@@ -46,25 +48,24 @@ fun AnswerOptionItem(
                 RoundedCornerShape(15.dp)
             )
             .background(color = Color.Transparent)
-            .padding(horizontal = 6.dp, vertical = 5.dp)
+            .padding(horizontal = 3.dp, vertical = 5.dp)
             .clickable { onClick() },
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
-
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
     ){
         Icon(
             painter = painterResource(R.drawable.answer_option_logo),
             contentDescription = "answer opt icon_button",
-            modifier = Modifier.size(14.dp),
+            modifier = Modifier.size(10.dp),
             tint = MaterialTheme.colorScheme.onBackground,
         )
         Text(
             text = answerOption.optAnswer,
-            fontSize = 30.sp,
+            fontSize = 28.sp,
             fontWeight = FontWeight.Normal,
             color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier
-                .padding(start = 2.dp),
+                .padding(start = 8.dp),
         )
     }
 }
