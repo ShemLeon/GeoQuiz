@@ -51,9 +51,19 @@ class AdminScreenViewModel @Inject constructor(
                 )
                 _state.update { it.copy(isLoading = false) }
                 deleteSuggestion(currSuggesstion.id)
+
+                snackbarHostState.showSnackbar(
+                    message = "Suggestion applied successfully",
+                    actionLabel = "Great!"
+                )
             }
         } ?: run {
-            // TODO: show error
+            viewModelScope.launch(Dispatchers.Main) {
+                snackbarHostState.showSnackbar(
+                    message = "Failed to apply suggestion",
+                    actionLabel = "Okay"
+                )
+            }
         }
     }
 

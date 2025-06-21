@@ -66,7 +66,6 @@ fun AdminScreen(
 ){
     val viewModel: AdminScreenViewModel = hiltViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
@@ -85,22 +84,14 @@ fun AdminScreen(
 
     Scaffold(
         snackbarHost = {
-            SnackbarHost(snackbarHostState)
+            SnackbarHost(viewModel.snackbarHostState)
         }
     ) {
         AdminScreenContent(
             modifier = Modifier.padding(it),
             navigate = navigate,
             state = state,
-            onEvent = viewModel::onEvent,
-            showSnackBar = { textLabel: String, actionLabel: String ->
-                coroutineScope.launch {
-                    snackbarHostState.showSnackbar(
-                        message = textLabel,
-                        actionLabel = actionLabel
-                    )
-                }
-            }
+            onEvent = viewModel::onEvent
         )
     }
 
@@ -113,8 +104,7 @@ fun AdminScreenContent(
     modifier: Modifier = Modifier,
     state: AdminScreenState = AdminScreenState(),
     onEvent: (AdminScreenEvent) -> Unit,
-    navigate: (NavigationPaths) -> Unit,
-    showSnackBar: (String, String) -> Unit
+    navigate: (NavigationPaths) -> Unit
 ) {
     var isImageZoomed by remember { mutableStateOf(false) }
     // анимация разворачивания по времени
@@ -190,7 +180,6 @@ fun AdminScreenContent(
                 contentPadding = PaddingValues(vertical = 15.dp),
                 shape = RoundedCornerShape(25.dp),
                 onClick = {
-                    showSnackBar("Fields cannot be empty", "Close")
                     onEvent(AdminScreenEvent.ApproveBtnClicked)
                 }
             ) {
@@ -211,7 +200,6 @@ fun AdminScreenContent(
                 contentPadding = PaddingValues(vertical = 10.dp),
                 shape = RoundedCornerShape(15.dp),
                 onClick = {
-                    showSnackBar("Fields cannot be empty", "Close")
                     onEvent(AdminScreenEvent.RejectSuggestionClicked)
                 }
             ) {
@@ -275,8 +263,7 @@ fun AdminScreenPreview(){
             modifier = Modifier,
             state = AdminScreenState(),
             onEvent = {},
-            navigate = {},
-            showSnackBar = { textLabel: String, actionLabel: String -> }
+            navigate = {}
         )
     }
 }
