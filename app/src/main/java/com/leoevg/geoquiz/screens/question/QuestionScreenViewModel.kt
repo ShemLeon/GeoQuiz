@@ -1,5 +1,6 @@
 package com.leoevg.geoquiz.screens.question
 
+import androidx.compose.material3.SnackbarHostState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.leoevg.geoquiz.R
@@ -37,6 +38,7 @@ class QuestionScreenViewModel @AssistedInject constructor(
         isNightModeEnabled = prefManager.getBoolValueByKey("darkWorks", true)
         ))
     val state: StateFlow<QuestionScreenState> = _state
+    val snackbarHostState = SnackbarHostState()
 
     fun onEvent(event: QuestionScreenEvent){
         // SOLID
@@ -45,7 +47,6 @@ class QuestionScreenViewModel @AssistedInject constructor(
             QuestionScreenEvent.ApplyBtnClicked -> onApplyBtnClicked()
             QuestionScreenEvent.FinishBtnClicked -> onFinishBtnClicked()
             QuestionScreenEvent.HintBtnClicked -> onHintBtnClicked()
-            QuestionScreenEvent.ImageDoubleClicked -> onImageDoubleBtnClicked()
             QuestionScreenEvent.NightModeBtnClicked -> onNightModeBtnClicked()
             is QuestionScreenEvent.OptionSelected -> onOptionSelected(event.selectedOption)
             QuestionScreenEvent.SilentModeBtnClicked -> onSilentModeBtnClicked()
@@ -119,15 +120,17 @@ class QuestionScreenViewModel @AssistedInject constructor(
     }
 
     private fun onHintBtnClicked(){
+        viewModelScope.launch {
+            snackbarHostState.showSnackbar(
+                message = question.hint,
+                actionLabel = "Got it!"
+            )
+        }
         if (!_state.value.isHintUsed){
             _state.update {
                 it.copy(isHintUsed = true)
             }
         }
-    }
-
-    private fun onImageDoubleBtnClicked(){
-        // TODO: расширение на весь экран
     }
 
     private fun onOptionSelected(selectedOption: String){

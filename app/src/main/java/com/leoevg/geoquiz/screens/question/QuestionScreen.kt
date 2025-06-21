@@ -30,6 +30,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -94,13 +96,19 @@ fun QuestionScreen(
     }
 
     GeoQuizTheme(darkTheme = state.isNightModeEnabled) {
-        QuestionScreenContent(
-            question = question,
-            currentScore = currentScore,
-            currentQuestionNumber = currentQuestionNumber,
-            state = state,
-            onEvent = viewModel::onEvent
-        )
+        Scaffold(
+            snackbarHost = {
+                SnackbarHost(viewModel.snackbarHostState)
+            }
+        ) { _ ->
+            QuestionScreenContent(
+                question = question,
+                currentScore = currentScore,
+                currentQuestionNumber = currentQuestionNumber,
+                state = state,
+                onEvent = viewModel::onEvent
+            )
+        }
     }
 }
 
@@ -255,10 +263,7 @@ fun QuestionScreenContent(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Blue.copy(alpha = 0.5f)
                 ),
-                onClick = {
-                    onEvent(QuestionScreenEvent.HintBtnClicked)
-                    Toast.makeText(context, "Hint: ${question.hint}", Toast.LENGTH_LONG).show()
-                }
+                onClick = { onEvent(QuestionScreenEvent.HintBtnClicked) }
             ) {
                 Icon(
                     painter = painterResource(R.drawable.hint_button),
