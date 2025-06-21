@@ -52,6 +52,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import com.leoevg.geoquiz.ui.components.ChooseGameModeDialog
 import com.leoevg.geoquiz.ui.components.LoadingDialog
 import kotlin.String
 import com.leoevg.geoquiz.ui.theme.DarkGreen
@@ -69,10 +70,10 @@ fun AdminScreen(
 
     LoadingDialog(isLoading = state.isLoading)
 
-    LaunchedEffect(state.isChooseGameModeDialogRequested) {
-        if (state.isChooseGameModeDialogRequested) {
-
-        }
+    if (state.isChooseGameModeDialogRequested) {
+        ChooseGameModeDialog(
+            onModesSelected = { viewModel.onEvent(AdminScreenEvent.ChooseGameModeDialogModesSelected(it)) }
+        )
     }
 
     Scaffold(

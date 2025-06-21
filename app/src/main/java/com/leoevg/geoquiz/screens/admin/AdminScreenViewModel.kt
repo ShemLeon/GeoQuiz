@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
+import com.leoevg.geoquiz.data.model.TypeGame
 import com.leoevg.geoquiz.domain.repository.FirebaseStorageRepository
 import com.leoevg.geoquiz.domain.repository.SuggestionRepository
 import com.leoevg.geoquiz.screens.login.LoginScreenEvent
@@ -33,7 +34,18 @@ class AdminScreenViewModel @Inject constructor(
             is AdminScreenEvent.SuggestedCountryName -> onSuggestedCountryName(event.countryName)
             AdminScreenEvent.RejectSuggestionClicked -> onRejectBtnClicked()
             AdminScreenEvent.ApproveBtnClicked -> onApproveBtnClicked()
+            AdminScreenEvent.ChooseGameModeDialogDismissed -> onChooseGameModeDialogDismissed()
+            is AdminScreenEvent.ChooseGameModeDialogModesSelected -> onChooseGameModeDialogModesSelected(event.selectedModes)
         }
+    }
+
+    private fun onChooseGameModeDialogModesSelected(selectedModes: List<TypeGame>) {
+        _state.update { it.copy(isChooseGameModeDialogRequested = false) }
+        // TODO: apply suggestion
+    }
+
+    private fun onChooseGameModeDialogDismissed() {
+        _state.update { it.copy(isChooseGameModeDialogRequested = false) }
     }
 
     private fun onRejectBtnClicked(){
@@ -49,7 +61,7 @@ class AdminScreenViewModel @Inject constructor(
     }
 
     private fun onApproveBtnClicked(){
-
+        _state.update { it.copy(isChooseGameModeDialogRequested = true) }
     }
 
     private fun loadSuggestions(){
