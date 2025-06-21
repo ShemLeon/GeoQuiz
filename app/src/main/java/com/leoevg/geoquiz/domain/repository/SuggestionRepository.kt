@@ -6,4 +6,5 @@ interface SuggestionRepository{
     fun createSuggestion(country: String, imageUrl: String)
     suspend fun loadSuggestions(): List<Suggestion>
     fun deleteSuggestion(id: String)
+    suspend fun applySuggestion(suggestion: Suggestion, typeGamesNames: List<String>)
 }

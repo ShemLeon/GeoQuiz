@@ -35,13 +35,26 @@ class AdminScreenViewModel @Inject constructor(
             AdminScreenEvent.RejectSuggestionClicked -> onRejectBtnClicked()
             AdminScreenEvent.ApproveBtnClicked -> onApproveBtnClicked()
             AdminScreenEvent.ChooseGameModeDialogDismissed -> onChooseGameModeDialogDismissed()
-            is AdminScreenEvent.ChooseGameModeDialogModesSelected -> onChooseGameModeDialogModesSelected(event.selectedModes)
+            is AdminScreenEvent.ChooseGameModeDialogModesSelected -> onChooseGameModeDialogModesSelected(event.selectedModesNames)
         }
     }
 
-    private fun onChooseGameModeDialogModesSelected(selectedModes: List<TypeGame>) {
+    private fun onChooseGameModeDialogModesSelected(selectedModesNames: List<String>) {
         _state.update { it.copy(isChooseGameModeDialogRequested = false) }
-        // TODO: apply suggestion
+
+        state.value.currentSuggestion?.let { currSuggesstion ->
+            viewModelScope.launch(Dispatchers.IO) {
+                _state.update { it.copy(isLoading = true) }
+                suggestionRepository.applySuggestion(
+                    suggestion = currSuggesstion,
+                    typeGamesNames = selectedModesNames
+                )
+                _state.update { it.copy(isLoading = false) }
+                deleteSuggestion(currSuggesstion.id)
+            }
+        } ?: run {
+            // TODO: show error
+        }
     }
 
     private fun onChooseGameModeDialogDismissed() {
