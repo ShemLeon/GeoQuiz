@@ -7,8 +7,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -33,13 +36,13 @@ import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.navigation.NavigationPaths
 import com.leoevg.geoquiz.ui.components.LoadingDialog
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
-
 import kotlin.Unit
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import androidx.compose.ui.text.TextStyle
+
 
 @Composable
 fun LoginScreen(
@@ -175,8 +178,21 @@ fun LoginScreenContent(
                     onEvent(LoginScreenEvent.LoginBtnClicked)
                 }
             ) {
-                Text(
-                    stringResource(R.string.login)
+                BasicText(
+                    stringResource(R.string.login),
+                    modifier = Modifier
+                              .fillMaxWidth()
+                              .padding(),
+                    maxLines = 1,
+                    autoSize = TextAutoSize.StepBased(
+                        minFontSize = 12.sp,
+                        maxFontSize = 30.sp
+                    ),
+                    style = TextStyle(
+                        color = MaterialTheme.colorScheme.onBackground,  // для текста на фоне
+                        fontFamily = MaterialTheme.typography.headlineMedium.fontFamily,
+                        fontWeight = MaterialTheme.typography.headlineMedium.fontWeight
+                    )
                 )
             }
 // btn Create account
