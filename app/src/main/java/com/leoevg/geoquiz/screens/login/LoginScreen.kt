@@ -67,6 +67,16 @@ fun LoginScreen(
             navigate(NavigationPaths.Choose)
         }
     }
+    LaunchedEffect(state.snackbarMessage) {
+        state.snackbarMessage?.let { message ->
+            snackbarHostState.showSnackbar(
+                message = message,
+                actionLabel = "Close"
+                )
+            viewModel.clearSnackbarMessage()
+        }
+    }
+
     LoadingDialog(isLoading = state.isLoading)
 
     Scaffold(
@@ -181,7 +191,7 @@ fun LoginScreenContent(
                 modifier = Modifier
                     .fillMaxWidth(fraction = 0.8f)
                     .height(buttonHeight),
-                shape = RoundedCornerShape(15.dp),
+                shape = RoundedCornerShape(25.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.primary
@@ -193,9 +203,8 @@ fun LoginScreenContent(
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Transparent // Делаем фон кнопки прозрачным, так как цвет задан в Card
                     ),
-                    shape = RoundedCornerShape(15.dp), // Можно оставить или убрать, если форма Card уже подходит
+                    shape = RoundedCornerShape(25.dp), // Можно оставить или убрать, если форма Card уже подходит
                     onClick = {
-                        showSnackBar("Fields cannot be empty", "Close")
                         onEvent(LoginScreenEvent.LoginBtnClicked)
                     }
                 ) {
@@ -206,7 +215,7 @@ fun LoginScreenContent(
                         maxLines = 1,
                         autoSize = TextAutoSize.StepBased(
                             minFontSize = 10.sp,
-                            maxFontSize = 38.sp
+                            maxFontSize = 28.sp
                         ),
                         style = TextStyle(
                             color = MaterialTheme.colorScheme.background,
@@ -227,7 +236,7 @@ fun LoginScreenContent(
                     containerColor = MaterialTheme.colorScheme.secondary
                 ),
 
-                shape = RoundedCornerShape(15.dp),
+                shape = RoundedCornerShape(25.dp),
                 onClick = {
                     navigate(NavigationPaths.Register)
                 }

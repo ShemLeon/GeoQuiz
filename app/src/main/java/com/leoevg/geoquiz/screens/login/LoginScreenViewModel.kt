@@ -44,15 +44,16 @@ class LoginScreenViewModel @Inject constructor(
     private fun onLoginBtnClicked(){
         if (state.value.email.isEmpty() || state.value.password.isEmpty()) {
             viewModelScope.launch {
-                snackbarHostState.showSnackbar(
-                    message = "Fields cannot be empty",
-                    actionLabel = "Close"
-                )
+                _state.update { it.copy(snackbarMessage = "Fields cannot be empty") }
             }
             return
         }
         _state.update{it.copy(error = null)}
         login(state.value.email, state.value.password)
+    }
+
+    fun clearSnackbarMessage() {
+        _state.update { it.copy(snackbarMessage = null) }
     }
 
     private fun login(email: String, password: String) = viewModelScope.launch(Dispatchers.IO) {
@@ -64,7 +65,7 @@ class LoginScreenViewModel @Inject constructor(
         result?.user?.let {
             _state.update{it.copy(isLoggedIn = true)}
         } ?: run {
-            _state.update{it.copy(error = "Error signing in. Check your credentials")}
+            _state.update{it.copy(snackbarMessage = "Error signing in. Check your credentials")}
         }
     }
 

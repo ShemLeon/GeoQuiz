@@ -166,7 +166,7 @@ fun RegisterScreenContent(
                 modifier = Modifier
                     .fillMaxWidth(fraction = 0.8f)
                     .height(buttonHeight),
-                shape = RoundedCornerShape(15.dp),
+                shape = RoundedCornerShape(25.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.primary
@@ -178,7 +178,7 @@ fun RegisterScreenContent(
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Transparent
                     ),
-                    shape = RoundedCornerShape(15.dp),
+                    shape = RoundedCornerShape(25.dp),
                     onClick = {
                         onEvent(RegisterScreenEvent.RegisterBtnClicked)
                     }

@@ -5,5 +5,6 @@ data class LoginScreenState(
     val password: String = "",
     var error: String? = null,
     val isLoggedIn: Boolean = false,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val snackbarMessage: String? = null
 )
