@@ -3,14 +3,18 @@ package com.leoevg.geoquiz.screens.login
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -40,8 +44,10 @@ import kotlin.Unit
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalConfiguration
 import kotlinx.coroutines.launch
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 
 
 @Composable
@@ -94,6 +100,10 @@ fun LoginScreenContent(
     navigate: (NavigationPaths) -> Unit,
     showSnackBar: (String, String) -> Unit
 ){
+    // Получаем текущую конфигурацию для доступа к размерам экрана
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp // Высота экрана в Dp
+    val buttonHeight = screenHeight * 0.07f
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -103,7 +113,7 @@ fun LoginScreenContent(
     ) {
         Text(
             text = stringResource(R.string.app_login_title),
-            fontSize = 25.sp,
+            fontSize = 35.sp,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(top = 90.dp),
             color = MaterialTheme.colorScheme.onBackground
@@ -135,7 +145,6 @@ fun LoginScreenContent(
                     disabledContainerColor = MaterialTheme.colorScheme.secondary,
                     focusedContainerColor = MaterialTheme.colorScheme.secondary,
                     errorContainerColor = MaterialTheme.colorScheme.secondary,
-                  // unfocusedContainerColor = BlueGrey
                     unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
                 )
             )
@@ -159,6 +168,8 @@ fun LoginScreenContent(
                 )
             )
         }
+
+
         Column (
             modifier = Modifier
                 .fillMaxWidth()
@@ -166,52 +177,76 @@ fun LoginScreenContent(
             horizontalAlignment = Alignment.CenterHorizontally
         ){
 // btn Login
-            Button(
+            Card(
                 modifier = Modifier
-                    .fillMaxWidth(fraction = 0.8f),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                ),
+                    .fillMaxWidth(fraction = 0.8f)
+                    .height(buttonHeight),
                 shape = RoundedCornerShape(15.dp),
-                onClick = {
-                    showSnackBar("Fields cannot be empty", "Close")
-                    onEvent(LoginScreenEvent.LoginBtnClicked)
-                }
-            ) {
-                BasicText(
-                    stringResource(R.string.login),
-                    modifier = Modifier
-                              .fillMaxWidth()
-                              .padding(),
-                    maxLines = 1,
-                    autoSize = TextAutoSize.StepBased(
-                        minFontSize = 12.sp,
-                        maxFontSize = 30.sp
-                    ),
-                    style = TextStyle(
-                        color = MaterialTheme.colorScheme.onBackground,  // для текста на фоне
-                        fontFamily = MaterialTheme.typography.headlineMedium.fontFamily,
-                        fontWeight = MaterialTheme.typography.headlineMedium.fontWeight
-                    )
+                elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.primary
                 )
+            ) {
+                Button(
+                    modifier = Modifier
+                        .fillMaxSize(), // Заполняем всю карточку
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Transparent // Делаем фон кнопки прозрачным, так как цвет задан в Card
+                    ),
+                    shape = RoundedCornerShape(15.dp), // Можно оставить или убрать, если форма Card уже подходит
+                    onClick = {
+                        showSnackBar("Fields cannot be empty", "Close")
+                        onEvent(LoginScreenEvent.LoginBtnClicked)
+                    }
+                ) {
+                    BasicText(
+                        stringResource(R.string.login),
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        maxLines = 1,
+                        autoSize = TextAutoSize.StepBased(
+                            minFontSize = 10.sp,
+                            maxFontSize = 38.sp
+                        ),
+                        style = TextStyle(
+                            color = Color.White,  // для текста на фоне
+                            fontFamily = MaterialTheme.typography.headlineMedium.fontFamily,
+                            fontWeight = FontWeight.SemiBold,
+                            textAlign = TextAlign.Center
+                        )
+                    )
+                }
             }
+            Spacer(modifier = Modifier.height(10.dp))
 // btn Create account
             Button(
                 modifier = Modifier
-                    .fillMaxWidth(fraction = 0.8f),
+                    .fillMaxWidth(fraction = 0.8f)
+                    .height(buttonHeight),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.secondary
                 ),
+
                 shape = RoundedCornerShape(15.dp),
                 onClick = {
                     navigate(NavigationPaths.Register)
                 }
             ) {
-                Text(
+                BasicText(
                     stringResource(R.string.create_account),
-                    color = MaterialTheme.colorScheme.tertiary,
-                    fontWeight = FontWeight.SemiBold
-                )
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    maxLines = 1,
+                    autoSize = TextAutoSize.StepBased(
+                        minFontSize = 10.sp,
+                        maxFontSize = 38.sp
+                    ),
+                    style = TextStyle(
+                        color = MaterialTheme.colorScheme.tertiary,
+                        fontFamily = MaterialTheme.typography.headlineMedium.fontFamily,
+                        fontWeight = FontWeight.SemiBold,
+                        textAlign = TextAlign.Center
+                ))
             }
         }
     }
