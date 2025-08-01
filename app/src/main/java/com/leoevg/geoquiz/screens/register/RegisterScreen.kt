@@ -5,10 +5,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -31,6 +36,9 @@ import com.leoevg.geoquiz.navigation.NavigationPaths
 import com.leoevg.geoquiz.ui.components.LoadingDialog
 import kotlin.Unit
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
 
 @Composable
@@ -63,6 +71,10 @@ fun RegisterScreenContent(
     state: RegisterScreenState = RegisterScreenState(),
     onEvent: (RegisterScreenEvent) -> Unit
 ){
+    // Get current config for screen size access
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp // Высота экрана в Dp
+    val buttonHeight = screenHeight * 0.045f
     Column(modifier = modifier
         .fillMaxSize()
         .background(MaterialTheme.colorScheme.background),
@@ -71,7 +83,7 @@ fun RegisterScreenContent(
     ) {
         Text(
             text = stringResource(R.string.create_account),
-            fontSize = 25.sp,
+            fontSize = 35.sp,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(top = 90.dp),
             color = MaterialTheme.colorScheme.onBackground
@@ -150,20 +162,44 @@ fun RegisterScreenContent(
                 .padding(bottom = 40.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Button(
+            Card(
                 modifier = Modifier
-                    .fillMaxWidth(fraction = 0.8f),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                ),
+                    .fillMaxWidth(fraction = 0.8f)
+                    .height(buttonHeight),
                 shape = RoundedCornerShape(15.dp),
-                onClick = {
-                    onEvent(RegisterScreenEvent.RegisterBtnClicked)
-                }
-            ) {
-                Text(
-                    stringResource(R.string.create_account)
+                elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.primary
                 )
+            ) {
+                Button(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Transparent
+                    ),
+                    shape = RoundedCornerShape(15.dp),
+                    onClick = {
+                        onEvent(RegisterScreenEvent.RegisterBtnClicked)
+                    }
+                ) {
+                    BasicText(
+                        stringResource(R.string.create_account),
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        maxLines = 1,
+                        autoSize = TextAutoSize.StepBased(
+                            minFontSize = 10.sp,
+                            maxFontSize = 38.sp
+                        ),
+                        style = TextStyle(
+                            color = MaterialTheme.colorScheme.background,
+                            fontFamily = MaterialTheme.typography.headlineMedium.fontFamily,
+                            fontWeight = FontWeight.SemiBold,
+                            textAlign = TextAlign.Center
+                        )
+                    )
+                }
             }
         }
     }

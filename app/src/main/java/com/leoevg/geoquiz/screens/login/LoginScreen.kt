@@ -100,10 +100,10 @@ fun LoginScreenContent(
     navigate: (NavigationPaths) -> Unit,
     showSnackBar: (String, String) -> Unit
 ){
-    // Получаем текущую конфигурацию для доступа к размерам экрана
+    // Get current config for screen size access
     val configuration = LocalConfiguration.current
-    val screenHeight = configuration.screenHeightDp.dp // Высота экрана в Dp
-    val buttonHeight = screenHeight * 0.07f
+    val screenHeight = configuration.screenHeightDp.dp // Screen height in dp
+    val buttonHeight = screenHeight * 0.045f
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -209,7 +209,7 @@ fun LoginScreenContent(
                             maxFontSize = 38.sp
                         ),
                         style = TextStyle(
-                            color = Color.White,  // для текста на фоне
+                            color = MaterialTheme.colorScheme.background,
                             fontFamily = MaterialTheme.typography.headlineMedium.fontFamily,
                             fontWeight = FontWeight.SemiBold,
                             textAlign = TextAlign.Center
