@@ -96,6 +96,7 @@ fun QuestionScreen(
     }
 
     GeoQuizTheme(darkTheme = state.isNightModeEnabled) {
+        @Suppress("UnusedMaterial3ScaffoldPaddingParameter")
         Scaffold(
             snackbarHost = {
                 SnackbarHost(viewModel.snackbarHostState)

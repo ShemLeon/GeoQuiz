@@ -59,7 +59,8 @@ fun AnswerOptionItem(
             modifier = Modifier
                 .size(40.dp)
                 .padding(start = 8.dp),
-            tint = MaterialTheme.colorScheme.onBackground,
+            tint= if (isSelected) MaterialTheme.colorScheme.primary
+                    else MaterialTheme.colorScheme.onBackground,
         )
         Text(
             text = answerOption.optAnswer,
