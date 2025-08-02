@@ -56,7 +56,9 @@ fun AnswerOptionItem(
         Icon(
             painter = painterResource(R.drawable.answer_option_logo),
             contentDescription = "answer opt icon_button",
-            modifier = Modifier.size(10.dp),
+            modifier = Modifier
+                .size(40.dp)
+                .padding(start = 8.dp),
             tint = MaterialTheme.colorScheme.onBackground,
         )
         Text(

@@ -123,7 +123,6 @@ fun QuestionScreenContent(
 ){
     // Стейты
     val context = LocalContext.current  // context for hint
-
     var isImageZoomed by remember { mutableStateOf(false) }
     // анимация разворачивания по времени
     val transition = updateTransition(targetState = isImageZoomed, label = "ZoomTransition")
@@ -238,7 +237,7 @@ fun QuestionScreenContent(
                     contentDescription = "Question image",
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(20.dp)
+                        .padding(2.dp)
                         .background(
                             color = MaterialTheme.colorScheme.primary.copy(alpha = 0.05f),
                             shape = RoundedCornerShape(12.dp)
@@ -301,10 +300,9 @@ fun QuestionScreenContent(
                 Button(
                     modifier = Modifier
                         .fillMaxHeight(fraction = 0.9f)
-                        .fillMaxWidth(fraction = 0.7f),
-          //              .weight(1f),
+                        .fillMaxWidth(fraction = 0.49f),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.secondary
+                        containerColor = MaterialTheme.colorScheme.primary
                     ),
                     contentPadding = PaddingValues(vertical = 15.dp),
                     shape = RoundedCornerShape(25.dp),
@@ -314,7 +312,7 @@ fun QuestionScreenContent(
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.apply_button),
-                        tint = MaterialTheme.colorScheme.onBackground,
+                        tint = MaterialTheme.colorScheme.background,
                         contentDescription = "hint_icon_button",
                         modifier = Modifier.size(24.dp),
 
@@ -325,7 +323,7 @@ fun QuestionScreenContent(
                         fontWeight = FontWeight.Normal,
                         modifier = Modifier
                             .padding(start = 10.dp),
-                        color = MaterialTheme.colorScheme.onBackground,
+                        color = MaterialTheme.colorScheme.background,
                     )
                 }
                 // Finish
@@ -334,17 +332,17 @@ fun QuestionScreenContent(
                         .fillMaxHeight(fraction = 0.9f)
                         .weight(1f),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary
+                        MaterialTheme.colorScheme.secondary
                     ),
                     contentPadding = PaddingValues(vertical = 10.dp),
-                    shape = RoundedCornerShape(15.dp),
+                    shape = RoundedCornerShape(25.dp),
                     onClick = {
                         onEvent(QuestionScreenEvent.FinishBtnClicked)
                     }
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.icon_finish),
-                        tint = MaterialTheme.colorScheme.background,
+                        tint = MaterialTheme.colorScheme.onBackground,
                         contentDescription = "finish_icon_button",
                         modifier = Modifier.size(44.dp)
                         )
@@ -390,9 +388,6 @@ fun QuestionScreenContent(
             }
         }
     }
-
-
-
 
 @Composable
 fun OptionAnswersSection(
