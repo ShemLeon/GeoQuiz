@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -19,14 +21,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.data.model.AnswerOption
-import com.leoevg.geoquiz.screens.quiz.QuizScreen
-import com.leoevg.geoquiz.ui.theme.Blue
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.TextStyle
 
 @Composable
 fun AnswerOptionItem(
@@ -37,9 +41,10 @@ fun AnswerOptionItem(
     onClick: () -> Unit = {}
 ){
     val answerResultIndicationColor = if (isAnswerRight == true) Color.Green else Color.Red
-    Row (
+    Row(
         modifier = modifier
             .fillMaxWidth()
+
             .border(
                 2.dp,
                 if (isAnswerRight != null) answerResultIndicationColor
@@ -47,9 +52,14 @@ fun AnswerOptionItem(
                 else Color.Transparent,
                 RoundedCornerShape(15.dp)
             )
-            .background(color = Color.Transparent)
-            .padding(horizontal = 3.dp, vertical = 5.dp)
-            .clickable { onClick() },
+            .clip(RoundedCornerShape(15.dp))
+            .background(
+                color = Color.Transparent
+            )
+
+            .clickable { onClick() }
+            .padding(horizontal = 8.dp, vertical = 8.dp),
+
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ){
@@ -58,17 +68,29 @@ fun AnswerOptionItem(
             contentDescription = "answer opt icon_button",
             modifier = Modifier
                 .size(40.dp)
-                .padding(start = 8.dp),
-            tint= if (isSelected) MaterialTheme.colorScheme.primary
-                    else MaterialTheme.colorScheme.onBackground,
+            ,
+            tint = if (isAnswerRight != null) answerResultIndicationColor
+                   else if (isSelected) MaterialTheme.colorScheme.primary
+                   else MaterialTheme.colorScheme.onBackground
+
         )
-        Text(
+
+        BasicText(
             text = answerOption.optAnswer,
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Normal,
-            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier
-                .padding(start = 8.dp),
+                .padding(start = 8.dp)
+                .fillMaxWidth(),
+            maxLines = 1,
+            autoSize = TextAutoSize.StepBased(
+                minFontSize = 22.sp,
+                maxFontSize = 28.sp
+            ),
+            style = TextStyle(
+                color = MaterialTheme.colorScheme.onBackground,
+                fontFamily = MaterialTheme.typography.headlineMedium.fontFamily,
+                textAlign = TextAlign.Start,
+                fontWeight = FontWeight.Normal
+            )
         )
     }
 }
