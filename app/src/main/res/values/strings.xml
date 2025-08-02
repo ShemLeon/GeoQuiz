@@ -28,18 +28,18 @@
     <string name="clothingDesc">This game mode’s name is “Clothing,”
         and it’s all about style, fabrics, and fashion history!
         From iconic designers to traditional attire,
-        this mode will test your knowledge of the world of clothing.
+        this mode will test your knowledge of clothing.
         Not completely sure? Take a hint! Good luck—you’ll need it!</string>
     <string name="historyDesc">This game mode’s name is “History,”
         and it’s your ticket to a journey through time!
-        Challenge yourself with questions about ancient civilizations,
-        famous events, legendary leaders, and turning points that shaped our world.
-         Not completely sure? Take a hint! Good luck—you’ll need it!</string>
+        Challenge yourself with questions about ancient civilizations
+        and turning points that shaped our world.
+        Not completely sure? Take a hint! </string>
     <string name="sportDesc">This game mode’s name is “Sport”
         and it’s all about athletic achievements, legendary players,
         and unforgettable moments! From the Olympics to the World Cup,
         test your knowledge of sports rules, records, and history.
-        Not completely sure? Take a hint! Good luck—you’ll need it!</string>
+        Not completely sure? Take a hint! </string>
 
     <string name="your_score">Your score: </string>
     <string name="val_points">points</string>
