@@ -15,7 +15,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -48,6 +47,9 @@ import androidx.compose.ui.platform.LocalConfiguration
 import kotlinx.coroutines.launch
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 
 
 @Composable
@@ -114,6 +116,7 @@ fun LoginScreenContent(
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp // Screen height in dp
     val buttonHeight = screenHeight * 0.045f
+    val hapticFeedback = LocalHapticFeedback.current
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -205,6 +208,7 @@ fun LoginScreenContent(
                     ),
                     shape = RoundedCornerShape(25.dp), // Можно оставить или убрать, если форма Card уже подходит
                     onClick = {
+                        hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
                         onEvent(LoginScreenEvent.LoginBtnClicked)
                     }
                 ) {
