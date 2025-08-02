@@ -15,31 +15,17 @@
     <string name="history">History</string>
     <string name="sport">Sport</string>
 
-    <string name="easyDesc">This game mode is called "Easy,"
-        so your questions won\'t be difficult.
-        Carefully examine the image and choose the country that best matches it. Not completely sure?
-        Take a hint! Let’s dive in and make learning fun!</string>
-    <string name="hardDesc">This game mode’s name is “Hard,” and it’s not for the faint of heart!
-        Carefully examine the image and choose the country that best matches it.
-        Not completely sure? Take a hint! Good luck—you’ll need it!</string>
-    <string name="nightmareDesc">This game mode’s name is “Nightmare,” and it’s as terrifyingly tough as it sounds!
-        Prepare to face the most challenging.
-        Not completely sure? Take a hint! Good luck—you’ll need it!</string>
-    <string name="clothingDesc">This game mode’s name is “Clothing,”
-        and it’s all about style, fabrics, and fashion history!
-        From iconic designers to traditional attire,
-        this mode will test your knowledge of clothing.
-        Not completely sure? Take a hint! Good luck—you’ll need it!</string>
-    <string name="historyDesc">This game mode’s name is “History,”
-        and it’s your ticket to a journey through time!
-        Challenge yourself with questions about ancient civilizations
-        and turning points that shaped our world.
-        Not completely sure? Take a hint! </string>
-    <string name="sportDesc">This game mode’s name is “Sport”
-        and it’s all about athletic achievements, legendary players,
-        and unforgettable moments! From the Olympics to the World Cup,
-        test your knowledge of sports rules, records, and history.
-        Not completely sure? Take a hint! </string>
+    <string name="easyDesc">This game mode is called "Easy," so your questions won\'t be difficult. Carefully examine the image and choose the country that best matches it. Not completely sure? Take a hint! Good luck—you\'ll need it!</string>
+
+    <string name="hardDesc">This game mode\'s name is "Hard," and it\'s not for the faint of heart! Carefully examine the image and choose the country that best matches it. Not completely sure? Take a hint! Good luck—you\'ll need it!</string>
+
+    <string name="nightmareDesc">This game mode\'s name is "Nightmare," and it\'s as terrifyingly tough as it sounds! Prepare to face the most challenging geographic puzzles. Not completely sure? Take a hint! Good luck—you\'ll need it!</string>
+
+    <string name="clothingDesc">This game mode\'s name is "Clothing," and it\'s all about style, fabrics, and fashion history! From iconic designers to traditional attire worldwide. Not completely sure? Take a hint! Good luck—you\'ll need it!</string>
+
+    <string name="historyDesc">This game mode\'s name is "History," and it\'s your ticket to a journey through time! Challenge yourself with questions about ancient civilizations. Not completely sure? Take a hint! Good luck—you\'ll need it!</string>
+
+    <string name="sportDesc">This game mode\'s name is "Sport" and it\'s all about athletic achievements, legendary players, and unforgettable moments! From the Olympics to World Cup records. Not completely sure? Take a hint! Good luck—you\'ll need it!</string>
 
     <string name="your_score">Your score: </string>
     <string name="val_points">points</string>
