@@ -16,6 +16,8 @@ import androidx.compose.ui.unit.sp
 import com.leoevg.geoquiz.data.model.TypeGame
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
 import com.leoevg.geoquiz.data.model.typeGames
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 
 @Composable
 fun GameModelItem(
@@ -24,12 +26,17 @@ fun GameModelItem(
     isSelected: Boolean,
     onItemClicked: ()->Unit
 ){
+    val hapticFeedback = LocalHapticFeedback.current
+
     Surface(
         modifier = modifier,
         color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
         shape = RoundedCornerShape(25.dp),
         border = if (!isSelected) BorderStroke(2.dp, MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)) else null,
-        onClick = onItemClicked
+        onClick = {
+            hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+            onItemClicked()
+        }
     ){
         Box(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 18.dp

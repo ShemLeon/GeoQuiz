@@ -45,6 +45,9 @@ import com.leoevg.geoquiz.data.model.typeGames
 import com.leoevg.geoquiz.navigation.NavigationPaths
 import com.leoevg.geoquiz.ui.components.GameModelItem
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+
 
 import kotlin.Unit
 
@@ -74,6 +77,7 @@ fun ChooseScreenContent(
 ){
     var selectedTypeGame by remember { mutableStateOf(typeGames[0]) }
     val context = LocalContext.current
+    val hapticFeedback = LocalHapticFeedback.current
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -179,6 +183,7 @@ fun ChooseScreenContent(
                 ),
                 shape = RoundedCornerShape(15.dp),
                 onClick = {
+                    hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
                     onQuizSelected(NavigationPaths.Quiz(selectedTypeGame))
                 }
             ) {
