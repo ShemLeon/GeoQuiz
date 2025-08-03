@@ -133,7 +133,7 @@ fun AdminScreenContent(
                     .padding(top=30.dp)
             ) {
                 AsyncImage(
-                    model = state.currentSuggestion?.imageUrl?:"",
+                    model = state.currentSuggestion?.imageUrl?:R.drawable.img_the_end,
                     contentDescription = "Suggested image",
                     modifier = Modifier
                         .fillMaxSize()
@@ -154,58 +154,84 @@ fun AdminScreenContent(
         }
         Text(
             modifier = Modifier.padding(top = 10.dp),
-            text = "Country: ${state.currentSuggestion?.country?:"null Country"}",
-            fontSize = 20.sp
+            text = state.currentSuggestion?.country?:"Content is finished",
+            fontSize = 30.sp
             )
 
         Spacer(modifier = Modifier.weight(1f)) // Выталкивает всё, что ниже, к низу
-        Row(
-            verticalAlignment = Alignment.Bottom,
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 10.dp)
-                .padding(bottom = 10.dp)
-                .height(90.dp)
-        ) {
+
+        if (state.currentSuggestion != null) {
+            Row(
+                verticalAlignment = Alignment.Bottom,
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp)
+                    .padding(bottom = 10.dp)
+                    .height(90.dp)
+            ) {
 // Approve
+                Button(
+                    modifier = Modifier
+                        .fillMaxHeight(fraction = 0.9f)
+                        .fillMaxWidth(fraction = 0.6f),
+                    //              .weight(1f),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = DarkGreen
+                    ),
+                    contentPadding = PaddingValues(vertical = 15.dp),
+                    shape = RoundedCornerShape(25.dp),
+                    onClick = {
+                        onEvent(AdminScreenEvent.ApproveBtnClicked)
+                    }
+                ){
+                    Text(
+                        stringResource(R.string.approve),
+                        fontSize = 40.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+// Reject
+                Button(
+                    modifier = Modifier
+                        .fillMaxHeight(fraction = 0.9f)
+                        .weight(1f),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = DarkRed
+                    ),
+                    contentPadding = PaddingValues(vertical = 10.dp),
+                    shape = RoundedCornerShape(15.dp),
+                    onClick = {
+                        onEvent(AdminScreenEvent.RejectSuggestionClicked)
+                    }
+                ){
+                    Text(
+                        stringResource(R.string.reject),
+                        fontSize = 40.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+            }
+        } else {
+// Go Home button when content is finished
             Button(
                 modifier = Modifier
-                    .fillMaxHeight(fraction = 0.9f)
-                    .fillMaxWidth(fraction = 0.6f),
-                //              .weight(1f),
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp)
+                    .padding(bottom = 10.dp)
+                    .height(80.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = DarkGreen
+                    containerColor = MaterialTheme.colorScheme.primary
                 ),
                 contentPadding = PaddingValues(vertical = 15.dp),
                 shape = RoundedCornerShape(25.dp),
                 onClick = {
-                    onEvent(AdminScreenEvent.ApproveBtnClicked)
+                    navigate(NavigationPaths.Choose)
                 }
             ) {
                 Text(
-                    stringResource(R.string.approve),
-                    fontSize = 40.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
-            }
-// Reject
-            Button(
-                modifier = Modifier
-                    .fillMaxHeight(fraction = 0.9f)
-                    .weight(1f),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = DarkRed
-                ),
-                contentPadding = PaddingValues(vertical = 10.dp),
-                shape = RoundedCornerShape(15.dp),
-                onClick = {
-                    onEvent(AdminScreenEvent.RejectSuggestionClicked)
-                }
-            ) {
-                Text(
-                    stringResource(R.string.reject),
-                    fontSize = 40.sp,
+                    "Go Home",
+                    fontSize = 36.sp,
                     fontWeight = FontWeight.SemiBold
                 )
             }
