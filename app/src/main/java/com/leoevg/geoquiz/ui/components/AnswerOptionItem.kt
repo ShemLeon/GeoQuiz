@@ -44,7 +44,6 @@ fun AnswerOptionItem(
     Row(
         modifier = modifier
             .fillMaxWidth()
-
             .border(
                 2.dp,
                 if (isAnswerRight != null) answerResultIndicationColor
@@ -67,14 +66,12 @@ fun AnswerOptionItem(
             painter = painterResource(R.drawable.answer_option_logo),
             contentDescription = "answer opt icon_button",
             modifier = Modifier
-                .size(40.dp)
+                .size(38.dp)
             ,
             tint = if (isAnswerRight != null) answerResultIndicationColor
                    else if (isSelected) MaterialTheme.colorScheme.primary
                    else MaterialTheme.colorScheme.onBackground
-
         )
-
         BasicText(
             text = answerOption.optAnswer,
             modifier = Modifier
@@ -82,7 +79,7 @@ fun AnswerOptionItem(
                 .fillMaxWidth(),
             maxLines = 1,
             autoSize = TextAutoSize.StepBased(
-                minFontSize = 22.sp,
+                minFontSize = 18.sp,
                 maxFontSize = 28.sp
             ),
             style = TextStyle(

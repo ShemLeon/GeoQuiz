@@ -26,6 +26,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddAlert
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -60,9 +63,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.zIndex
 import com.leoevg.geoquiz.data.model.TypeGame
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
@@ -123,10 +129,11 @@ fun QuestionScreenContent(
     onEvent: (QuestionScreenEvent) -> Unit
 ){
     // Стейты
-    val context = LocalContext.current  // context for hint
+    val context = LocalContext.current  // context for a hint
     var isImageZoomed by remember { mutableStateOf(false) }
     // анимация разворачивания по времени
     val transition = updateTransition(targetState = isImageZoomed, label = "ZoomTransition")
+    val hapticFeedback = LocalHapticFeedback.current // вибрация
 
     val imageScale by transition.animateFloat(
         transitionSpec = { tween(durationMillis = 500) },
@@ -251,32 +258,10 @@ fun QuestionScreenContent(
                             )
                         }
                 )
-
-// Hint
-            Button(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(6.dp)
-                    .size(60.dp),
-                contentPadding = PaddingValues(vertical = 5.dp),
-                shape = CircleShape,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Blue.copy(alpha = 0.5f)
-                ),
-                onClick = { onEvent(QuestionScreenEvent.HintBtnClicked) }
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.hint_button),
-                    tint = Color.Black,
-                    contentDescription = "hint_icon_button",
-                    modifier = Modifier.size(24.dp)
-                )
-            }
         }
 
 // Grid
         OptionAnswersSection(
-            //TODO: вообще не чувствую этого модифаера педдинг
             modifier = Modifier.padding(top = 15.dp),
             answerOptions = question.answerOptions,
             selectedAnswerOption = state.selectedAnswer,
@@ -287,7 +272,7 @@ fun QuestionScreenContent(
             }
         )
     }
-        Row (
+        Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             modifier = Modifier
@@ -296,18 +281,24 @@ fun QuestionScreenContent(
                 .padding(horizontal = 10.dp)
                 .padding(bottom = 10.dp)
                 .height(90.dp)
-            ){
-// Apply
-                Button(
-                    modifier = Modifier
-                        .fillMaxHeight(fraction = 0.9f)
-                        .fillMaxWidth(fraction = 0.49f),
+        ){// Apply
+            Button(
+                modifier = Modifier
+                    .fillMaxHeight(fraction = 0.9f)
+                    .fillMaxWidth(fraction = 0.49f)
+                    .shadow(
+                        elevation = 1.dp,
+                        shape = RoundedCornerShape(25.dp),
+                        ambientColor = MaterialTheme.colorScheme.primary,
+                        spotColor = MaterialTheme.colorScheme.primary
+                    ),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary
                     ),
                     contentPadding = PaddingValues(vertical = 15.dp),
                     shape = RoundedCornerShape(25.dp),
                     onClick = {
+                        hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
                         onEvent(QuestionScreenEvent.ApplyBtnClicked)
                     }
                 ) {
@@ -327,7 +318,7 @@ fun QuestionScreenContent(
                         color = MaterialTheme.colorScheme.background,
                     )
                 }
-                // Finish
+                // Hint
                 Button(
                     modifier = Modifier
                         .fillMaxHeight(fraction = 0.9f)
@@ -338,16 +329,40 @@ fun QuestionScreenContent(
                     contentPadding = PaddingValues(vertical = 10.dp),
                     shape = RoundedCornerShape(25.dp),
                     onClick = {
-                        onEvent(QuestionScreenEvent.FinishBtnClicked)
+                        hapticFeedback.performHapticFeedback(HapticFeedbackType.VirtualKey)
+                        onEvent(QuestionScreenEvent.HintBtnClicked)
                     }
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.icon_finish),
-                        tint = MaterialTheme.colorScheme.onBackground,
+                        imageVector = Icons.Filled.AddAlert,
                         contentDescription = "finish_icon_button",
+                        tint = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.size(44.dp)
                         )
                 }
+            // Finish
+            Button(
+                modifier = Modifier
+                    .fillMaxHeight(fraction = 0.9f)
+                    .weight(1f),
+                colors = ButtonDefaults.buttonColors(
+                    MaterialTheme.colorScheme.secondary
+                ),
+                contentPadding = PaddingValues(vertical = 10.dp),
+                shape = RoundedCornerShape(25.dp),
+                onClick = {
+                    hapticFeedback.performHapticFeedback(HapticFeedbackType.VirtualKey)
+                    onEvent(QuestionScreenEvent.FinishBtnClicked)
+                }
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.icon_finish),
+                    contentDescription = "finish_icon_button",
+                    tint = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.size(44.dp)
+                )
+            }
+
             }
         }
 
