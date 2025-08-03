@@ -1,5 +1,6 @@
 package com.leoevg.geoquiz.screens.finish
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -40,6 +41,7 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.airbnb.lottie.compose.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 
 @Composable
@@ -177,7 +179,6 @@ fun FinishScreenContent(
             color = MaterialTheme.colorScheme.onBackground
         )
 
-
 // Bottom
         Column (
             modifier = Modifier
@@ -190,9 +191,19 @@ fun FinishScreenContent(
             Button(
                 modifier = Modifier
                     .fillMaxWidth(fraction = 0.6f)
-                    .padding(bottom = 20.dp),
+                    .padding(bottom = 20.dp)
+                    .shadow(
+                        elevation = 2.dp,
+                        shape = RoundedCornerShape(15.dp),
+                        ambientColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                        spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
+                    ),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.background
+                ),
+                border = BorderStroke(
+                    width = 1.dp,
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
                 ),
                 shape = RoundedCornerShape(15.dp),
                 onClick = {

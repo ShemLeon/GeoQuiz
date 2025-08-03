@@ -54,7 +54,17 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import com.leoevg.geoquiz.ui.components.LoadingDialog
 import androidx.compose.ui.platform.LocalConfiguration
-
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.text.TextAutoSize
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 
 @Composable
 fun RateScreen(
@@ -199,6 +209,7 @@ fun RateScreenContent(
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally
         ){
+
 // Btn give you content
             state.pickedImageUri?.let {
                 // если изображение выбрано - отображаем его
@@ -214,12 +225,23 @@ fun RateScreenContent(
             } ?: run {
                 Button(
                     modifier = Modifier
-                        .fillMaxWidth(fraction = 0.6f)
-                        .padding(bottom = 20.dp),
+                        .fillMaxWidth(fraction = 0.5f)
+                        .padding(bottom = 20.dp)
+                        .shadow(
+                            elevation = 2.dp,
+                            shape = RoundedCornerShape(15.dp),
+                            ambientColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                            spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
+                        ),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.background
                     ),
+                    border = BorderStroke(
+                        width = 1.dp,
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+                    ),
                     shape = RoundedCornerShape(15.dp),
+                    contentPadding = PaddingValues(top = 0.dp, bottom = 6.dp, start = 6.dp, end = 6.dp), // Убирает весь внутренний отступ
                     onClick = { checkGalleryPermissionAndPickImage() }
                 ) {
                     Box(
@@ -233,11 +255,19 @@ fun RateScreenContent(
                             modifier = Modifier
                                 .size(150.dp)
                         )
-                        Text(
+                        BasicText(
                             stringResource(R.string.send_content).uppercase(),
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Normal,
-                            color = MaterialTheme.colorScheme.onBackground,
+                            modifier = Modifier
+                                .width(130.dp),
+                            maxLines = 1,
+                            autoSize = TextAutoSize.StepBased(
+                                minFontSize = 8.sp,
+                                maxFontSize = 24.sp
+                            ),
+                            style = TextStyle(
+                                color = MaterialTheme.colorScheme.onBackground,
+                                textAlign = TextAlign.Center
+                            )
                         )
                     }
                 }
