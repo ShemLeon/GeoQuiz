@@ -68,8 +68,8 @@ class RateScreenViewModel @Inject constructor(
         }
     }
 
-    private fun onStarsSelected(stars: Int) {  // Исправить сигнатуру
-        _state.update { it.copy(stars = stars) }
+    private fun onStarsSelected(stars: Int) {
+        _state.update { it.copy(stars = stars, voted = true) }
     }
 
     private fun onSendContentBtnClicked() {

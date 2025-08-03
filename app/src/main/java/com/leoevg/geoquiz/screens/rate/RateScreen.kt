@@ -180,6 +180,17 @@ fun RateScreenContent(
                 onEvent(RateScreenEvent.StarsChanged(stars))
             }
         )
+// Gratitude
+        if (state.voted) {
+            Text(
+                stringResource(R.string.gratitude),
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier
+                    .padding(top = 20.dp),
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Bold,
+            )
+        }
 
 // Bottom
         Column (
@@ -274,7 +285,7 @@ fun RatingViewStateful(
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
-    ) {
+    ){
         repeat(maxRating) { index ->
             Icon(
                 imageVector = if (index < rating.value) {
@@ -293,6 +304,7 @@ fun RatingViewStateful(
             )
         }
     }
+
 }
 
 
