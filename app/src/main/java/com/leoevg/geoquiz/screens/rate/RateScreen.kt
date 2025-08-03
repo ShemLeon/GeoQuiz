@@ -6,8 +6,8 @@ import android.os.Build
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,7 +26,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -35,11 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.leoevg.geoquiz.R
 import com.leoevg.geoquiz.navigation.NavigationPaths
-
 import com.leoevg.geoquiz.ui.theme.GeoQuizTheme
-import androidx.compose.material3.IconButton
-
-
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -55,11 +50,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
-import com.leoevg.geoquiz.screens.login.LoginScreenEvent
 import com.leoevg.geoquiz.ui.components.LoadingDialog
+import androidx.compose.ui.platform.LocalConfiguration
+
 
 @Composable
 fun RateScreen(
@@ -76,7 +71,7 @@ fun RateScreen(
     // 3 - контракт на получение одного изображения - pickImageLauncher
     val context = LocalContext.current
     val pickImageLauncher = rememberLauncherForActivityResult(
-          ActivityResultContracts.GetContent()) { uri ->
+        ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
             viewModel.onEvent(RateScreenEvent.ImagePicked(uri))
             viewModel.onEvent(RateScreenEvent.CountryBottomSheetRequested)
@@ -258,42 +253,44 @@ fun RateScreenContent(
             }
         }
     }
-
 }
-
 
 @Composable
 fun RatingViewStateful(
     maxRating: Int = 5,
+    iconSizeRatio: Float = 0.15f,
     onRatingChanged: (Int) -> Unit = {}
 ) {
     val rating = remember { mutableStateOf(0) }
-    
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp.dp
+    val padding = 5.dp
+    val availableWidth = screenWidth - (padding * 2)
+    val iconSize = screenWidth * iconSizeRatio
+
     Row(
         modifier = Modifier
-            .padding(vertical = 16.dp)
+            .padding(vertical = 16.dp, horizontal = 5.dp)
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
         repeat(maxRating) { index ->
-            IconButton(
-                onClick = {
-                    rating.value = index + 1
-                    onRatingChanged(index + 1) // вызов
-                }
-            ) {
-                Icon(
-                    imageVector = if (index < rating.value) {
-                        Icons.Filled.Star
-                    } else {
-                        Icons.Filled.StarBorder
-                    },
-                    contentDescription = "Rate ${index + 1}",
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(40.dp)
-                )
-            }
+            Icon(
+                imageVector = if (index < rating.value) {
+                    Icons.Filled.Star
+                } else {
+                    Icons.Filled.StarBorder
+                },
+                contentDescription = "Rate ${index + 1}",
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier
+                    .size(iconSize)
+                    .clickable {
+                        rating.value = index + 1
+                        onRatingChanged(index + 1)
+                    }
+            )
         }
     }
 }
