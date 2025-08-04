@@ -84,7 +84,33 @@ class AdminScreenViewModel @Inject constructor(
     }
 
     private fun onApproveBtnClicked(){
-        _state.update { it.copy(isChooseGameModeDialogRequested = true) }
+        state.value.currentSuggestion?.let { currSuggestion ->
+            viewModelScope.launch(Dispatchers.IO) {
+                _state.update { it.copy(isLoading = true) }
+
+                // Применяем ко всем режимам игры
+                val allGameModes = listOf("Easy", "Hard", "Nightmare", "Sport", "History", "Clothing")
+
+                suggestionRepository.applySuggestion(
+                    suggestion = currSuggestion,
+                    typeGamesNames = allGameModes
+                )
+                _state.update { it.copy(isLoading = false) }
+                deleteSuggestion(currSuggestion.id)
+
+                snackbarHostState.showSnackbar(
+                    message = "Suggestion approved successfully",
+                    actionLabel = "Great!"
+                )
+            }
+        } ?: run {
+            viewModelScope.launch(Dispatchers.Main) {
+                snackbarHostState.showSnackbar(
+                    message = "Failed to approve suggestion",
+                    actionLabel = "Okay"
+                )
+            }
+        }
     }
 
     private fun loadSuggestions(){

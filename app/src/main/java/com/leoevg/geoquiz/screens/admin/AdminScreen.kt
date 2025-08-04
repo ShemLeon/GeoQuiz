@@ -174,7 +174,7 @@ fun AdminScreenContent(
                 Button(
                     modifier = Modifier
                         .fillMaxHeight(fraction = 0.9f)
-                        .fillMaxWidth(fraction = 0.6f),
+                        .fillMaxWidth(fraction = 0.49f),
                     //              .weight(1f),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = DarkGreen
