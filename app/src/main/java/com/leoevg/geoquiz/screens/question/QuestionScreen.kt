@@ -252,7 +252,6 @@ fun QuestionScreenContent(
                         }
                 )
         }
-
 // Grid
         OptionAnswersSection(
             modifier = Modifier.padding(top = 15.dp),
@@ -273,11 +272,12 @@ fun QuestionScreenContent(
                 .fillMaxWidth()
                 .padding(horizontal = 10.dp)
                 .padding(bottom = 10.dp)
-                .height(90.dp)
-        ){// Apply
+                .height(80.dp)
+        ){
+            // Apply
             Button(
                 modifier = Modifier
-                    .fillMaxHeight(fraction = 0.9f)
+                    .fillMaxHeight()
                     .fillMaxWidth(fraction = 0.49f)
                     .shadow(
                         elevation = 1.dp,
@@ -299,12 +299,12 @@ fun QuestionScreenContent(
                         painter = painterResource(R.drawable.apply_button),
                         tint = MaterialTheme.colorScheme.background,
                         contentDescription = "hint_icon_button",
-                        modifier = Modifier.size(24.dp),
+                        modifier = Modifier.size(30.dp),
 
                     )
                     Text(
                         stringResource(R.string.apply),
-                        fontSize = 30.sp,
+                        fontSize = 35.sp,
                         fontWeight = FontWeight.Normal,
                         modifier = Modifier
                             .padding(start = 10.dp),
