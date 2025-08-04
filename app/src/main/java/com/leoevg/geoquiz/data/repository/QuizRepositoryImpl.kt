@@ -48,7 +48,7 @@ class QuizRepositoryImpl: QuizRepository {
 
         return Quiz(
             typeGame = quizTypeGame,
-            questions = questions
+            questions = questions.shuffled()
         )
     }
 }
