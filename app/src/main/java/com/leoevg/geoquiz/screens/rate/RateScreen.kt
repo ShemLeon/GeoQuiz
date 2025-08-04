@@ -2,6 +2,7 @@ package com.leoevg.geoquiz.screens.rate
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -191,7 +192,7 @@ fun RateScreenContent(
             }
         )
 // Gratitude
-        if (state.voted) {
+        if (state.voted || state.pickedImageUri != null) {
             Text(
                 stringResource(R.string.gratitude),
                 color = MaterialTheme.colorScheme.primary,
@@ -220,6 +221,8 @@ fun RateScreenContent(
                     contentDescription = "Picked image",
                     modifier = Modifier
                         .padding(bottom = 20.dp)
+                        .height(250.dp)
+                        .padding(bottom=20.dp)
                 )
                 // действие выбора
             } ?: run {
@@ -363,6 +366,24 @@ fun RateScreenDarkPreview(){
         RateScreenContent(
             modifier = Modifier,
             state = RateScreenState(),
+            onEvent = {},
+            navigate = {},
+            checkGalleryPermissionAndPickImage = {}
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = false)
+fun RateScreenWithImagePreview(){
+    GeoQuizTheme(
+        darkTheme = false
+    ) {
+        RateScreenContent(
+            modifier = Modifier,
+            state = RateScreenState(
+                pickedImageUri = Uri.parse("android.resource://com.leoevg.geoquiz/${R.drawable.img_test}")
+            ),
             onEvent = {},
             navigate = {},
             checkGalleryPermissionAndPickImage = {}
