@@ -34,7 +34,7 @@ class QuestionScreenViewModel @AssistedInject constructor(
     private val userRepository: UserRepository
 ) : ViewModel() {
     private val _state = MutableStateFlow(QuestionScreenState(
-        isSilentModeEnabled = prefManager.getBoolValueByKey("darkWorks", true),
+        isSilentModeEnabled = prefManager.getBoolValueByKey("musicWorks", true),
         isNightModeEnabled = prefManager.getBoolValueByKey("darkWorks", true)
         ))
     val state: StateFlow<QuestionScreenState> = _state
@@ -112,11 +112,7 @@ class QuestionScreenViewModel @AssistedInject constructor(
         if (_state.value.isSilentModeEnabled){
             audioService.playSound(R.raw.tadam)
         }
-
-
         navigate(NavigationPaths.Finish(finalScore = _state.value.currentScore))
-
-
     }
 
     private fun onHintBtnClicked(){
@@ -140,12 +136,16 @@ class QuestionScreenViewModel @AssistedInject constructor(
     }
 
     fun updateState(question: Question, currentScore: Int) {
-        _state.update { QuestionScreenState(
-            isSilentModeEnabled = it.isSilentModeEnabled,
-            isNightModeEnabled = it.isNightModeEnabled,
-            currentScore = currentScore
-        ) }
         this.question = question
+        _state.update {
+            it.copy(
+                currentScore = currentScore,
+                shuffledAnswerOptions = question.answerOptions.shuffled(),
+                selectedAnswer = "",
+                isAnswerRight = null,
+                isHintUsed = false
+            )
+        }
     }
 
     @AssistedFactory

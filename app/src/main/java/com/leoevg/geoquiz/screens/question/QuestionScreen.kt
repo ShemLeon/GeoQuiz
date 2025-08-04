@@ -141,13 +141,6 @@ fun QuestionScreenContent(
     ){ zoomed ->
         if (zoomed) 1f else 0f
     }
-    /*
-    val fullImageSize by transition.animateDp(
-      transitionSpec = { tween(durationMillis = 500) },
-      label = "FullImageSize"
-      ){ zoomed ->
-         if (zoomed) 400.dp else 0.dp}
-     */
 
     Box(
         modifier = modifier
@@ -263,7 +256,7 @@ fun QuestionScreenContent(
 // Grid
         OptionAnswersSection(
             modifier = Modifier.padding(top = 15.dp),
-            answerOptions = question.answerOptions,
+            answerOptions = state.shuffledAnswerOptions,
             selectedAnswerOption = state.selectedAnswer,
             isAnswerRight = state.isAnswerRight,
             // нам надо передать события, что произошло и передать в него выбранный id
