@@ -16,5 +16,5 @@ val BlueGrey = Color(0xFF255A7E).copy(alpha = 0.09f)
 val DarkGrey = Color(0xFFFFFFFF).copy(alpha = 0.16f)
 val Blue = Color(0xFF3498DB)
 
-val DarkGreen = Color(0xFF4CAF50).copy(alpha = 0.8f)
-val DarkRed = Color(0xFFF44336).copy(alpha = 0.8f)
+val DarkGreen = Color(0xFF38CE3E).copy(alpha = 0.8f)
+val DarkRed = Color(0xFFE03629).copy(alpha = 0.8f)
