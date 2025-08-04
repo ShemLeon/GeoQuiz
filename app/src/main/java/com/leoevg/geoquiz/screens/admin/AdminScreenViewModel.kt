@@ -94,7 +94,7 @@ class AdminScreenViewModel @Inject constructor(
             _state.update {
                 it.copy(
                     suggestionsList = list,
-                    currentSuggestion = list[0]
+                    currentSuggestion = list.firstOrNull()
                 )
             }
         }
