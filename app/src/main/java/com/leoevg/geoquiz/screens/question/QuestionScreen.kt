@@ -233,25 +233,33 @@ fun QuestionScreenContent(
                 .aspectRatio(1f) // расположение квадратиком
                 .padding(top=30.dp)
         ){
-                AsyncImage(
-                    model = question.picturesUrls[0],
-                    contentDescription = "Question image",
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(2.dp)
-                        .background(
-                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.05f),
-                            shape = RoundedCornerShape(12.dp)
-                        )
-                        .pointerInput(Unit){ // мод для "тапания пальцами"
-                            detectTapGestures( // слушатель для тапов
-                                onDoubleTap = { // исполнение после дабл тапа
-                                    isImageZoomed = true
-                                }
-                            )
-                        }
-                )
+                    AsyncImage(
+                        model = state.selectedPictureUrl,
+                        contentDescription = "Question image",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(1f) // расположение квадратиком
+                            .padding(top=30.dp)
+                            .padding(2.dp)
+
+                            .pointerInput(Unit){ // мод для "тапания пальцами"
+                                detectTapGestures( // слушатель для тапов
+                                    onDoubleTap = { // исполнение после дабл тапа
+                                        isImageZoomed = true
+                                    }
+                                )
+                            }
+                    )
         }
+
+//        Box(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .aspectRatio(1f) // расположение квадратиком
+//                .padding(top=30.dp)
+//        ){
+//
+//        }
 // Grid
         OptionAnswersSection(
             modifier = Modifier.padding(top = 15.dp),
@@ -300,7 +308,6 @@ fun QuestionScreenContent(
                         tint = MaterialTheme.colorScheme.background,
                         contentDescription = "hint_icon_button",
                         modifier = Modifier.size(30.dp),
-
                     )
                     Text(
                         stringResource(R.string.apply),
@@ -369,7 +376,7 @@ fun QuestionScreenContent(
                 contentAlignment = Alignment.Center
             ){
                 AsyncImage(
-                    model = question.picturesUrls[0],
+                    model = state.selectedPictureUrl,
                     contentDescription = "Question image",
                     modifier = Modifier
                         .fillMaxWidth() // Пропорционально

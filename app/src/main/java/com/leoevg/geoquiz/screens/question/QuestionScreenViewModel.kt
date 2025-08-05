@@ -143,7 +143,8 @@ class QuestionScreenViewModel @AssistedInject constructor(
                 shuffledAnswerOptions = question.answerOptions.shuffled(),
                 selectedAnswer = "",
                 isAnswerRight = null,
-                isHintUsed = false
+                isHintUsed = false,
+                selectedPictureUrl = if (question.picturesUrls.isNotEmpty()) question.picturesUrls.random() else ""
             )
         }
     }

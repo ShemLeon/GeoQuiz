@@ -14,7 +14,8 @@ data class QuestionScreenState (
     val isAnswerRight: Boolean? = null, // если мы еще не ответили - состояние null,
     // дальше смена на false/true
     val isHintUsed: Boolean = false,
-    val currentScore: Int = 0
+    val currentScore: Int = 0,
+    val selectedPictureUrl: String = ""
 
 )
 
