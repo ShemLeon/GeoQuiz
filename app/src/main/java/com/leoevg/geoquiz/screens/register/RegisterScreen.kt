@@ -10,10 +10,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.TextAutoSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.Face
+import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -36,6 +42,7 @@ import com.leoevg.geoquiz.navigation.NavigationPaths
 import com.leoevg.geoquiz.ui.components.LoadingDialog
 import kotlin.Unit
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -116,7 +123,13 @@ fun RegisterScreenContent(
                     errorContainerColor = MaterialTheme.colorScheme.secondary,
                     // unfocusedContainerColor = BlueGrey
                     unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
-                )
+                ),
+                leadingIcon = {
+                    Icon(
+                        painter = rememberVectorPainter(image = Icons.Outlined.Add),
+                        contentDescription = "nickname"
+                    )
+                },
             )
             OutlinedTextField(
                 modifier = Modifier
@@ -134,7 +147,13 @@ fun RegisterScreenContent(
                     errorContainerColor = MaterialTheme.colorScheme.secondary,
                     // unfocusedContainerColor = BlueGrey
                     unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
-                )
+                ),
+                leadingIcon = {
+                    Icon(
+                        painter = rememberVectorPainter(image = Icons.Outlined.Email),
+                        contentDescription = "Email"
+                    )
+                },
             )
             OutlinedTextField(
                 modifier = Modifier
@@ -153,7 +172,13 @@ fun RegisterScreenContent(
                     errorContainerColor = MaterialTheme.colorScheme.secondary,
                     // unfocusedContainerColor = BlueGrey
                     unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
-                )
+                ),
+                leadingIcon = {
+                    Icon(
+                        painter = rememberVectorPainter(image = Icons.Outlined.Lock),
+                        contentDescription = "password"
+                    )
+                },
             )
         }
         Column (

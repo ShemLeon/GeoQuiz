@@ -11,10 +11,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.TextAutoSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -43,6 +47,7 @@ import kotlin.Unit
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalConfiguration
 import kotlinx.coroutines.launch
 import androidx.compose.ui.text.TextStyle
@@ -159,7 +164,14 @@ fun LoginScreenContent(
                     focusedContainerColor = MaterialTheme.colorScheme.secondary,
                     errorContainerColor = MaterialTheme.colorScheme.secondary,
                     unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
-                )
+                ),
+                leadingIcon = {
+                    Icon(
+                        painter = rememberVectorPainter(image = Icons.Outlined.Email),
+                        contentDescription = "Email"
+                    )
+                },
+
             )
             OutlinedTextField(
                 modifier = Modifier
@@ -178,7 +190,13 @@ fun LoginScreenContent(
                     focusedContainerColor = MaterialTheme.colorScheme.secondary,
                     errorContainerColor = MaterialTheme.colorScheme.secondary,
                     unfocusedContainerColor = MaterialTheme.colorScheme.secondary
-                )
+                ),
+                leadingIcon = {
+                    Icon(
+                        painter = rememberVectorPainter(image = Icons.Outlined.Lock),
+                        contentDescription = "password"
+                    )
+                },
             )
         }
 
