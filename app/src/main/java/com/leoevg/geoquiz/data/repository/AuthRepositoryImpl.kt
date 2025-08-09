@@ -10,7 +10,6 @@ import com.leoevg.geoquiz.data.util.getCompletedResult
 import com.leoevg.geoquiz.domain.repository.AuthRepository
 
 class AuthRepositoryImpl : AuthRepository {
-
     override suspend fun login(
         email: String,
         password: String

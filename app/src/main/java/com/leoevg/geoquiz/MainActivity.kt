@@ -1,5 +1,6 @@
 package com.leoevg.geoquiz
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -17,10 +18,13 @@ import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Принудительно устанавливаем портретную ориентацию
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         enableEdgeToEdge()
         setContent {
             GeoQuizTheme {
