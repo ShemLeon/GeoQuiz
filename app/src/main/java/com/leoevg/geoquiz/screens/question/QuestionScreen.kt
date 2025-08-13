@@ -227,31 +227,30 @@ fun QuestionScreenContent(
             }
         }
 // Image
-        // Image
-        AsyncImage(
-            model = state.selectedPictureUrl,
-            contentDescription = "Question image",
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 30.dp, start = 20.dp, end = 20.dp)
-                .background(
-                    color = MaterialTheme.colorScheme.primary,
-                    shape = RoundedCornerShape(12.dp)
-                )
-                .padding(3.dp) // Толщина обводки
-                .background(
-                    color = MaterialTheme.colorScheme.background,
-                    shape = RoundedCornerShape(9.dp)
-                )
-                .pointerInput(Unit){ // мод для "тапания пальцами"
-                    detectTapGestures( // слушатель для тапов
-                        onDoubleTap = { // исполнение после дабл тапа
-                            isImageZoomed = true
-                        }
+                .aspectRatio(1f) // расположение квадратиком
+                .padding(top=30.dp)
+        ){
+                    AsyncImage(
+                        model = state.selectedPictureUrl,
+                        contentDescription = "Question image",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(1f) // расположение квадратиком
+                            .padding(top=30.dp)
+                            .padding(2.dp)
+
+                            .pointerInput(Unit){ // мод для "тапания пальцами"
+                                detectTapGestures( // слушатель для тапов
+                                    onDoubleTap = { // исполнение после дабл тапа
+                                        isImageZoomed = true
+                                    }
+                                )
+                            }
                     )
-                },
-            contentScale = ContentScale.Fit // Сохраняет пропорции изображения
-        )
+        }
 
 //        Box(
 //            modifier = Modifier
