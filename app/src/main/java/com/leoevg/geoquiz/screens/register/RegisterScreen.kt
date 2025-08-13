@@ -71,7 +71,6 @@ fun RegisterScreen(
     )
 }
 
-
 @Composable
 fun RegisterScreenContent(
     modifier: Modifier = Modifier,
